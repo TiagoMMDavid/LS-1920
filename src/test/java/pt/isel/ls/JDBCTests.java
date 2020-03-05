@@ -3,6 +3,7 @@ package pt.isel.ls;
 import org.junit.Assert;
 import org.junit.Test;
 
+
 import java.sql.*;
 
 import static org.junit.Assert.assertEquals;
@@ -13,25 +14,28 @@ public class JDBCTests {
     private final String SERVER_NAME = "localhost";
     private final String PORT_NUMBER = "5432";
     private final String DATABASE_NAME = "postgres";
+    private final String USER = "postgres";
     private final String PASSWORD = "123macaco";
 
     @Test
     public void testJDBC() throws SQLException {
-        testConnection();
-        createTable();
-        fillTable();
-        queryTest();
-        clearTable();
-        dropTable();
-    }
-
-    private void testConnection() throws SQLException {
-        Connection con = DriverManager.getConnection(getConnectionUrl(),DATABASE_NAME, PASSWORD);
+        Connection con = testConnection();
         Assert.assertNotNull(con);
+
+        createTable(con);
+        fillTable(con);
+        queryTest(con);
+        clearTable(con);
+        dropTable(con);
+
+        con.close();
     }
 
-    private void createTable() throws SQLException {
-        Connection con = DriverManager.getConnection(getConnectionUrl(),DATABASE_NAME, PASSWORD);
+    private Connection testConnection() throws SQLException {
+        return DriverManager.getConnection(getConnectionUrl(),USER, PASSWORD);
+    }
+
+    private void createTable(Connection con) throws SQLException {
         PreparedStatement ps = con.prepareStatement("CREATE TABLE STUDENT(" +
                                                         "name   VARCHAR(255)," +
                                                         "age    INT," +
@@ -40,8 +44,7 @@ public class JDBCTests {
         ps.close();
     }
 
-    private void fillTable() throws SQLException {
-        Connection con = DriverManager.getConnection(getConnectionUrl(),DATABASE_NAME, PASSWORD);
+    private void fillTable(Connection con) throws SQLException {
         PreparedStatement ps = con.prepareStatement("INSERT INTO STUDENT VALUES " +
                                                         "('John Doe', 20, 1234), "+
                                                         "('Luís Barreiros', 50, 4321);");
@@ -49,28 +52,25 @@ public class JDBCTests {
         ps.close();
     }
 
-    private void queryTest() throws SQLException {
-        Connection con = DriverManager.getConnection(getConnectionUrl(),DATABASE_NAME, PASSWORD);
-        Statement stmt = con.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT age " +
-                                             "FROM STUDENT " +
-                                             "WHERE number = 1234;");
+    private void queryTest(Connection con) throws SQLException {
+        PreparedStatement ps = con.prepareStatement("SELECT age " +
+                                                        "FROM STUDENT " +
+                                                        "WHERE number = 1234;");
+        ResultSet rs = ps.executeQuery();
         rs.next();
         assertEquals(20, rs.getInt(1));
 
         rs.close();
-        stmt.close();
+        ps.close();
     }
 
-    private void clearTable() throws SQLException {
-        Connection con = DriverManager.getConnection(getConnectionUrl(),DATABASE_NAME, PASSWORD);
+    private void clearTable(Connection con) throws SQLException {
         PreparedStatement ps = con.prepareStatement("DELETE FROM STUDENT;");
         ps.executeUpdate();
         ps.close();
     }
 
-    private void dropTable() throws SQLException {
-        Connection con = DriverManager.getConnection(getConnectionUrl(),DATABASE_NAME, PASSWORD);
+    private void dropTable(Connection con) throws SQLException {
         PreparedStatement ps = con.prepareStatement("DROP TABLE STUDENT;");
         ps.executeUpdate();
         ps.close();
