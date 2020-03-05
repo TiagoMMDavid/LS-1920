@@ -8,6 +8,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import static org.junit.Assert.assertEquals;
+
 public class JDBCTests {
     // These fields describe the connection url
     private final String url = "jdbc:postgresql://";
@@ -34,22 +36,44 @@ public class JDBCTests {
 
     @Test
     public void fillTable() throws SQLException {
-        // TODO
+        Connection con = DriverManager.getConnection(getConnectionUrl(),"postgres","123macaco");
+        PreparedStatement ps = con.prepareStatement("INSERT INTO student values("+
+                "'John Doe',"+
+                "20,"+
+                "1234"+
+                ");"+
+                "INSERT INTO student values("+
+                "'Luís Barreiros',"+
+                "50,"+
+                "4321"+
+                ");");
+        ps.executeUpdate();
     }
 
     @Test
     public void queryTest() throws SQLException {
-        // TODO
+        Connection con = DriverManager.getConnection(getConnectionUrl(),"postgres","123macaco");
+        PreparedStatement ps = con.prepareStatement("select age "+
+                "from student "+
+                "where number = 1234 ");
+        ps.executeUpdate();
+        assertEquals(20, ps.getResultSet().getInt(0));
     }
 
     @Test
     public void clearTable() throws SQLException {
-        // TODO
+        Connection con = DriverManager.getConnection(getConnectionUrl(),"postgres","123macaco");
+        PreparedStatement ps = con.prepareStatement("DELETE "+
+                "FROM student "+
+                ";");
+        ps.executeUpdate();
     }
 
     @Test
     public void dropTable() throws SQLException {
-        // TODO
+        Connection con = DriverManager.getConnection(getConnectionUrl(),"postgres","123macaco");
+        PreparedStatement ps = con.prepareStatement("DROP TABLE if EXISTS student;");
+        ps.executeUpdate();
     }
 
     /**
