@@ -33,10 +33,14 @@ public class IntsTests {
         int[] v = {1, 2, 3};
 
         // Act
-        int ix = Ints.indexOfBinary(v, 2, 1, 4);
+        int ix1 = Ints.indexOfBinary(v, 2, 1, 4);
+        int ix2 = Ints.indexOfBinary(v, -1, 1, 4);
+        int ix3 = Ints.indexOfBinary(v, 0, 5, 4);
 
         // Assert
-        assertTrue(ix < 0);
+        assertTrue(ix1 < 0);
+        assertTrue(ix2 < 0);
+        assertTrue(ix3 < 0);
     }
 
     @Test
