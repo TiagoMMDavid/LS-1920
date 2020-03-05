@@ -25,7 +25,7 @@ public class Ints {
 
     public static int indexOfBinary(int[] a, int fromIndex, int toIndex, int n) {
 
-        if (fromIndex > toIndex) {
+        if (fromIndex > toIndex || fromIndex < 0 || toIndex < 0 || toIndex > a.length) {
             throw new IllegalArgumentException("from(" + fromIndex + ") > to(" + toIndex + ")");
         }
 

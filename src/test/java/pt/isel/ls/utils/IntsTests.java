@@ -33,14 +33,36 @@ public class IntsTests {
         int[] v = {1, 2, 3};
 
         // Act
-        int ix1 = Ints.indexOfBinary(v, 2, 1, 4);
-        int ix2 = Ints.indexOfBinary(v, -1, 1, 4);
-        int ix3 = Ints.indexOfBinary(v, 0, 5, 4);
+        int ix = Ints.indexOfBinary(v, 2, 1, 4);
 
         // Assert
-        assertTrue(ix1 < 0);
-        assertTrue(ix2 < 0);
-        assertTrue(ix3 < 0);
+        assertTrue(ix < 0);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void indexOfBinary_throws_IllegalArgumentException_if_indexes_are_negative()
+    {
+        // Arrange
+        int[] v = {1, 2, 3};
+
+        // Act
+        int ix = Ints.indexOfBinary(v, -1, 1, 4);
+
+        // Assert
+        assertTrue(ix < 0);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void indexOfBinary_throws_IllegalArgumentException_if_indexes_are_out_of_bounds()
+    {
+        // Arrange
+        int[] v = {1, 2, 3};
+
+        // Act
+        int ix = Ints.indexOfBinary(v, 0, 5, 4);
+
+        // Assert
+        assertTrue(ix < 0);
     }
 
     @Test
@@ -60,7 +82,7 @@ public class IntsTests {
     @Test
     public void indexOfBinary_array_of_odd_dimension() {
         int[] v = {1, 2, 3};
-        int ix = Ints.indexOfBinary(v,0,4,3);
+        int ix = Ints.indexOfBinary(v,0,3,3);
         assertEquals(2,ix);
     }
 
