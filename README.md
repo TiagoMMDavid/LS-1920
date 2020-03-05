@@ -1,4 +1,5 @@
-# 1920-2-common
-Software Laboratory, 2019/2020, Spring semester
+# LI42D-G08
 
-See [wiki](https://github.com/isel-leic-ls/1920-2-common/wiki) for further information, namely [calendar](https://github.com/isel-leic-ls/1920-2-common/wiki/calendar).
+## 46008 - Diogo Sousa
+## 46078 - Tiago David
+## 46107 - João Moura
