@@ -22,7 +22,7 @@ dependencies {
 task pgPrms {
     def url = System.getenv('JDBC_DATABASE_URL')
     if (url == null || url.allWhitespace) {
-        url = 'jdbc:postgresql://localhost:5432/school?user=postgres&password=changeit'
+        url = 'jdbc:postgresql://localhost:5432/school?user=postgres&password=123macaco'
         println('no JDBC_DATABASE_URL environment variable found, using default value')
     }
     def uri = new URI(url.substring(5))
