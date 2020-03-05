@@ -46,4 +46,24 @@ public class IntsTests {
         assertTrue(ix < 0);
     }
 
+    @Test
+    public void indexOfBinary_array_of_even_dimension() {
+        int[] v = {1, 2, 3, 4};
+        int ix = Ints.indexOfBinary(v,0,4,4);
+        assertEquals(3,ix);
+    }
+
+    @Test
+    public void indexOfBinary_array_of_odd_dimension() {
+        int[] v = {1, 2, 3};
+        int ix = Ints.indexOfBinary(v,0,4,3);
+        assertEquals(2,ix);
+    }
+
+    @Test
+    public void indexOfBinary_singleton_array() {
+        int[] v = {1};
+        int ix = Ints.indexOfBinary(v,0,1,1);
+        assertEquals(0,ix);
+    }
 }
