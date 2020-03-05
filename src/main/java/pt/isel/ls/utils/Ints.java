@@ -43,6 +43,8 @@ public class Ints {
                 return mid;
             }
         }
+
+        if (low == high && a[low] == n) return low;
         return -1;
     }
 }
