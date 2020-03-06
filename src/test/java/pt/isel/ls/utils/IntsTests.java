@@ -40,8 +40,7 @@ public class IntsTests {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void indexOfBinary_throws_IllegalArgumentException_if_indexes_are_negative()
-    {
+    public void indexOfBinary_throws_IllegalArgumentException_if_indexes_are_negative() {
         // Arrange
         int[] v = {1, 2, 3};
 
@@ -53,8 +52,7 @@ public class IntsTests {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void indexOfBinary_throws_IllegalArgumentException_if_indexes_are_out_of_bounds()
-    {
+    public void indexOfBinary_throws_IllegalArgumentException_if_indexes_are_out_of_bounds() {
         // Arrange
         int[] v = {1, 2, 3};
 

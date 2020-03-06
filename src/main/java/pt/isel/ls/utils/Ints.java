@@ -44,7 +44,9 @@ public class Ints {
             }
         }
 
-        if (low == high && a[low] == n) return low;
+        if (low == high && a[low] == n) {
+            return low;
+        }
         return -1;
     }
 }
