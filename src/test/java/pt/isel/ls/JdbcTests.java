@@ -21,57 +21,82 @@ public class JdbcTests {
     private final String user = "postgres";
     private final String password = "123macaco";
 
-    @Test
-    public void testJdbc() throws SQLException {
-        Connection con = testConnection();
-        assertNotNull(con);
-
-        con.setAutoCommit(false);   // Disable automatic commit of changes
-        try (con) {
-            createTable(con);
-            fillTable(con);
-            queryTest(con);
-            clearTable(con);
-            dropTable(con);
-            con.commit();           // Commit only if there was no exception thrown
-        } catch (Exception e) {
-            con.rollback();         // If there's an error, rollback the changes
-            throw e;
-        }
-    }
-
-    private Connection testConnection() throws SQLException {
+    private Connection getConnection() throws SQLException {
         PGSimpleDataSource ds = new PGSimpleDataSource();
         ds.setURL(getConnectionUrl());
         ds.setUser(user);
         ds.setPassword(password);
 
         Connection con = ds.getConnection();
-        assertNotNull(con);
+        con.setAutoCommit(false);
         return con;
     }
 
-    private void createTable(Connection con) throws SQLException {
+    @Test
+    public void connectionToDatabaseTest() throws SQLException {
+        Connection con = getConnection();
+        assertNotNull(con);
+        con.close();
+    }
+
+    @Test
+    public void createTableTest() throws SQLException {
+        Connection con = getConnection();
+        try {
+            createTableAux(con);
+        } finally {
+            con.rollback();
+            con.close();
+        }
+    }
+
+
+    private void createTableAux(Connection con) throws SQLException {
         PreparedStatement ps = con.prepareStatement("CREATE TABLE STUDENT("
-                                                        + "name   VARCHAR(255),"
-                                                        + "age    INT,"
-                                                        + "number INT PRIMARY KEY);");
+                + "name   VARCHAR(255),"
+                + "age    INT,"
+                + "number INT PRIMARY KEY);");
         ps.executeUpdate();
         ps.close();
     }
 
-    private void fillTable(Connection con) throws SQLException {
+    @Test
+    public void fillTableWithDataTest() throws SQLException {
+        Connection con = getConnection();
+        createTableAux(con);
+        try {
+            fillTableAux(con);
+        } finally {
+            con.rollback();
+            con.close();
+        }
+    }
+
+    private void fillTableAux(Connection con) throws SQLException {
         PreparedStatement ps = con.prepareStatement("INSERT INTO STUDENT VALUES "
-                                                        + "('John Doe', 20, 1234), "
-                                                        + "('Luís Barreiros', 50, 4321);");
+                + "('John Doe', 20, 1234), "
+                + "('Luís Barreiros', 50, 4321);");
         ps.executeUpdate();
         ps.close();
     }
 
-    private void queryTest(Connection con) throws SQLException {
+    @Test
+    public void selectQueryTest() throws SQLException {
+        Connection con = getConnection();
+        createTableAux(con);
+        fillTableAux(con);
+        try {
+            queryTestAux(con);
+        } finally {
+            con.rollback();
+            con.close();
+        }
+    }
+
+    private void queryTestAux(Connection con) throws SQLException {
         PreparedStatement ps = con.prepareStatement("SELECT age "
-                                                        + "FROM STUDENT "
-                                                        + "WHERE number = 1234;");
+                + "FROM STUDENT "
+                + "WHERE number = 1234;");
         ResultSet rs = ps.executeQuery();
         rs.next();
         assertEquals(20, rs.getInt(1));
@@ -80,16 +105,36 @@ public class JdbcTests {
         ps.close();
     }
 
-    private void clearTable(Connection con) throws SQLException {
-        PreparedStatement ps = con.prepareStatement("DELETE FROM STUDENT;");
-        ps.executeUpdate();
-        ps.close();
+    @Test
+    public void clearTableTest() throws SQLException {
+        Connection con = getConnection();
+        createTableAux(con);
+        fillTableAux(con);
+
+        try {
+            PreparedStatement ps = con.prepareStatement("DELETE FROM STUDENT;");
+            ps.executeUpdate();
+            ps.close();
+        } finally {
+            con.rollback();
+            con.close();
+        }
     }
 
-    private void dropTable(Connection con) throws SQLException {
-        PreparedStatement ps = con.prepareStatement("DROP TABLE STUDENT;");
-        ps.executeUpdate();
-        ps.close();
+    @Test
+    public void dropTableTest() throws SQLException {
+        Connection con = getConnection();
+        createTableAux(con);
+        fillTableAux(con);
+
+        try {
+            PreparedStatement ps = con.prepareStatement("DROP TABLE STUDENT;");
+            ps.executeUpdate();
+            ps.close();
+        } finally {
+            con.rollback();
+            con.close();
+        }
     }
 
     /**
