@@ -1,4 +1,4 @@
-package pt.isel.ls.model.commands;
+package pt.isel.ls.model.commands.common;
 
 public class CommandRequest {
 

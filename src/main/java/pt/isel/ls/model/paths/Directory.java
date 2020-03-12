@@ -8,4 +8,12 @@ public class Directory {
         this.name = name;
         this.isVariable = isVariable;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public boolean isVariable() {
+        return isVariable;
+    }
 }
