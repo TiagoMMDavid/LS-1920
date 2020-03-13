@@ -7,10 +7,16 @@ public class PathTemplate {
     private LinkedList<Directory> path = new LinkedList<>();
 
     public PathTemplate (String template) {
+        if(template != null || !isValid(template)) throw new IllegalArgumentException("Wrong format.");
+        template = template.substring(1);
         String[] path = template.split("/");
         for (String str: path) {
             this.path.add(new Directory(str,isVariable(str)));
         }
+    }
+
+    private boolean isValid(String template) {
+        return template.charAt(0) != '/';
     }
 
     public boolean isTemplateOf(Path o) {

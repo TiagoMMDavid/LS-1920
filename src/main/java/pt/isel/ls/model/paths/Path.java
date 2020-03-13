@@ -6,6 +6,10 @@ public class Path {
     private LinkedList<Directory> path = new LinkedList<>();
 
     public Path(String path) {
+        if(path != null || path.charAt(0) != '/'){
+            throw new IllegalArgumentException("Wrong Path format.");
+        }
+        path = path.substring(1);
         String[] paths = path.split("/");
         for (String str: paths) {
             this.path.add(new Directory(str, false));
