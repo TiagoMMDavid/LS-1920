@@ -1,32 +1,39 @@
 package pt.isel.ls.model.paths;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 
 public class PathTemplate {
-    LinkedList<Directory> path = new LinkedList<>();
+    private LinkedList<Directory> path = new LinkedList<>();
 
-    public PathTemplate (String template) throws IllegalArgumentException {
+    public PathTemplate (String template) {
         String[] path = template.split("/");
         for (String str: path) {
-            if (!isValid(str)) throw new IllegalArgumentException("Invalid template");
             this.path.add(new Directory(str,isVariable(str)));
         }
     }
 
-    private boolean isValid(String dir) {
-        if (dir.charAt(0) == '{') {
-            return (dir.charAt(dir.length() - 1) == '}' && dir.indexOf('/') < 0);   // If it's a variable, check if it's closed on both sides.
-        } else {
-            return (dir.indexOf('/') < 0);                                          // If it's a constant, check it doesn't have a slash.
-        }
-    }
-
     public boolean isTemplateOf(Path o) {
-        // TODO
-        return false;
+        Iterator<Directory> template = path.iterator();
+        Iterator<Directory> path = o.getPath().iterator();
+        boolean templateSuccess = true;
+
+        while(path.hasNext() && template.hasNext()) {
+            Directory fromPath = path.next();
+            Directory fromTemplate = template.next();
+            if (!fromTemplate.isVariable() && !fromTemplate.getName().equals(fromPath.getName())) {
+                templateSuccess = false;
+                break;
+            }
+        }
+        if(path.hasNext() || template.hasNext()) templateSuccess = false;
+
+        return templateSuccess;
     }
 
     private boolean isVariable(String dir) {
-        return (dir.charAt(0) == '{' && dir.charAt(dir.length()-1) == '}');
+        if (dir.charAt(0) == '{')
+            return dir.charAt(dir.length()-1) == '}';
+        return false;
     }
 }
