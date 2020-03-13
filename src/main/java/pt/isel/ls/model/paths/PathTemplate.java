@@ -1,22 +1,11 @@
 package pt.isel.ls.model.paths;
 
 import java.util.Iterator;
-import java.util.LinkedList;
 
-public class PathTemplate {
-    private LinkedList<Directory> path = new LinkedList<>();
+public class PathTemplate extends PathCommon {
 
     public PathTemplate (String template) {
-        if(template != null || !isValid(template)) throw new IllegalArgumentException("Wrong format.");
-        template = template.substring(1);
-        String[] path = template.split("/");
-        for (String str: path) {
-            this.path.add(new Directory(str,isVariable(str)));
-        }
-    }
-
-    private boolean isValid(String template) {
-        return template.charAt(0) != '/';
+        super(template);
     }
 
     public boolean isTemplateOf(Path o) {
@@ -35,6 +24,11 @@ public class PathTemplate {
         if(path.hasNext() || template.hasNext()) templateSuccess = false;
 
         return templateSuccess;
+    }
+
+    @Override
+    protected void addDirectory(String str) {
+        super.path.add(new Directory(str,isVariable(str)));
     }
 
     private boolean isVariable(String dir) {

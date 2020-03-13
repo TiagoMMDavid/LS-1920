@@ -1,8 +1,8 @@
 package pt.isel.ls.model.paths;
 
-public class Directory {
+class Directory {
     private String name;
-    private boolean isVariable = false;
+    private boolean isVariable;
 
     public Directory(String name, boolean isVariable) {
         this.name = name;

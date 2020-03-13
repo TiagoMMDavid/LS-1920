@@ -1,13 +1,11 @@
-package pt.isel.ls;
+package pt.isel.ls.model.paths;
 
 import org.junit.Test;
-import pt.isel.ls.model.paths.Path;
-import pt.isel.ls.model.paths.PathTemplate;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-public class PathTest {
-
+public class PathTests {
 
     @Test
     public void correctPathTest(){
@@ -28,7 +26,6 @@ public class PathTest {
 
     @Test
     public void wrongPathTest(){
-
         //Arrange
         PathTemplate template = new PathTemplate("/rooms/{rid}");
         Path path1 = new Path("/rooms/");
@@ -41,9 +38,9 @@ public class PathTest {
         boolean isTemplate3 = template.isTemplateOf(path3);
 
         //Assert
-        assertTrue(!isTemplate1);
-        assertTrue(!isTemplate2);
-        assertTrue(!isTemplate3);
+        assertFalse(isTemplate1);
+        assertFalse(isTemplate2);
+        assertFalse(isTemplate3);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -55,6 +52,11 @@ public class PathTest {
     public void emptyPathTemplateFormatTest(){
         PathTemplate template = new PathTemplate("");
     }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void invalidDoubleSlashPathTemplateTest(){
+        PathTemplate template = new PathTemplate("/rooms//abc");
+}
 
     @Test(expected = IllegalArgumentException.class)
     public void emptyPathTest(){
