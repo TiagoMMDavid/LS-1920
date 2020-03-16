@@ -11,14 +11,19 @@ abstract class PathCommon {
     }
 
     protected void parsePath(String path) throws IllegalArgumentException {
-        if(path == null || !isValid(path)) {
+        if (path == null || !isValid(path)) {
             throw new IllegalArgumentException("Wrong template format");
         }
         path = path.substring(1);
         String[] paths = path.split("/");
-        if (paths.length == 0) throw new IllegalArgumentException("Wrong format");
+        if (paths.length == 0)  {
+            throw new IllegalArgumentException("Wrong format");
+        }
+
         for (String str: paths) {
-            if (str.isEmpty()) throw new IllegalArgumentException("Wrong format");
+            if (str.isEmpty()) {
+                throw new IllegalArgumentException("Wrong format");
+            }
             addDirectory(str);
         }
     }

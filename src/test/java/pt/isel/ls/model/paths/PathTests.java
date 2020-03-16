@@ -8,7 +8,7 @@ import static org.junit.Assert.assertTrue;
 public class PathTests {
 
     @Test
-    public void correctPathTest(){
+    public void correctPathTest() {
         //Arrange
         PathTemplate roomsTemplate = new PathTemplate("/rooms/{rid}");
         PathTemplate bookingsTemplate = new PathTemplate("/bookings/{bid}");
@@ -25,7 +25,7 @@ public class PathTests {
     }
 
     @Test
-    public void wrongPathTest(){
+    public void wrongPathTest() {
         //Arrange
         PathTemplate template = new PathTemplate("/rooms/{rid}");
         Path path1 = new Path("/rooms/");
@@ -44,22 +44,22 @@ public class PathTests {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void invalidPathTemplateFormatTest(){
+    public void invalidPathTemplateFormatTest() {
         PathTemplate template = new PathTemplate("///");
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void emptyPathTemplateFormatTest(){
+    public void emptyPathTemplateFormatTest() {
         PathTemplate template = new PathTemplate("");
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void invalidDoubleSlashPathTemplateTest(){
+    public void invalidDoubleSlashPathTemplateTest() {
         PathTemplate template = new PathTemplate("/rooms//abc");
-}
+    }
 
     @Test(expected = IllegalArgumentException.class)
-    public void emptyPathTest(){
+    public void emptyPathTest() {
         Path path = new Path("");
     }
 }

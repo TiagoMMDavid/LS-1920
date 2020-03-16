@@ -4,7 +4,7 @@ import java.util.Iterator;
 
 public class PathTemplate extends PathCommon {
 
-    public PathTemplate (String template) {
+    public PathTemplate(String template) {
         super(template);
     }
 
@@ -13,7 +13,7 @@ public class PathTemplate extends PathCommon {
         Iterator<Directory> path = o.getPath().iterator();
         boolean templateSuccess = true;
 
-        while(path.hasNext() && template.hasNext()) {
+        while (path.hasNext() && template.hasNext()) {
             Directory fromPath = path.next();
             Directory fromTemplate = template.next();
             if (!fromTemplate.isVariable() && !fromTemplate.getName().equals(fromPath.getName())) {
@@ -21,7 +21,10 @@ public class PathTemplate extends PathCommon {
                 break;
             }
         }
-        if(path.hasNext() || template.hasNext()) templateSuccess = false;
+
+        if (path.hasNext() || template.hasNext()) {
+            templateSuccess = false;
+        }
 
         return templateSuccess;
     }
@@ -32,8 +35,9 @@ public class PathTemplate extends PathCommon {
     }
 
     private boolean isVariable(String dir) {
-        if (dir.charAt(0) == '{')
-            return dir.charAt(dir.length()-1) == '}';
+        if (dir.charAt(0) == '{') {
+            return dir.charAt(dir.length() - 1) == '}';
+        }
         return false;
     }
 }
