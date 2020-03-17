@@ -4,8 +4,7 @@ import pt.isel.ls.model.commands.common.CommandHandler;
 import pt.isel.ls.model.commands.common.CommandRequest;
 import pt.isel.ls.model.commands.common.CommandResult;
 
-public class PostCommand implements CommandHandler {
-
+public class GetRoomsCommand implements CommandHandler {
     @Override
     public CommandResult execute(CommandRequest commandRequest) {
         return null;
