@@ -1,7 +1,6 @@
-package pt.isel.ls;
+package pt.isel.ls.model.commands.common;
 
 import org.junit.Test;
-import org.postgresql.ds.PGSimpleDataSource;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,27 +9,9 @@ import java.sql.SQLException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static pt.isel.ls.model.commands.common.PsqlHandler.getConnection;
 
 public class JdbcTests {
-    // These fields describe the connection URL
-    private final String url = "jdbc:postgresql://";
-    private final String serverAddress = "localhost";
-    private final String portNumber = "5432";
-    private final String databaseName = "postgres";
-
-    private final String user = "postgres";
-    private final String password = "123macaco";
-
-    private Connection getConnection() throws SQLException {
-        PGSimpleDataSource ds = new PGSimpleDataSource();
-        ds.setURL(getConnectionUrl());
-        ds.setUser(user);
-        ds.setPassword(password);
-
-        Connection con = ds.getConnection();
-        con.setAutoCommit(false);
-        return con;
-    }
 
     @Test
     public void connectionToDatabaseTest() throws SQLException {
@@ -135,16 +116,5 @@ public class JdbcTests {
             con.rollback();
             con.close();
         }
-    }
-
-    /**
-     * Uses the Strings in the class's fields to generate a connection URL
-     * @return the connection URL
-     */
-    private String getConnectionUrl() {
-        return url
-                + serverAddress + ":"
-                + portNumber + "/"
-                + databaseName;
     }
 }
