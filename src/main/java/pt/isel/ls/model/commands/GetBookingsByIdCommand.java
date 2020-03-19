@@ -4,8 +4,7 @@ import pt.isel.ls.model.commands.common.CommandHandler;
 import pt.isel.ls.model.commands.common.CommandRequest;
 import pt.isel.ls.model.commands.common.CommandResult;
 
-public class GetCommand implements CommandHandler {
-
+public class GetBookingsByIdCommand implements CommandHandler {
     @Override
     public CommandResult execute(CommandRequest commandRequest) {
         return null;

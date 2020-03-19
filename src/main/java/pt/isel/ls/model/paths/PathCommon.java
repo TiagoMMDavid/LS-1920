@@ -16,15 +16,16 @@ abstract class PathCommon {
         }
         path = path.substring(1);
         String[] paths = path.split("/");
-        if (paths.length == 0)  {
+        if (paths.length == 0) {
             throw new IllegalArgumentException("Wrong format");
         }
-
-        for (String str: paths) {
-            if (str.isEmpty()) {
-                throw new IllegalArgumentException("Wrong format");
+        if (!paths[0].isEmpty()) {
+            for (String str : paths) {
+                if (str.isEmpty()) {
+                    throw new IllegalArgumentException("Wrong format");
+                }
+                addDirectory(str);
             }
-            addDirectory(str);
         }
     }
 
