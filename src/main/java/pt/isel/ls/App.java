@@ -1,15 +1,27 @@
 package pt.isel.ls;
 
+import java.util.Scanner;
 import pt.isel.ls.model.Router;
-import pt.isel.ls.model.commands.*;
 import pt.isel.ls.model.commands.common.CommandHandler;
 import pt.isel.ls.model.commands.common.CommandRequest;
+import pt.isel.ls.model.commands.common.CommandResult;
 import pt.isel.ls.model.commands.common.Method;
 import pt.isel.ls.model.commands.common.Parameters;
 import pt.isel.ls.model.paths.Path;
 import pt.isel.ls.model.paths.PathTemplate;
 
-import java.util.Scanner;
+import pt.isel.ls.model.commands.GetRoomsCommand;
+import pt.isel.ls.model.commands.GetRoomsByIdCommand;
+import pt.isel.ls.model.commands.GetBookingsByIdCommand;
+import pt.isel.ls.model.commands.GetUsersByIdCommand;
+import pt.isel.ls.model.commands.GetBookingsByUserIdCommand;
+import pt.isel.ls.model.commands.GetLabelsCommand;
+import pt.isel.ls.model.commands.GetRoomsWithLabelCommand;
+import pt.isel.ls.model.commands.PostRoomsCommand;
+import pt.isel.ls.model.commands.PostBookingsInRoomCommand;
+import pt.isel.ls.model.commands.PostUsersCommand;
+import pt.isel.ls.model.commands.PostLabelsCommand;
+import pt.isel.ls.model.commands.ExitCommand;
 
 public class App {
     public static void main(String[] args) {
@@ -19,30 +31,49 @@ public class App {
         if (args.length > 0) {
             executeCommand(args, router);
         } else {
-            Scanner in = new Scanner(System.in);
-            while (true) {
-                System.out.print("> ");
-                String[] commands = in.nextLine().split(" ");
-
-                if (commands.length <= 1 || !executeCommand(commands, router)) {
-                    System.out.println("> Wrong format.");
-                }
-
-            }
-
+            run(router);
         }
+    }
+
+    private static void run(Router router) {
+        Scanner in = new Scanner(System.in);
+        boolean running = true;
+        while (running) {
+            System.out.print("> ");
+            String[] commands = in.nextLine().split(" ");
+
+            if (!isCommandValid(commands)) {
+                System.out.println("> Wrong format.");
+            } else {
+                running = executeCommand(commands, router);
+            }
+        }
+    }
+
+    private static boolean isCommandValid(String[] commands) {
+        return commands.length > 1 && commands.length <= 3;
     }
 
     private static boolean executeCommand(String[] commands, Router router) {
         CommandRequest cmd;
         if (commands.length == 3) {
-            cmd = new CommandRequest(Method.valueOf(commands[0].toUpperCase()), new Path(commands[1]), new Parameters(commands[2]));
+            cmd = new CommandRequest(Method.valueOf(commands[0].toUpperCase()),
+                    new Path(commands[1]),
+                    new Parameters(commands[2]));
         } else {
-            cmd = new CommandRequest(Method.valueOf(commands[0].toUpperCase()), new Path(commands[1]));
+            cmd = new CommandRequest(Method.valueOf(commands[0].toUpperCase()),
+                    new Path(commands[1]));
         }
         CommandHandler handler = router.findRoute(cmd.getMethod(), cmd.getPath());
-        handler.execute(cmd);
-        return true;
+        CommandResult result = handler.execute(cmd);
+        if (result != null && result.isSuccess()) {
+            displayResult(result);
+        }
+        return result != null;
+    }
+
+    private static void displayResult(CommandResult result) {
+        //TODO:
     }
 
     private static void addCommands(Router router) {
