@@ -87,7 +87,20 @@ public class GetCommandsTest {
 
     @Test
     public void GetLabelsTest() {
-        //TODO:
+        Router router = new Router();
+        router.addRoute(Method.GET, new PathTemplate("/labels"), new GetLabelsCommand());
+        CommandRequest cmd = new CommandRequest(Method.GET, new Path("/labels"));
+
+        CommandHandler handler = router.findRoute(cmd.getMethod(), cmd.getPath());
+        CommandResult result = handler.execute(cmd);
+        Iterator<String> itr = result.iterator();
+
+        assertNotNull(result);
+        assertTrue(result.isSuccess());
+        assertEquals(itr.next(), "Has Projector (lid: 0)");
+        assertEquals(itr.next(), "Has Food (lid: 1)");
+        assertEquals(itr.next(), "Has Board (lid: 2)");
+
     }
 
     @Test
@@ -124,7 +137,17 @@ public class GetCommandsTest {
 
     @Test
     public void GetRoomsWithLabelTest() {
-        //TODO:
+        Router router = new Router();
+        router.addRoute(Method.GET, new PathTemplate("/labels/{lid}/rooms"), new GetRoomsWithLabelCommand());
+        CommandRequest cmd = new CommandRequest(Method.GET, new Path("/labels/1/rooms"));
+
+        CommandHandler handler = router.findRoute(cmd.getMethod(), cmd.getPath());
+        CommandResult result = handler.execute(cmd);
+        Iterator<String> itr = result.iterator();
+
+        assertNotNull(result);
+        assertTrue(result.isSuccess());
+        assertEquals(itr.next(), "room id (rid): 1");
     }
 
     @Test
