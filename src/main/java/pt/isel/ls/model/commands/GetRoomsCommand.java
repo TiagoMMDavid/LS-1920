@@ -3,7 +3,7 @@ package pt.isel.ls.model.commands;
 import pt.isel.ls.model.commands.common.CommandHandler;
 import pt.isel.ls.model.commands.common.CommandRequest;
 import pt.isel.ls.model.commands.common.CommandResult;
-import pt.isel.ls.model.commands.common.PsqlHandler;
+import pt.isel.ls.model.commands.common.PsqlConnectionHandler;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -14,14 +14,14 @@ public class GetRoomsCommand implements CommandHandler {
     @Override
     public CommandResult execute(CommandRequest commandRequest) {
         CommandResult result = new CommandResult();
-        try (Connection con = PsqlHandler.getConnection()) {
-            PreparedStatement ps = con.prepareStatement("SELECT rid "
-                    + "FROM ROOM ");
+        try (Connection con = PsqlConnectionHandler.getConnection()) {
+            PreparedStatement ps = con.prepareStatement("SELECT rid, name "
+                    + "FROM ROOM");
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                result.addResult(Integer.toString(rs.getInt(1)));
+                result.addResult(rs.getString("name") + " (rid: " + rs.getInt("rid") + ")");
             }
-            result.setTitle("Rooms ids");
+            result.setTitle("ID and name of all the rooms");
             result.setSuccess(true);
 
             rs.close();

@@ -20,6 +20,7 @@ public class Router {
         Iterable<Pair<Method, PathTemplate>> itr = routes.keySet();
         for (Pair<Method, PathTemplate> key: itr) {
             if (key.first.equals(method) && key.second.isTemplateOf(path)) {
+                key.second.applyTemplate(path);
                 return routes.get(key);
             }
         }

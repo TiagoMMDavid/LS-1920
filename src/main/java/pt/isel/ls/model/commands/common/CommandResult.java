@@ -1,8 +1,9 @@
 package pt.isel.ls.model.commands.common;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 
-public class CommandResult {
+public class CommandResult implements Iterable<String> {
     private boolean success;
     private String title;
     private LinkedList<String> results;
@@ -32,8 +33,10 @@ public class CommandResult {
     }
 
     public void clearResults() {
-        results.clear();
-        results = null;
+        if (results != null) {
+            results.clear();
+            results = null;
+        }
     }
 
     public String getTitle() {
@@ -42,5 +45,10 @@ public class CommandResult {
 
     public boolean isSuccess() {
         return success;
+    }
+
+    @Override
+    public Iterator<String> iterator() {
+        return results != null ? results.iterator() : null;
     }
 }

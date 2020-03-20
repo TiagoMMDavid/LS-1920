@@ -1,5 +1,6 @@
 package pt.isel.ls;
 
+import java.util.Iterator;
 import java.util.Scanner;
 import pt.isel.ls.model.Router;
 import pt.isel.ls.model.commands.common.CommandHandler;
@@ -54,6 +55,7 @@ public class App {
         return commands.length > 1 && commands.length <= 3;
     }
 
+    //Returned value determines if the app should continue running or not
     private static boolean executeCommand(String[] commands, Router router) {
         CommandRequest cmd;
         if (commands.length == 3) {
@@ -65,6 +67,10 @@ public class App {
                     new Path(commands[1]));
         }
         CommandHandler handler = router.findRoute(cmd.getMethod(), cmd.getPath());
+        if (handler == null) {
+            return true;
+        }
+
         CommandResult result = handler.execute(cmd);
         if (result != null && result.isSuccess()) {
             displayResult(result);
@@ -73,29 +79,36 @@ public class App {
     }
 
     private static void displayResult(CommandResult result) {
-        //TODO:
+        System.out.println(result.getTitle());
+        Iterator<String> itr = result.iterator();
+        if (itr != null) {
+            while (itr.hasNext()) {
+                System.out.println(itr.next());
+            }
+        }
     }
 
     private static void addCommands(Router router) {
+        //Path Templates (shared between different commands)
+        PathTemplate roomsTemplate = new PathTemplate("/rooms");
+        PathTemplate labelsTemplate = new PathTemplate("/labels");
+
         //GET commands
-        router.addRoute(Method.GET, new PathTemplate("/rooms"), new GetRoomsCommand());
+        router.addRoute(Method.GET, roomsTemplate, new GetRoomsCommand());
         router.addRoute(Method.GET, new PathTemplate("/rooms/{rid}"), new GetRoomsByIdCommand());
         router.addRoute(Method.GET, new PathTemplate("/rooms/{rid}/bookings/{bid}"), new GetBookingsByIdCommand());
         router.addRoute(Method.GET, new PathTemplate("/users/{uid}"), new GetUsersByIdCommand());
         router.addRoute(Method.GET, new PathTemplate("/users/{uid}/bookings"), new GetBookingsByUserIdCommand());
-        router.addRoute(Method.GET, new PathTemplate("/labels"), new GetLabelsCommand());
+        router.addRoute(Method.GET, labelsTemplate, new GetLabelsCommand());
         router.addRoute(Method.GET, new PathTemplate("/labels/{lid}/rooms"), new GetRoomsWithLabelCommand());
+
         //POST commands
-        router.addRoute(Method.POST, new PathTemplate("/rooms"), new PostRoomsCommand());
+        router.addRoute(Method.POST, roomsTemplate, new PostRoomsCommand());
         router.addRoute(Method.POST, new PathTemplate("/rooms/{rid}/bookings"), new PostBookingsInRoomCommand());
         router.addRoute(Method.POST, new PathTemplate("/users"), new PostUsersCommand());
-        router.addRoute(Method.POST, new PathTemplate("/labels"), new PostLabelsCommand());
+        router.addRoute(Method.POST, labelsTemplate, new PostLabelsCommand());
+
         //EXIT command
         router.addRoute(Method.EXIT, new PathTemplate("/"), new ExitCommand());
-
-
-
-
-
     }
 }

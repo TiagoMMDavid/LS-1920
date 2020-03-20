@@ -9,7 +9,7 @@ import java.sql.SQLException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static pt.isel.ls.model.commands.common.PsqlHandler.getConnection;
+import static pt.isel.ls.model.commands.common.PsqlConnectionHandler.getConnection;
 
 public class JdbcTests {
 

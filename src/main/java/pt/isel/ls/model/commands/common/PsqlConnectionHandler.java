@@ -5,7 +5,7 @@ import org.postgresql.ds.PGSimpleDataSource;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-public class PsqlHandler {
+public class PsqlConnectionHandler {
 
     public static Connection getConnection() throws SQLException {
         PGSimpleDataSource ds = new PGSimpleDataSource();

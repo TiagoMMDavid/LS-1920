@@ -8,25 +8,37 @@ public class PathTemplate extends PathCommon {
         super(template);
     }
 
-    public boolean isTemplateOf(Path o) {
-        Iterator<Directory> template = path.iterator();
-        Iterator<Directory> path = o.getPath().iterator();
+    public boolean isTemplateOf(Path path) {
+        Iterator<Directory> templateItr = this.path.iterator();
+        Iterator<Directory> pathItr = path.getPath().iterator();
         boolean templateSuccess = true;
 
-        while (path.hasNext() && template.hasNext()) {
-            Directory fromPath = path.next();
-            Directory fromTemplate = template.next();
+        while (pathItr.hasNext() && templateItr.hasNext()) {
+            Directory fromPath = pathItr.next();
+            Directory fromTemplate = templateItr.next();
             if (!fromTemplate.isVariable() && !fromTemplate.getName().equals(fromPath.getName())) {
                 templateSuccess = false;
                 break;
             }
         }
 
-        if (path.hasNext() || template.hasNext()) {
+        if (pathItr.hasNext() || templateItr.hasNext()) {
             templateSuccess = false;
         }
 
         return templateSuccess;
+    }
+
+    public void applyTemplate(Path path) {
+        Iterator<Directory> templateItr = this.path.iterator();
+        Iterator<Directory> pathItr = path.getPath().iterator();
+        while (pathItr.hasNext() && templateItr.hasNext()) {
+            Directory fromPath = pathItr.next();
+            Directory fromTemplate = templateItr.next();
+            if (fromTemplate.isVariable()) {
+                path.addVariable(fromPath.getName());
+            }
+        }
     }
 
     @Override
