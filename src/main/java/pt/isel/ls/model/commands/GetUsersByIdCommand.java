@@ -22,7 +22,7 @@ public class GetUsersByIdCommand implements CommandHandler {
             ps.setInt(1, userId);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                result.addResult("uid: " + rs.getInt("uid"));
+                result.addResult("user id (uid): " + rs.getInt("uid"));
                 result.addResult("name: " + rs.getString("name"));
                 result.addResult("email: " + rs.getString("email"));
             }

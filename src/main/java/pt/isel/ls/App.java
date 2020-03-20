@@ -13,7 +13,7 @@ import pt.isel.ls.model.paths.PathTemplate;
 
 import pt.isel.ls.model.commands.GetRoomsCommand;
 import pt.isel.ls.model.commands.GetRoomsByIdCommand;
-import pt.isel.ls.model.commands.GetBookingsByIdCommand;
+import pt.isel.ls.model.commands.GetBookingsByRoomAndBookingId;
 import pt.isel.ls.model.commands.GetUsersByIdCommand;
 import pt.isel.ls.model.commands.GetBookingsByUserIdCommand;
 import pt.isel.ls.model.commands.GetLabelsCommand;
@@ -83,8 +83,10 @@ public class App {
         Iterator<String> itr = result.iterator();
         if (itr != null) {
             while (itr.hasNext()) {
-                System.out.println(itr.next());
+                System.out.println(" - " + itr.next());
             }
+        } else {
+            System.out.println(" - No results found");
         }
     }
 
@@ -96,7 +98,8 @@ public class App {
         //GET commands
         router.addRoute(Method.GET, roomsTemplate, new GetRoomsCommand());
         router.addRoute(Method.GET, new PathTemplate("/rooms/{rid}"), new GetRoomsByIdCommand());
-        router.addRoute(Method.GET, new PathTemplate("/rooms/{rid}/bookings/{bid}"), new GetBookingsByIdCommand());
+        router.addRoute(Method.GET, new PathTemplate("/rooms/{rid}/bookings/{bid}"),
+                new GetBookingsByRoomAndBookingId());
         router.addRoute(Method.GET, new PathTemplate("/users/{uid}"), new GetUsersByIdCommand());
         router.addRoute(Method.GET, new PathTemplate("/users/{uid}/bookings"), new GetBookingsByUserIdCommand());
         router.addRoute(Method.GET, labelsTemplate, new GetLabelsCommand());
