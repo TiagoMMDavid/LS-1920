@@ -1,6 +1,7 @@
 package pt.isel.ls.model.commands.common;
 
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 
 public class Parameters {
@@ -43,5 +44,10 @@ public class Parameters {
 
     public Iterable<String> getValues(String key) {
         return params.get(key);
+    }
+
+    public String getValue(String key) {
+        LinkedList<String> curr = params.get(key);
+        return curr == null ? null : curr.getFirst();
     }
 }

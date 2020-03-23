@@ -3,10 +3,40 @@ package pt.isel.ls.model.commands;
 import pt.isel.ls.model.commands.common.CommandHandler;
 import pt.isel.ls.model.commands.common.CommandRequest;
 import pt.isel.ls.model.commands.common.CommandResult;
+import pt.isel.ls.model.commands.common.PsqlConnectionHandler;
+
+import java.sql.*;
 
 public class PostLabelsCommand implements CommandHandler {
     @Override
     public CommandResult execute(CommandRequest commandRequest) {
-        return null;
+        CommandResult result = new CommandResult();
+        try (Connection con = PsqlConnectionHandler.getConnection()) {
+            PreparedStatement ps = con.prepareStatement("INSERT INTO LABEL "
+                            + "(name) Values(?)",
+                            Statement.RETURN_GENERATED_KEYS
+            );
+            String label = commandRequest.getParams().getValue("name");
+            if (label != null) {
+                ps.setString(1, label);
+                int success = ps.executeUpdate();
+                con.commit();
+                result.setSuccess(success > 0);
+                result.setTitle("Label <" + label + "> added successfully");
+                ResultSet rs = ps.getGeneratedKeys();
+                rs.next();
+                result.addResult("LID = "+ rs.getInt("lid"));
+
+            } else {
+                throw new IllegalArgumentException("No arguments found / Invalid arguments");
+            }
+            ps.close();
+
+        } catch (SQLException e) {
+            result.setSuccess(false);
+            result.clearResults();
+            result.setTitle(e.getMessage());
+        }
+        return result;
     }
 }

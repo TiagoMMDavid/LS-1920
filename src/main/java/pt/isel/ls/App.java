@@ -73,12 +73,12 @@ public class App {
 
         CommandResult result = handler.execute(cmd);
         if (result != null && result.isSuccess()) {
-            displayResult(result);
+            displayResult(result, cmd);
         }
         return result != null;
     }
 
-    private static void displayResult(CommandResult result) {
+    private static void displayResult(CommandResult result, CommandRequest request) {
         System.out.println(result.getTitle());
         Iterator<String> itr = result.iterator();
         if (itr != null) {
@@ -86,7 +86,9 @@ public class App {
                 System.out.println(" - " + itr.next());
             }
         } else {
-            System.out.println(" - No results found");
+            if (request.getMethod().equals(Method.GET)) {
+                System.out.println(" - No results found");
+            }
         }
     }
 
