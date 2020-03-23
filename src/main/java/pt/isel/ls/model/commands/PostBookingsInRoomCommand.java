@@ -25,11 +25,13 @@ public class PostBookingsInRoomCommand implements CommandHandler {
                 ps.setString(1, uid);
                 ps.setString(2, rid);
                 ps.setString(3, begin);
-                ps.setString(4, null);
+                //TODO: Calculate end time and finish PreparedStatement
+                //ps.setString(4, null);
+
                 int success = ps.executeUpdate();
                 con.commit();
                 result.setSuccess(success > 0);
-                result.setTitle("User <" + uid + "> added successfully");
+                result.setTitle("Booking in room <" + rid + "> added successfully");
             } else {
                 throw new IllegalArgumentException("No arguments found / Invalid arguments");
             }

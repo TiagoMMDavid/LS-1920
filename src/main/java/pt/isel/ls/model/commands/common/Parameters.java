@@ -1,7 +1,6 @@
 package pt.isel.ls.model.commands.common;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.LinkedList;
 
 public class Parameters {
