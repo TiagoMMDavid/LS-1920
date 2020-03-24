@@ -35,6 +35,7 @@ public class PostRoomsCommand implements CommandHandler {
                 ps.setInt(4, Integer.parseInt(capacity));
 
                 final int success = ps.executeUpdate();
+
                 //Get rid
                 ResultSet rs = ps.getGeneratedKeys();
                 rs.next();
@@ -62,6 +63,7 @@ public class PostRoomsCommand implements CommandHandler {
     }
 
     private LinkedList<Integer> getLids(Connection con, Iterable<String> label) throws SQLException {
+        //TODO: This isn't implemented properly
         PreparedStatement ps = con.prepareStatement("SELECT lid FROM LABEL "
                         + "WHERE name = ?"
         );
@@ -77,8 +79,19 @@ public class PostRoomsCommand implements CommandHandler {
         return null;
     }
 
-    private void fillRoomLabelTable(Connection con, int rid, LinkedList<Integer> lids) {
-        lids.size();
-        String sqlStatement = "insert into ROOMLABEl values(";
+    private void fillRoomLabelTable(Connection con, int rid, LinkedList<Integer> lids) throws SQLException {
+        StringBuilder builder = new StringBuilder("insert into ROOMLABEL values(?,?");
+        for (int i = 0; i < lids.size() -1 ; i++) {
+            builder.append("), (?,?");
+        }
+        builder.append(")");
+
+        PreparedStatement ps = con.prepareStatement(builder.toString());
+        int i = 1;
+        for (Integer lid: lids) {
+            ps.setInt(i++,lid);
+            ps.setInt(i++,rid);
+        }
+        ps.executeUpdate();
     }
 }
