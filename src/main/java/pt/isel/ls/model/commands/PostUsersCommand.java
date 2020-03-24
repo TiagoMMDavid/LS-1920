@@ -27,13 +27,13 @@ public class PostUsersCommand implements CommandHandler {
                 ps.setString(1, name);
                 ps.setString(2, email);
                 int success = ps.executeUpdate();
-                con.commit();
                 result.setSuccess(success > 0);
                 result.setTitle("User <" + name + "> added successfully");
                 //Get uid
                 ResultSet rs = ps.getGeneratedKeys();
                 rs.next();
                 result.addResult("UID = " + rs.getInt("uid"));
+                con.commit();
             } else {
                 throw new IllegalArgumentException("No arguments found / Invalid arguments");
             }

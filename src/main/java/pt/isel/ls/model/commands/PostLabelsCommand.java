@@ -26,13 +26,13 @@ public class PostLabelsCommand implements CommandHandler {
             if (label != null) {
                 ps.setString(1, label);
                 int success = ps.executeUpdate();
-                con.commit();
                 result.setSuccess(success > 0);
                 result.setTitle("Label <" + label + "> added successfully");
                 //Get lid
                 ResultSet rs = ps.getGeneratedKeys();
                 rs.next();
                 result.addResult("LID = " + rs.getInt("lid"));
+                con.commit();
             } else {
                 throw new IllegalArgumentException("No arguments found / Invalid arguments");
             }
