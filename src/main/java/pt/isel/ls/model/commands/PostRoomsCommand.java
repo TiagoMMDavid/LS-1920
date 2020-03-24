@@ -32,7 +32,7 @@ public class PostRoomsCommand implements CommandHandler {
                 ps.setString(1, name);
                 ps.setString(2, description);
                 ps.setString(3, location);
-                ps.setInt(4, capacity == null ? 0 : Integer.parseInt(capacity)); //By default, the value is 0 if no capacity is given
+                ps.setInt(4, capacity == null ? 0 : Integer.parseInt(capacity)); //By default, capacity is 0
 
                 final int success = ps.executeUpdate();
 
