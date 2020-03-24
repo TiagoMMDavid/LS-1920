@@ -28,11 +28,11 @@ public class PostRoomsCommand implements CommandHandler {
             String description = commandRequest.getParams().getValue("description");
             String location = commandRequest.getParams().getValue("location");
             String capacity = commandRequest.getParams().getValue("capacity");
-            if (name != null &&  capacity != null && location != null) {
+            if (name != null && location != null) {
                 ps.setString(1, name);
                 ps.setString(2, description);
                 ps.setString(3, location);
-                ps.setInt(4, Integer.parseInt(capacity));
+                ps.setInt(4, capacity == null ? 0 : Integer.parseInt(capacity)); //By default, the value is 0 if no capacity is given
 
                 final int success = ps.executeUpdate();
 

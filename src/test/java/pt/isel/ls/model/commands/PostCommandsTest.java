@@ -35,12 +35,28 @@ public class PostCommandsTest {
 
     @Test
     public void postLabelsCommandTest() {
+        Router router = new Router();
+        router.addRoute(Method.POST, new PathTemplate("/labels"), new PostLabelsCommand());
+        CommandRequest cmd = new CommandRequest(Method.POST, new Path("/labels"), new Parameters("name=projector"));
 
+        CommandHandler handler = router.findRoute(cmd.getMethod(), cmd.getPath());
+        CommandResult result = handler.execute(cmd);
+
+        assertNotNull(result);
+        assertTrue(result.isSuccess());
     }
 
     @Test
     public void postRoomsCommandTest() {
+        Router router = new Router();
+        router.addRoute(Method.POST, new PathTemplate("/rooms"), new PostRoomsCommand());
+        CommandRequest cmd = new CommandRequest(Method.POST, new Path("/rooms"), new Parameters("name=LS3&location=Building F+floor+-1&label=monitors&label=windows"));
 
+        CommandHandler handler = router.findRoute(cmd.getMethod(), cmd.getPath());
+        CommandResult result = handler.execute(cmd);
+
+        assertNotNull(result);
+        assertTrue(result.isSuccess());
     }
 
     @Test
