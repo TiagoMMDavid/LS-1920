@@ -81,7 +81,7 @@ public class PostRoomsCommand implements CommandHandler {
 
     private void fillRoomLabelTable(Connection con, int rid, LinkedList<Integer> lids) throws SQLException {
         StringBuilder builder = new StringBuilder("insert into ROOMLABEL values(?,?");
-        for (int i = 0; i < lids.size() -1 ; i++) {
+        for (int i = 0; i < lids.size() - 1; i++) {
             builder.append("), (?,?");
         }
         builder.append(")");
