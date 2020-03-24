@@ -63,7 +63,11 @@ public class GetCommandsTest {
                     + "DELETE FROM ROOMLABEL;"
                     + "DELETE FROM label WHERE lid IN (0,1,2);"
                     + "DELETE FROM ROOM where rid in (0,1);"
-                    + "DELETE FROM USERS WHERE uid IN (0,1);");
+                    + "DELETE FROM USERS WHERE uid IN (0,1);"
+                    + "ALTER SEQUENCE users_uid_seq RESTART;"
+                    + "ALTER SEQUENCE booking_bid_seq RESTART;"
+                    + "ALTER SEQUENCE label_lid_seq RESTART;"
+                    + "ALTER SEQUENCE room_rid_seq RESTART;");
             ps.execute();
             con.commit();
         } catch (SQLException e) {
