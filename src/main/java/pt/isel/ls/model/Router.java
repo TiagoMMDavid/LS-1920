@@ -8,12 +8,18 @@ import pt.isel.ls.utils.MethodNode;
 import pt.isel.ls.utils.NTree;
 
 public class Router {
+    /**
+     * A NTree is used to store the routes.
+     * Composed of an HashMap with a Method as a key, and MethodNode as value.
+     * This way, repetition is avoided, while also minimizing the amount of time to execute.
+     */
     private NTree routes = new NTree();
 
     public void addRoute(Method method, PathTemplate path, CommandHandler handler) {
         routes.add(method, path, handler);
     }
 
+    //Searches the NTree for a valid route
     public CommandHandler findRoute(Method method, Path path) {
         MethodNode node = routes.getMethodNode(method);
         return node == null ? null : node.getHandlerAndApplyTemplate(path);

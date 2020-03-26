@@ -3,6 +3,11 @@ package pt.isel.ls.model.paths;
 import java.util.LinkedList;
 
 abstract class PathCommon {
+
+    /**
+     * This class was created because there was a lot of repeated code between the several path-related classes.
+     * A path is composed of a List of Directories, which store the name, and whether or not it is a variable.
+     */
     protected LinkedList<Directory> path;
 
     protected PathCommon(String path) {
@@ -10,6 +15,9 @@ abstract class PathCommon {
         parsePath(path);
     }
 
+    /**
+     * Splits the string and parses it accordingly, adding each valid string to the list of Directories.
+     */
     protected void parsePath(String path) throws IllegalArgumentException {
         if (path == null || !isValid(path)) {
             throw new IllegalArgumentException("Wrong template format");

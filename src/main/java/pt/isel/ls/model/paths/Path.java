@@ -5,6 +5,9 @@ import java.util.LinkedList;
 
 public class Path extends PathCommon {
 
+    /**
+     * An ArrayList of Strings to represent the each variable's name.
+     */
     private ArrayList<String> variables;
 
     public void addVariable(String var) {

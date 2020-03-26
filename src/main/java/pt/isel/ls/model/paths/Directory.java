@@ -1,6 +1,7 @@
 package pt.isel.ls.model.paths;
 
 class Directory {
+
     private String name;
     private boolean isVariable;
 

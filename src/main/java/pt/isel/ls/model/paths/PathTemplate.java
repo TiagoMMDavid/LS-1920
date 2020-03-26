@@ -8,6 +8,11 @@ public class PathTemplate extends PathCommon {
         super(template);
     }
 
+    /**
+     * Compares the Directories of both the Path and PathTemplate, in case they all have the same name,
+     * or correspond to a variable, returns true.
+     */
+
     public boolean isTemplateOf(Path path) {
         Iterator<Directory> templateItr = this.path.iterator();
         Iterator<Directory> pathItr = path.getPath().iterator();
@@ -29,6 +34,9 @@ public class PathTemplate extends PathCommon {
         return templateSuccess;
     }
 
+    /**
+     * Applies the Template to a path, allowing it to add the variables to the allocated place.
+     */
     public void applyTemplate(Path path) {
         Iterator<Directory> templateItr = this.path.iterator();
         Iterator<Directory> pathItr = path.getPath().iterator();
