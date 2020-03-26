@@ -55,7 +55,7 @@ public class PostCommandsTest {
     @Test
     public void postRoomsCommandTest() {
         Router router = new Router();
-        router.addRoute(Method.POST, new PathTemplate("/rooms"), new PostLabelsCommand());
+        router.addRoute(Method.POST, new PathTemplate("/rooms"), new PostRoomsCommand());
         CommandRequest cmd = new CommandRequest(Method.POST, new Path("/rooms"),
                             new Parameters("name=LS3&location=Building+F+floor+-1&label=monitors&label=windows"));
 
@@ -90,7 +90,9 @@ public class PostCommandsTest {
                     "INSERT INTO USERS VALUES (0, 'John Frank', 'johnfrank@company.org');"
                             + "INSERT INTO ROOM VALUES (0, 'Meeting Room', 'A place where meetings are held.', "
                             + "'Floor 1', 10);"
-                            + "INSERT INTO label VALUES (0, 'Has Projector');"
+                            + "INSERT INTO label VALUES (0, 'monitors');"
+                            + "INSERT INTO label VALUES (1, 'windows');"
+                            + "ALTER SEQUENCE label_lid_seq RESTART WITH 2;"
             );
             ps.execute();
             con.commit();
@@ -106,10 +108,11 @@ public class PostCommandsTest {
     public static void clearTables() throws SQLException {
         Connection con = getConnection();
         try {
-            PreparedStatement ps = con.prepareStatement("DELETE FROM booking WHERE uid = 0;"
-                    + "DELETE FROM label WHERE lid IN (0,1);"
-                    + "DELETE FROM ROOM where rid = 0;"
-                    + "DELETE FROM USERS WHERE uid IN (0,1);"
+            PreparedStatement ps = con.prepareStatement("DELETE FROM ROOMLABEL;"
+                    + "DELETE FROM booking;"
+                    + "DELETE FROM label;"
+                    + "DELETE FROM ROOM;"
+                    + "DELETE FROM USERS;"
                     + "ALTER SEQUENCE users_uid_seq RESTART;"
                     + "ALTER SEQUENCE booking_bid_seq RESTART;"
                     + "ALTER SEQUENCE label_lid_seq RESTART;"

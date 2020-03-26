@@ -4,14 +4,15 @@ import pt.isel.ls.model.commands.common.CommandHandler;
 import pt.isel.ls.model.commands.common.CommandRequest;
 import pt.isel.ls.model.commands.common.CommandResult;
 import pt.isel.ls.model.commands.common.PsqlConnectionHandler;
-import pt.isel.ls.utils.ArrayUtils;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.ResultSet;
-import java.sql.Array;
+import java.sql.SQLException;
+import java.sql.Types;
+
+import java.util.Iterator;
 import java.util.LinkedList;
 
 public class PostRoomsCommand implements CommandHandler {
@@ -31,7 +32,12 @@ public class PostRoomsCommand implements CommandHandler {
                 ps.setString(1, name);
                 ps.setString(2, description);
                 ps.setString(3, location);
-                ps.setInt(4, capacity == null ? 0 : Integer.parseInt(capacity)); //By default, capacity is 0
+
+                if (capacity == null) {
+                    ps.setNull(4, Types.INTEGER);
+                } else {
+                    ps.setInt(4, Integer.parseInt(capacity));
+                }
 
                 final int success = ps.executeUpdate();
 
@@ -41,8 +47,11 @@ public class PostRoomsCommand implements CommandHandler {
                 int rid = rs.getInt("rid");
                 result.addResult("RID = " + rid);
 
-                LinkedList<Integer> lids = getLids(con, commandRequest.getParams().getValues("label"));
-                fillRoomLabelTable(con, rid, lids);
+                Iterable<String> labels = commandRequest.getParams().getValues("label");
+                if (labels != null) {
+                    LinkedList<Integer> lids = getLids(con, labels);
+                    fillRoomLabelTable(con, rid, lids);
+                }
 
                 result.setSuccess(success > 0);
                 result.setTitle("Room <" + name + "> added successfully");
@@ -61,21 +70,32 @@ public class PostRoomsCommand implements CommandHandler {
         return result;
     }
 
-    private LinkedList<Integer> getLids(Connection con, Iterable<String> label) throws SQLException {
-        //TODO: This isn't implemented properly
-        PreparedStatement ps = con.prepareStatement("SELECT lid FROM LABEL "
-                        + "WHERE name = ?"
-        );
-        String[] labels = ArrayUtils.convertIterableToArray(label);
-        Array array = con.createArrayOf("INT", labels);
-        ps.setArray(1, array);
+    private LinkedList<Integer> getLids(Connection con, Iterable<String> labels) throws SQLException {
+        StringBuilder builder = new StringBuilder("SELECT lid FROM LABEL WHERE name in (?");
+        Iterator<String> iter = labels.iterator();
+        // We are assured that there's at least one label in the iterable "labels", so we skip the first one.
+        iter.next();
+
+        while (iter.hasNext()) {
+            builder.append(",?");
+            iter.next();
+        }
+        builder.append(')');
+        PreparedStatement ps = con.prepareStatement(builder.toString());
+
+        int i = 1;
+        for (String label : labels) {
+            ps.setString(i++, label);
+        }
+
         ResultSet rs = ps.executeQuery();
+
         LinkedList<Integer> toReturn = new LinkedList<>();
         while (rs.next()) {
             toReturn.add(rs.getInt("lid"));
         }
 
-        return null;
+        return toReturn;
     }
 
     private void fillRoomLabelTable(Connection con, int rid, LinkedList<Integer> lids) throws SQLException {
@@ -91,6 +111,7 @@ public class PostRoomsCommand implements CommandHandler {
             ps.setInt(i++,lid);
             ps.setInt(i++,rid);
         }
+
         ps.executeUpdate();
     }
 }

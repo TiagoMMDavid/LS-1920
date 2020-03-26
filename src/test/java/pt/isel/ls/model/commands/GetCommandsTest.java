@@ -58,12 +58,11 @@ public class GetCommandsTest {
     public static void clearTables() throws SQLException {
         Connection con = getConnection();
         try {
-            PreparedStatement ps = con.prepareStatement("DELETE FROM BOOKING "
-                    + "WHERE bid IN (0,1,3,4); "
+            PreparedStatement ps = con.prepareStatement("DELETE FROM BOOKING;"
                     + "DELETE FROM ROOMLABEL;"
-                    + "DELETE FROM label WHERE lid IN (0,1,2);"
-                    + "DELETE FROM ROOM where rid in (0,1);"
-                    + "DELETE FROM USERS WHERE uid IN (0,1);"
+                    + "DELETE FROM label;"
+                    + "DELETE FROM ROOM;"
+                    + "DELETE FROM USERS;"
                     + "ALTER SEQUENCE users_uid_seq RESTART;"
                     + "ALTER SEQUENCE booking_bid_seq RESTART;"
                     + "ALTER SEQUENCE label_lid_seq RESTART;"
