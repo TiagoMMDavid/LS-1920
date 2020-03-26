@@ -1,33 +1,25 @@
 package pt.isel.ls.utils;
 
 import pt.isel.ls.model.commands.common.CommandHandler;
-import pt.isel.ls.model.commands.common.Method;
 import pt.isel.ls.model.paths.Path;
 import pt.isel.ls.model.paths.PathTemplate;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.util.HashSet;
 
 public class MethodNode {
-    private Method method;
-    private List<HandlerNode> cmdhandler = new LinkedList<>();
+    private HashSet<HandlerNode> cmdhandlers = new HashSet<>();
 
-    public MethodNode(Method method, PathTemplate template, CommandHandler cmd) {
-        this.method = method;
+    public MethodNode(PathTemplate template, CommandHandler cmd) {
         HandlerNode toAdd = new HandlerNode(cmd, template);
-        cmdhandler.add(toAdd);
+        cmdhandlers.add(toAdd);
     }
 
-    public Method getMethod() {
-        return method;
-    }
-
-    public List<HandlerNode> getCmdhandler() {
-        return cmdhandler;
+    public void addHandler(PathTemplate template, CommandHandler cmd) {
+        cmdhandlers.add(new HandlerNode(cmd, template));
     }
 
     public CommandHandler getHandlerAndApplyTemplate(Path path) {
-        for (HandlerNode handlerNode : cmdhandler) {
+        for (HandlerNode handlerNode : cmdhandlers) {
             PathTemplate template = handlerNode.getTemplate();
             if (template.isTemplateOf(path)) {
                 template.applyTemplate(path);

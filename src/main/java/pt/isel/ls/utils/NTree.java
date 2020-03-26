@@ -4,21 +4,22 @@ import pt.isel.ls.model.commands.common.CommandHandler;
 import pt.isel.ls.model.commands.common.Method;
 import pt.isel.ls.model.paths.PathTemplate;
 
-import java.util.LinkedList;
+import java.util.HashMap;
 
 public class NTree {
-    LinkedList<MethodNode> methods = new LinkedList<>();
+    HashMap<Method,MethodNode> methods = new HashMap<>();
 
     public void add(Method method, PathTemplate template, CommandHandler cmd) {
-        methods.add(new MethodNode(method, template, cmd));
+        MethodNode node = getMethodNode(method);
+        if (node == null) {
+            node = new MethodNode(template, cmd);
+        } else {
+            node.addHandler(template, cmd);
+        }
+        methods.put(method, node);
     }
 
     public MethodNode getMethodNode(Method method) {
-        for (MethodNode node: methods) {
-            if (node.getMethod().equals(method)) {
-                return node;
-            }
-        }
-        return null;
+        return methods.get(method);
     }
 }
