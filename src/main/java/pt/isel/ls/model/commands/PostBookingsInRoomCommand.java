@@ -9,9 +9,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.concurrent.TimeUnit;
+import java.util.TimeZone;
 
 public class PostBookingsInRoomCommand implements CommandHandler {
     @Override
@@ -31,12 +32,12 @@ public class PostBookingsInRoomCommand implements CommandHandler {
                 ps.setInt(2, Integer.parseInt(rid));
 
                 //Calculate end time
-                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-                Date beginDate = format.parse(begin);
-                Date endDate = new Date(beginDate.getTime() + TimeUnit.MINUTES.toMillis(Long.valueOf(duration)));
-
+                Date beginDate = parseTime(begin, "yyyy-MM-dd HH:mm");
+                Date durationDate = parseTime(duration, "HH:mm");
+                Date endDate = new Date(beginDate.getTime() + durationDate.getTime());
                 ps.setTimestamp(3, new java.sql.Timestamp(beginDate.getTime()));
                 ps.setTimestamp(4, new java.sql.Timestamp(endDate.getTime()));
+
                 int success = ps.executeUpdate();
                 result.setSuccess(success > 0);
                 result.setTitle("Booking in room <" + rid + "> added successfully");
@@ -56,5 +57,12 @@ public class PostBookingsInRoomCommand implements CommandHandler {
             result.setTitle(e.getMessage());
         }
         return result;
+    }
+
+    private Date parseTime(String date, String pattern) throws ParseException {
+        TimeZone tz = TimeZone.getTimeZone("UTC");
+        SimpleDateFormat formatDate = new SimpleDateFormat(pattern);
+        formatDate.setTimeZone(tz);
+        return formatDate.parse(date);
     }
 }

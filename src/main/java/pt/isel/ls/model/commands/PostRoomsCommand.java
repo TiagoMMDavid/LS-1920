@@ -17,7 +17,6 @@ import java.util.LinkedList;
 public class PostRoomsCommand implements CommandHandler {
     @Override
     public CommandResult execute(CommandRequest commandRequest) {
-        //TODO:
         CommandResult result = new CommandResult();
         try (Connection con = PsqlConnectionHandler.getConnection()) {
             PreparedStatement ps = con.prepareStatement("INSERT INTO ROOM "

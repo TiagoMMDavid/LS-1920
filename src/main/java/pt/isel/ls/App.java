@@ -72,10 +72,14 @@ public class App {
         }
 
         CommandResult result = handler.execute(cmd);
-        //TODO: Display something if result was not successfully
-        if (result != null && result.isSuccess()) {
-            displayResult(result, cmd);
+        if (result != null) {
+            if (result.isSuccess()) {
+                displayResult(result, cmd);
+            } else {
+                System.out.println(result.getTitle());
+            }
         }
+
         return result != null;
     }
 

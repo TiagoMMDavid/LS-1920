@@ -16,11 +16,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static pt.isel.ls.model.commands.common.PsqlConnectionHandler.getConnection;
 
-//TODO:
 public class PostCommandsTest {
 
     @Test
@@ -28,13 +28,14 @@ public class PostCommandsTest {
         Router router = new Router();
         router.addRoute(Method.POST, new PathTemplate("/rooms/{rid}/bookings"), new PostBookingsInRoomCommand());
         CommandRequest cmd = new CommandRequest(Method.POST, new Path("/rooms/0/bookings"),
-                new Parameters("begin=2020-12-20+10:20&duration=10&uid=0"));
+                new Parameters("begin=2020-12-20+10:20&duration=00:10&uid=0"));
 
         CommandHandler handler = router.findRoute(cmd.getMethod(), cmd.getPath());
         CommandResult result = handler.execute(cmd);
 
         assertNotNull(result);
         assertTrue(result.isSuccess());
+        assertEquals("Booking in room <0> added successfully", result.getTitle());
     }
 
     @Test
@@ -48,10 +49,22 @@ public class PostCommandsTest {
 
         assertNotNull(result);
         assertTrue(result.isSuccess());
+        assertEquals("Label <projector> added successfully", result.getTitle());
     }
 
     @Test
     public void postRoomsCommandTest() {
+        Router router = new Router();
+        router.addRoute(Method.POST, new PathTemplate("/rooms"), new PostLabelsCommand());
+        CommandRequest cmd = new CommandRequest(Method.POST, new Path("/rooms"),
+                            new Parameters("name=LS3&location=Building+F+floor+-1&label=monitors&label=windows"));
+
+        CommandHandler handler = router.findRoute(cmd.getMethod(), cmd.getPath());
+        CommandResult result = handler.execute(cmd);
+
+        assertNotNull(result);
+        assertTrue(result.isSuccess());
+        assertEquals("Room <LS3> added successfully", result.getTitle());
     }
 
     @Test
@@ -66,6 +79,7 @@ public class PostCommandsTest {
 
         assertNotNull(result);
         assertTrue(result.isSuccess());
+        assertEquals("User <David> added successfully", result.getTitle());
     }
 
     @BeforeClass
