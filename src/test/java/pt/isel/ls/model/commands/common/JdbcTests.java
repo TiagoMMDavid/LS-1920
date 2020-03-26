@@ -13,7 +13,7 @@ import static org.junit.Assert.assertNotNull;
 public class JdbcTests {
     private static PsqlConnectionHandler connectionHandler = new PsqlConnectionHandler(
             "jdbc:postgresql://localhost:5432/postgrestests");
-    
+
     @Test
     public void connectionToDatabaseTest() throws SQLException {
         Connection con = connectionHandler.getConnection();
