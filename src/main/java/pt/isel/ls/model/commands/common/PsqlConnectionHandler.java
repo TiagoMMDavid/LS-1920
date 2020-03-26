@@ -6,19 +6,20 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public class PsqlConnectionHandler {
+    private String connectionUrl;
 
-    public static Connection getConnection() throws SQLException {
+    public PsqlConnectionHandler(String connectionUrl) {
+        this.connectionUrl = connectionUrl;
+    }
+
+    public Connection getConnection() throws SQLException {
         PGSimpleDataSource ds = new PGSimpleDataSource();
-        ds.setURL(getConnectionUrl());
+        ds.setURL(connectionUrl);
         ds.setUser("postgres");
         ds.setPassword("123macaco");
 
         Connection con = ds.getConnection();
         con.setAutoCommit(false);
         return con;
-    }
-
-    private static String getConnectionUrl() {
-        return "jdbc:postgresql://localhost:5432/postgres";
     }
 }

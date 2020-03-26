@@ -6,14 +6,16 @@ public class CommandRequest {
     private Method method;
     private Path path;
     private Parameters params;
+    private PsqlConnectionHandler connectionHandler;
 
-    public CommandRequest(Method method, Path path) {
+    public CommandRequest(Method method, Path path, PsqlConnectionHandler connectionHandler) {
         this.method = method;
         this.path = path;
+        this.connectionHandler = connectionHandler;
     }
 
-    public CommandRequest(Method method, Path path, Parameters params) {
-        this(method, path);
+    public CommandRequest(Method method, Path path, Parameters params, PsqlConnectionHandler connectionHandler) {
+        this(method, path, connectionHandler);
         this.params = params;
     }
 
@@ -27,5 +29,9 @@ public class CommandRequest {
 
     public Parameters getParams() {
         return params;
+    }
+
+    public PsqlConnectionHandler getConnectionHandler() {
+        return connectionHandler;
     }
 }

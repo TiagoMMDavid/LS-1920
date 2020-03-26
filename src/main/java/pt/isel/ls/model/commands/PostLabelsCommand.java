@@ -3,7 +3,6 @@ package pt.isel.ls.model.commands;
 import pt.isel.ls.model.commands.common.CommandHandler;
 import pt.isel.ls.model.commands.common.CommandRequest;
 import pt.isel.ls.model.commands.common.CommandResult;
-import pt.isel.ls.model.commands.common.PsqlConnectionHandler;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,7 +15,7 @@ public class PostLabelsCommand implements CommandHandler {
     @Override
     public CommandResult execute(CommandRequest commandRequest) {
         CommandResult result = new CommandResult();
-        try (Connection con = PsqlConnectionHandler.getConnection()) {
+        try (Connection con = commandRequest.getConnectionHandler().getConnection()) {
             PreparedStatement ps = con.prepareStatement("INSERT INTO LABEL "
                             + "(name) Values(?)",
                             Statement.RETURN_GENERATED_KEYS

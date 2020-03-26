@@ -9,20 +9,21 @@ import java.sql.SQLException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static pt.isel.ls.model.commands.common.PsqlConnectionHandler.getConnection;
 
 public class JdbcTests {
-
+    private static PsqlConnectionHandler connectionHandler = new PsqlConnectionHandler(
+            "jdbc:postgresql://localhost:5432/postgrestests");
+    
     @Test
     public void connectionToDatabaseTest() throws SQLException {
-        Connection con = getConnection();
+        Connection con = connectionHandler.getConnection();
         assertNotNull(con);
         con.close();
     }
 
     @Test
     public void createTableTest() throws SQLException {
-        Connection con = getConnection();
+        Connection con = connectionHandler.getConnection();
         try {
             createTableAux(con);
         } finally {
@@ -43,7 +44,7 @@ public class JdbcTests {
 
     @Test
     public void fillTableWithDataTest() throws SQLException {
-        Connection con = getConnection();
+        Connection con = connectionHandler.getConnection();
         createTableAux(con);
         try {
             fillTableAux(con);
@@ -63,7 +64,7 @@ public class JdbcTests {
 
     @Test
     public void selectQueryTest() throws SQLException {
-        Connection con = getConnection();
+        Connection con = connectionHandler.getConnection();
         createTableAux(con);
         fillTableAux(con);
         try {
@@ -88,7 +89,7 @@ public class JdbcTests {
 
     @Test
     public void clearTableTest() throws SQLException {
-        Connection con = getConnection();
+        Connection con = connectionHandler.getConnection();
         createTableAux(con);
         fillTableAux(con);
 
@@ -104,7 +105,7 @@ public class JdbcTests {
 
     @Test
     public void dropTableTest() throws SQLException {
-        Connection con = getConnection();
+        Connection con = connectionHandler.getConnection();
         createTableAux(con);
         fillTableAux(con);
 

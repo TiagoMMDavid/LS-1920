@@ -3,11 +3,13 @@ package pt.isel.ls;
 import java.util.Iterator;
 import java.util.Scanner;
 import pt.isel.ls.model.Router;
-import pt.isel.ls.model.commands.common.CommandHandler;
 import pt.isel.ls.model.commands.common.CommandRequest;
-import pt.isel.ls.model.commands.common.CommandResult;
 import pt.isel.ls.model.commands.common.Method;
 import pt.isel.ls.model.commands.common.Parameters;
+import pt.isel.ls.model.commands.common.CommandResult;
+import pt.isel.ls.model.commands.common.CommandHandler;
+import pt.isel.ls.model.commands.common.PsqlConnectionHandler;
+
 import pt.isel.ls.model.paths.Path;
 import pt.isel.ls.model.paths.PathTemplate;
 
@@ -61,10 +63,12 @@ public class App {
         if (commands.length == 3) {
             cmd = new CommandRequest(Method.valueOf(commands[0].toUpperCase()),
                     new Path(commands[1]),
-                    new Parameters(commands[2]));
+                    new Parameters(commands[2]),
+                    new PsqlConnectionHandler("jdbc:postgresql://localhost:5432/postgres"));
         } else {
             cmd = new CommandRequest(Method.valueOf(commands[0].toUpperCase()),
-                    new Path(commands[1]));
+                    new Path(commands[1]),
+                    new PsqlConnectionHandler("jdbc:postgresql://localhost:5432/postgres"));
         }
         CommandHandler handler = router.findRoute(cmd.getMethod(), cmd.getPath());
         if (handler == null) {
