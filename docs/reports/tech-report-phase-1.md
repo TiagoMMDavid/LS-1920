@@ -14,11 +14,10 @@ O seguinte diagrama apresenta a modelo entidade-associação para a informação
 
 Destacam-se os seguintes aspectos deste modelo:
 
-* Uma entidade USERS, com atributos uid (chave primária), email, e name.
-* Uma entidade fraca BOOKING, com atributos bid (chave primária), begin_inst (correspondente à data de início do booking) e end_inst (data de fim do booking). Esta entidade é fraca sendo dependente de ROOM, visto que cada booking está necessáriamente associado a uma sala. Por sua vez, a sua relação com USERS também é obrigatória pois só existe um booking se houver um utilizador responsável pela respetiva reserva.
-* Uma entidade ROOM, com atributos rid (chave primária), location, name, description e capacity.
-* Uma associação ROOMLABEL que contém as chaves primárias de ROOM, e de LABEL.
-* Uma entidade LABEL, composta pelos atributos lid (chave primária) e name.
+* Uma entidade USERS, com atributos uid (chave), email, e name.
+* Uma entidade fraca BOOKING, com atributos bid (chave), begin_inst (correspondente à data de início do booking) e end_inst (data de fim do booking). Esta entidade é fraca sendo dependente de ROOM, visto que cada booking está necessáriamente associado a uma sala. Por sua vez, a sua relação com USERS também é obrigatória pois só existe um booking se houver um utilizador responsável pela respetiva reserva.
+* Uma entidade ROOM, com atributos rid (chave), location, name, description e capacity.
+* Uma entidade LABEL, composta pelos atributos lid (chave) e name.
 * Uma relação 1 - N entre USERS e BOOKING, porque cada pessoa pode ter vários bookings mas uma reserva só está associada a um utilizador.
 * Uma relação 1 - N entre ROOM e BOOKING, dado que cada sala pode ter vários bookings.
 * Uma relação N - N entre ROOM e LABEL, porque cada room pode ter associado a si um número indeterminado de labels, e as labels, por sua vez, podem também ser aplicadas a vários rooms.
