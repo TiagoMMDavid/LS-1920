@@ -17,7 +17,7 @@ public class GetUsersByIdCommand implements CommandHandler {
             PreparedStatement ps = con.prepareStatement("SELECT * "
                     + "FROM USERS WHERE uid = ?");
 
-            int userId = Integer.parseInt(commandRequest.getPath().getVariable(0));
+            int userId = Integer.parseInt(commandRequest.getPath().getVariable("uid"));
             ps.setInt(1, userId);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {

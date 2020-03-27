@@ -6,6 +6,9 @@ class Directory {
     private boolean isVariable;
 
     public Directory(String name, boolean isVariable) {
+        if (isVariable) {
+            name = name.substring(1, name.length() - 1);
+        }
         this.name = name;
         this.isVariable = isVariable;
     }

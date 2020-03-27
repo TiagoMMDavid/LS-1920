@@ -17,7 +17,7 @@ public class GetRoomsByIdCommand implements CommandHandler {
             PreparedStatement ps = con.prepareStatement("SELECT * "
                     + "FROM ROOM WHERE rid = ?");
 
-            int roomId = Integer.parseInt(commandRequest.getPath().getVariable(0));
+            int roomId = Integer.parseInt(commandRequest.getPath().getVariable("rid"));
             ps.setInt(1, roomId);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {

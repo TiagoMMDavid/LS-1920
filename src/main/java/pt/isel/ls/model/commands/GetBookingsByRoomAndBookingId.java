@@ -17,8 +17,8 @@ public class GetBookingsByRoomAndBookingId implements CommandHandler {
             PreparedStatement ps = con.prepareStatement("SELECT * "
                     + "FROM BOOKING WHERE rid = ? AND bid = ?");
 
-            int roomId = Integer.parseInt(commandRequest.getPath().getVariable(0));
-            int bookingId = Integer.parseInt(commandRequest.getPath().getVariable(1));
+            int roomId = Integer.parseInt(commandRequest.getPath().getVariable("rid"));
+            int bookingId = Integer.parseInt(commandRequest.getPath().getVariable("bid"));
             ps.setInt(1, roomId);
             ps.setInt(2, bookingId);
             ResultSet rs = ps.executeQuery();

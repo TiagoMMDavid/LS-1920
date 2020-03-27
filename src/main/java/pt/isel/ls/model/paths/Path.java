@@ -1,28 +1,28 @@
 package pt.isel.ls.model.paths;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 
 public class Path extends PathCommon {
 
     /**
-     * An ArrayList of Strings to represent the each variable's name.
+     * An Hashmap of Strings to represent the each variable's name.
      */
-    private ArrayList<String> variables;
+    private HashMap<String, String> variables;
 
-    public void addVariable(String var) {
+    public void addVariable(String varName, String var) {
         if (variables == null) {
-            variables = new ArrayList<>();
+            variables = new HashMap<>();
         }
-        variables.add(var);
+        variables.put(varName, var);
     }
 
     public Path(String path) {
         super(path);
     }
 
-    public String getVariable(int index) {
-        return variables.get(index);
+    public String getVariable(String varName) {
+        return variables.get(varName);
     }
 
     public LinkedList<Directory> getPath() {

@@ -17,7 +17,7 @@ public class GetRoomsWithLabelCommand implements CommandHandler {
             PreparedStatement ps = con.prepareStatement("SELECT rid "
                     + "FROM ROOMLABEL WHERE lid = ?");
 
-            int labelId = Integer.parseInt(commandRequest.getPath().getVariable(0));
+            int labelId = Integer.parseInt(commandRequest.getPath().getVariable("lid"));
             ps.setInt(1, labelId);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {

@@ -44,7 +44,7 @@ public class PathTemplate extends PathCommon {
             Directory fromPath = pathItr.next();
             Directory fromTemplate = templateItr.next();
             if (fromTemplate.isVariable()) {
-                path.addVariable(fromPath.getName());
+                path.addVariable(fromTemplate.getName(), fromPath.getName());
             }
         }
     }

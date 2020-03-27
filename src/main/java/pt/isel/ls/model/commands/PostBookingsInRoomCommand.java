@@ -23,7 +23,7 @@ public class PostBookingsInRoomCommand implements CommandHandler {
                             Statement.RETURN_GENERATED_KEYS
             );
             String uid = commandRequest.getParams().getValue("uid");
-            String rid = commandRequest.getPath().getVariable(0);
+            String rid = commandRequest.getPath().getVariable("rid");
             String duration = commandRequest.getParams().getValue("duration");
             String begin = commandRequest.getParams().getValue("begin");
             if (uid != null && rid != null && duration != null && begin != null) {
