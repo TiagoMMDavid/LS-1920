@@ -3,7 +3,7 @@ package pt.isel.ls.model.paths;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-public class Path extends PathCommon {
+public class Path extends BasePath {
 
     /**
      * An Hashmap of Strings to represent the each variable's name.

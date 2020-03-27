@@ -11,8 +11,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 public class JdbcTests {
-    private static PsqlConnectionHandler connectionHandler = new PsqlConnectionHandler(
-            "jdbc:postgresql://localhost:5432/postgrestests");
+    private static PsqlConnectionHandler connectionHandler = new PsqlConnectionHandler("localhost", 5432,
+            "postgrestests", "postgres","123macaco");
 
     @Test
     public void connectionToDatabaseTest() throws SQLException {

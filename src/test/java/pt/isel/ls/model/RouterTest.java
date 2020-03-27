@@ -15,8 +15,8 @@ import static org.junit.Assert.assertNull;
 
 
 public class RouterTest {
-    private static PsqlConnectionHandler connectionHandler = new PsqlConnectionHandler(
-            "jdbc:postgresql://localhost:5432/postgrestests");
+    private static PsqlConnectionHandler connectionHandler = new PsqlConnectionHandler("localhost", 5432,
+            "postgrestests", "postgres","123macaco");
 
     @Test
     public void addValidRouteAndFindRouteTest() {
