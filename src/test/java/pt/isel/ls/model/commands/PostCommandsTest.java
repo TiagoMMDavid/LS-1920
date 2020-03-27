@@ -29,11 +29,11 @@ public class PostCommandsTest {
     public void postBookingsInRoomCommandTest() {
         Router router = new Router();
         router.addRoute(Method.POST, new PathTemplate("/rooms/{rid}/bookings"), new PostBookingsInRoomCommand());
-        CommandRequest cmd = new CommandRequest(Method.POST, new Path("/rooms/0/bookings"),
+        CommandRequest cmd = new CommandRequest(new Path("/rooms/0/bookings"),
                 new Parameters("begin=2020-12-20+10:20&duration=00:10&uid=0"),
                 connectionHandler);
 
-        CommandHandler handler = router.findRoute(cmd.getMethod(), cmd.getPath());
+        CommandHandler handler = router.findRoute(Method.POST, cmd.getPath());
         CommandResult result = handler.execute(cmd);
 
         assertNotNull(result);
@@ -45,11 +45,11 @@ public class PostCommandsTest {
     public void postLabelsCommandTest() {
         Router router = new Router();
         router.addRoute(Method.POST, new PathTemplate("/labels"), new PostLabelsCommand());
-        CommandRequest cmd = new CommandRequest(Method.POST, new Path("/labels"),
+        CommandRequest cmd = new CommandRequest(new Path("/labels"),
                 new Parameters("name=projector"),
                 connectionHandler);
 
-        CommandHandler handler = router.findRoute(cmd.getMethod(), cmd.getPath());
+        CommandHandler handler = router.findRoute(Method.POST, cmd.getPath());
         CommandResult result = handler.execute(cmd);
 
         assertNotNull(result);
@@ -61,11 +61,11 @@ public class PostCommandsTest {
     public void postRoomsCommandTest() {
         Router router = new Router();
         router.addRoute(Method.POST, new PathTemplate("/rooms"), new PostRoomsCommand());
-        CommandRequest cmd = new CommandRequest(Method.POST, new Path("/rooms"),
+        CommandRequest cmd = new CommandRequest(new Path("/rooms"),
                 new Parameters("name=LS3&location=Building+F+floor+-1&label=monitors&label=windows"),
                 connectionHandler);
 
-        CommandHandler handler = router.findRoute(cmd.getMethod(), cmd.getPath());
+        CommandHandler handler = router.findRoute(Method.POST, cmd.getPath());
         CommandResult result = handler.execute(cmd);
 
         assertNotNull(result);
@@ -77,11 +77,11 @@ public class PostCommandsTest {
     public void postUsersCommandTest() {
         Router router = new Router();
         router.addRoute(Method.POST, new PathTemplate("/users"), new PostUsersCommand());
-        CommandRequest cmd = new CommandRequest(Method.POST, new Path("/users"),
+        CommandRequest cmd = new CommandRequest(new Path("/users"),
                 new Parameters("name=David&email=davidp@email.org"),
                 connectionHandler);
 
-        CommandHandler handler = router.findRoute(cmd.getMethod(), cmd.getPath());
+        CommandHandler handler = router.findRoute(Method.POST, cmd.getPath());
         CommandResult result = handler.execute(cmd);
 
         assertNotNull(result);

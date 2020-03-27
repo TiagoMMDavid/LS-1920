@@ -83,10 +83,10 @@ public class GetCommandsTest {
     public void getBookingsByRoomAndBookingIdTest() {
         Router router = new Router();
         router.addRoute(Method.GET, new PathTemplate("/rooms/{rid}/bookings/{bid}"),
-                new GetBookingsByRoomAndBookingId());
-        CommandRequest cmd = new CommandRequest(Method.GET, new Path("/rooms/0/bookings/4"), connectionHandler);
+                new GetBookingByRoomAndBookingId());
+        CommandRequest cmd = new CommandRequest(new Path("/rooms/0/bookings/4"), connectionHandler);
 
-        CommandHandler handler = router.findRoute(cmd.getMethod(), cmd.getPath());
+        CommandHandler handler = router.findRoute(Method.GET, cmd.getPath());
         CommandResult result = handler.execute(cmd);
         Iterator<String> itr = result.iterator();
 
@@ -103,9 +103,9 @@ public class GetCommandsTest {
     public void getBookingsByUserIdTest() {
         Router router = new Router();
         router.addRoute(Method.GET, new PathTemplate("/users/{uid}/bookings"), new GetBookingsByUserIdCommand());
-        CommandRequest cmd = new CommandRequest(Method.GET, new Path("/users/0/bookings"), connectionHandler);
+        CommandRequest cmd = new CommandRequest( new Path("/users/0/bookings"), connectionHandler);
 
-        CommandHandler handler = router.findRoute(cmd.getMethod(), cmd.getPath());
+        CommandHandler handler = router.findRoute(Method.GET, cmd.getPath());
         CommandResult result = handler.execute(cmd);
         Iterator<String> itr = result.iterator();
 
@@ -121,9 +121,9 @@ public class GetCommandsTest {
     public void getLabelsTest() {
         Router router = new Router();
         router.addRoute(Method.GET, new PathTemplate("/labels"), new GetLabelsCommand());
-        CommandRequest cmd = new CommandRequest(Method.GET, new Path("/labels"), connectionHandler);
+        CommandRequest cmd = new CommandRequest(new Path("/labels"), connectionHandler);
 
-        CommandHandler handler = router.findRoute(cmd.getMethod(), cmd.getPath());
+        CommandHandler handler = router.findRoute(Method.GET, cmd.getPath());
         CommandResult result = handler.execute(cmd);
         Iterator<String> itr = result.iterator();
 
@@ -138,10 +138,10 @@ public class GetCommandsTest {
     @Test
     public void getRoomsByIdTest() {
         Router router = new Router();
-        router.addRoute(Method.GET, new PathTemplate("/rooms/{rid}"), new GetRoomsByIdCommand());
-        CommandRequest cmd = new CommandRequest(Method.GET, new Path("/rooms/0"), connectionHandler);
+        router.addRoute(Method.GET, new PathTemplate("/rooms/{rid}"), new GetRoomByIdCommand());
+        CommandRequest cmd = new CommandRequest(new Path("/rooms/0"), connectionHandler);
 
-        CommandHandler handler = router.findRoute(cmd.getMethod(), cmd.getPath());
+        CommandHandler handler = router.findRoute(Method.GET, cmd.getPath());
         CommandResult result = handler.execute(cmd);
         Iterator<String> itr = result.iterator();
 
@@ -155,9 +155,9 @@ public class GetCommandsTest {
     public void getRoomsTest() {
         Router router = new Router();
         router.addRoute(Method.GET, new PathTemplate("/rooms"), new GetRoomsCommand());
-        CommandRequest cmd = new CommandRequest(Method.GET, new Path("/rooms"), connectionHandler);
+        CommandRequest cmd = new CommandRequest(new Path("/rooms"), connectionHandler);
 
-        CommandHandler handler = router.findRoute(cmd.getMethod(), cmd.getPath());
+        CommandHandler handler = router.findRoute(Method.GET, cmd.getPath());
         CommandResult result = handler.execute(cmd);
         Iterator<String> itr = result.iterator();
 
@@ -171,9 +171,9 @@ public class GetCommandsTest {
     public void getRoomsWithLabelTest() {
         Router router = new Router();
         router.addRoute(Method.GET, new PathTemplate("/labels/{lid}/rooms"), new GetRoomsWithLabelCommand());
-        CommandRequest cmd = new CommandRequest(Method.GET, new Path("/labels/1/rooms"), connectionHandler);
+        CommandRequest cmd = new CommandRequest(new Path("/labels/1/rooms"), connectionHandler);
 
-        CommandHandler handler = router.findRoute(cmd.getMethod(), cmd.getPath());
+        CommandHandler handler = router.findRoute(Method.GET, cmd.getPath());
         CommandResult result = handler.execute(cmd);
         Iterator<String> itr = result.iterator();
 
@@ -185,10 +185,10 @@ public class GetCommandsTest {
     @Test
     public void getUsersByIdTest() {
         Router router = new Router();
-        router.addRoute(Method.GET, new PathTemplate("/users/{uid}"), new GetUsersByIdCommand());
-        CommandRequest cmd = new CommandRequest(Method.GET, new Path("/users/0"), connectionHandler);
+        router.addRoute(Method.GET, new PathTemplate("/users/{uid}"), new GetUserByIdCommand());
+        CommandRequest cmd = new CommandRequest(new Path("/users/0"), connectionHandler);
 
-        CommandHandler handler = router.findRoute(cmd.getMethod(), cmd.getPath());
+        CommandHandler handler = router.findRoute(Method.GET, cmd.getPath());
         CommandResult result = handler.execute(cmd);
         Iterator<String> itr = result.iterator();
 

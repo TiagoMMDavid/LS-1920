@@ -20,8 +20,12 @@ public class GetBookingsByUserIdCommand implements CommandHandler {
             int userId = Integer.parseInt(commandRequest.getPath().getVariable("uid"));
             ps.setInt(1, userId);
             ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                result.addResult("booking id (bid): " + rs.getInt("bid"));
+            if (!rs.next()) {
+                result.addResult("No results found");
+            } else {
+                do {
+                    result.addResult("booking id (bid): " + rs.getInt("bid"));
+                } while (rs.next());
             }
             result.setTitle("All bookings of user " + userId);
             result.setSuccess(true);

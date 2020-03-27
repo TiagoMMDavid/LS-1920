@@ -14,9 +14,9 @@ import pt.isel.ls.model.paths.Path;
 import pt.isel.ls.model.paths.PathTemplate;
 
 import pt.isel.ls.model.commands.GetRoomsCommand;
-import pt.isel.ls.model.commands.GetRoomsByIdCommand;
-import pt.isel.ls.model.commands.GetBookingsByRoomAndBookingId;
-import pt.isel.ls.model.commands.GetUsersByIdCommand;
+import pt.isel.ls.model.commands.GetRoomByIdCommand;
+import pt.isel.ls.model.commands.GetBookingByRoomAndBookingId;
+import pt.isel.ls.model.commands.GetUserByIdCommand;
 import pt.isel.ls.model.commands.GetBookingsByUserIdCommand;
 import pt.isel.ls.model.commands.GetLabelsCommand;
 import pt.isel.ls.model.commands.GetRoomsWithLabelCommand;
@@ -63,17 +63,16 @@ public class App {
     //Returned value determines if the app should continue running or not
     private static boolean executeCommand(String[] commands, Router router) {
         CommandRequest cmd;
+        Method method = Method.valueOf(commands[0].toUpperCase());
         if (commands.length == 3) {
-            cmd = new CommandRequest(Method.valueOf(commands[0].toUpperCase()),
-                    new Path(commands[1]),
+            cmd = new CommandRequest(new Path(commands[1]),
                     new Parameters(commands[2]),
                     connectionHandler);
         } else {
-            cmd = new CommandRequest(Method.valueOf(commands[0].toUpperCase()),
-                    new Path(commands[1]),
+            cmd = new CommandRequest(new Path(commands[1]),
                     connectionHandler);
         }
-        CommandHandler handler = router.findRoute(cmd.getMethod(), cmd.getPath());
+        CommandHandler handler = router.findRoute(method, cmd.getPath());
         if (handler == null) {
             return true;
         }
@@ -81,7 +80,7 @@ public class App {
         CommandResult result = handler.execute(cmd);
         if (result != null) {
             if (result.isSuccess()) {
-                displayResult(result, cmd);
+                displayResult(result, method);
             } else {
                 // Title should contain the error message
                 System.out.println(result.getTitle());
@@ -91,16 +90,12 @@ public class App {
         return result != null;
     }
 
-    private static void displayResult(CommandResult result, CommandRequest request) {
+    private static void displayResult(CommandResult result, Method method) {
         System.out.println(result.getTitle());
         Iterator<String> itr = result.iterator();
         if (itr != null) {
             while (itr.hasNext()) {
                 System.out.println(" - " + itr.next());
-            }
-        } else {
-            if (request.getMethod().equals(Method.GET)) {
-                System.out.println(" - No results found");
             }
         }
     }
@@ -112,10 +107,10 @@ public class App {
 
         //GET commands
         router.addRoute(Method.GET, roomsTemplate, new GetRoomsCommand());
-        router.addRoute(Method.GET, new PathTemplate("/rooms/{rid}"), new GetRoomsByIdCommand());
+        router.addRoute(Method.GET, new PathTemplate("/rooms/{rid}"), new GetRoomByIdCommand());
         router.addRoute(Method.GET, new PathTemplate("/rooms/{rid}/bookings/{bid}"),
-                new GetBookingsByRoomAndBookingId());
-        router.addRoute(Method.GET, new PathTemplate("/users/{uid}"), new GetUsersByIdCommand());
+                new GetBookingByRoomAndBookingId());
+        router.addRoute(Method.GET, new PathTemplate("/users/{uid}"), new GetUserByIdCommand());
         router.addRoute(Method.GET, new PathTemplate("/users/{uid}/bookings"), new GetBookingsByUserIdCommand());
         router.addRoute(Method.GET, labelsTemplate, new GetLabelsCommand());
         router.addRoute(Method.GET, new PathTemplate("/labels/{lid}/rooms"), new GetRoomsWithLabelCommand());

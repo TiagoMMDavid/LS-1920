@@ -17,8 +17,12 @@ public class GetLabelsCommand implements CommandHandler {
             PreparedStatement ps = con.prepareStatement("SELECT lid, name "
                     + "FROM LABEL");
             ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                result.addResult(rs.getString("name") + " (lid: " + rs.getInt("lid") + ")");
+            if (!rs.next()) {
+                result.addResult("No results found");
+            } else {
+                do {
+                    result.addResult(rs.getString("name") + " (lid: " + rs.getInt("lid") + ")");
+                } while (rs.next());
             }
             result.setTitle("ID and name of all the labels");
             result.setSuccess(true);

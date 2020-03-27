@@ -17,8 +17,12 @@ public class GetRoomsCommand implements CommandHandler {
             PreparedStatement ps = con.prepareStatement("SELECT rid, name "
                     + "FROM ROOM");
             ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                result.addResult(rs.getString("name") + " (rid: " + rs.getInt("rid") + ")");
+            if (!rs.next()) {
+                result.addResult("No results found");
+            } else {
+                do {
+                    result.addResult(rs.getString("name") + " (rid: " + rs.getInt("rid") + ")");
+                } while (rs.next());
             }
             result.setTitle("ID and name of all the rooms");
             result.setSuccess(true);

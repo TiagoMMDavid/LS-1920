@@ -20,8 +20,12 @@ public class GetRoomsWithLabelCommand implements CommandHandler {
             int labelId = Integer.parseInt(commandRequest.getPath().getVariable("lid"));
             ps.setInt(1, labelId);
             ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                result.addResult("room id (rid): " + rs.getInt("rid"));
+            if (!rs.next()) {
+                result.addResult("No results found");
+            } else {
+                do {
+                    result.addResult("room id (rid): " + rs.getInt("rid"));
+                } while (rs.next());
             }
             result.setTitle("List of rooms that have label " + labelId);
             result.setSuccess(true);

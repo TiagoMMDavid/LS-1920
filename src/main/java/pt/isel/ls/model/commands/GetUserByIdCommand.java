@@ -9,7 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class GetUsersByIdCommand implements CommandHandler {
+public class GetUserByIdCommand implements CommandHandler {
     @Override
     public CommandResult execute(CommandRequest commandRequest) {
         CommandResult result = new CommandResult();
@@ -20,7 +20,9 @@ public class GetUsersByIdCommand implements CommandHandler {
             int userId = Integer.parseInt(commandRequest.getPath().getVariable("uid"));
             ps.setInt(1, userId);
             ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
+            if (!rs.next()) {
+                result.addResult("No results found");
+            } else {
                 result.addResult("user id (uid): " + rs.getInt("uid"));
                 result.addResult("name: " + rs.getString("name"));
                 result.addResult("email: " + rs.getString("email"));

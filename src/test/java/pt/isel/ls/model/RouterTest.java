@@ -23,10 +23,10 @@ public class RouterTest {
         //Arrange
         Router router = new Router();
         router.addRoute(Method.GET, new PathTemplate("/rooms/{rid}"), new GetRoomsCommand());
-        CommandRequest cmd = new CommandRequest(Method.GET, new Path("/rooms/92"), connectionHandler);
+        CommandRequest cmd = new CommandRequest(new Path("/rooms/92"), connectionHandler);
 
         //Act
-        CommandHandler handler = router.findRoute(cmd.getMethod(), cmd.getPath());
+        CommandHandler handler = router.findRoute(Method.GET, cmd.getPath());
 
         //Assert
         assertNotNull(handler);
@@ -37,10 +37,10 @@ public class RouterTest {
     public void findNonExistingRoute() {
         //Arrange
         Router router = new Router();
-        CommandRequest cmd = new CommandRequest(Method.GET, new Path("/rooms"), connectionHandler);
+        CommandRequest cmd = new CommandRequest(new Path("/rooms"), connectionHandler);
 
         //Act
-        CommandHandler handler = router.findRoute(cmd.getMethod(), cmd.getPath());
+        CommandHandler handler = router.findRoute(Method.GET, cmd.getPath());
 
         //Assert
         assertNull(handler);
