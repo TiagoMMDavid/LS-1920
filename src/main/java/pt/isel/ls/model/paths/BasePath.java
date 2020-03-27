@@ -2,7 +2,7 @@ package pt.isel.ls.model.paths;
 
 import java.util.LinkedList;
 
-abstract class PathCommon {
+abstract class BasePath {
 
     /**
      * This class was created because there was a lot of repeated code between the several path-related classes.
@@ -10,7 +10,7 @@ abstract class PathCommon {
      */
     protected LinkedList<Directory> path;
 
-    protected PathCommon(String path) {
+    protected BasePath(String path) {
         this.path = new LinkedList<>();
         parsePath(path);
     }

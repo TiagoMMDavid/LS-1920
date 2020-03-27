@@ -22,8 +22,8 @@ import java.sql.SQLException;
 import java.util.Iterator;
 
 public class GetCommandsTest {
-    private static PsqlConnectionHandler connectionHandler = new PsqlConnectionHandler(
-            "jdbc:postgresql://localhost:5432/postgrestests");
+    private static PsqlConnectionHandler connectionHandler = new PsqlConnectionHandler("localhost", 5432,
+            "postgrestests", "postgres","123macaco");
 
     @BeforeClass
     public static void fillTables() throws SQLException {
@@ -91,6 +91,7 @@ public class GetCommandsTest {
         Iterator<String> itr = result.iterator();
 
         assertNotNull(result);
+        assertTrue(result.isSuccess());
         assertEquals("booking id (bid): 4", itr.next());
         assertEquals("reservation by user id (uid): 0", itr.next());
         assertEquals("room id (rid): 0", itr.next());
@@ -109,6 +110,7 @@ public class GetCommandsTest {
         Iterator<String> itr = result.iterator();
 
         assertNotNull(result);
+        assertTrue(result.isSuccess());
         assertEquals("booking id (bid): 0", itr.next());
         assertEquals("booking id (bid): 1", itr.next());
         assertEquals("booking id (bid): 3", itr.next());

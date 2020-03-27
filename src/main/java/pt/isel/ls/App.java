@@ -27,6 +27,9 @@ import pt.isel.ls.model.commands.PostLabelsCommand;
 import pt.isel.ls.model.commands.ExitCommand;
 
 public class App {
+    private static PsqlConnectionHandler connectionHandler = new PsqlConnectionHandler("localhost", 5432, "postgres",
+            "postgres","123macaco");
+
     public static void main(String[] args) {
         Router router = new Router();
         addCommands(router);
@@ -64,11 +67,11 @@ public class App {
             cmd = new CommandRequest(Method.valueOf(commands[0].toUpperCase()),
                     new Path(commands[1]),
                     new Parameters(commands[2]),
-                    new PsqlConnectionHandler("jdbc:postgresql://localhost:5432/postgres"));
+                    connectionHandler);
         } else {
             cmd = new CommandRequest(Method.valueOf(commands[0].toUpperCase()),
                     new Path(commands[1]),
-                    new PsqlConnectionHandler("jdbc:postgresql://localhost:5432/postgres"));
+                    connectionHandler);
         }
         CommandHandler handler = router.findRoute(cmd.getMethod(), cmd.getPath());
         if (handler == null) {
@@ -80,6 +83,7 @@ public class App {
             if (result.isSuccess()) {
                 displayResult(result, cmd);
             } else {
+                // Title should contain the error message
                 System.out.println(result.getTitle());
             }
         }

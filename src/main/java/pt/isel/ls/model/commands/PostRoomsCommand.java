@@ -27,6 +27,7 @@ public class PostRoomsCommand implements CommandHandler {
             String description = commandRequest.getParams().getValue("description");
             String location = commandRequest.getParams().getValue("location");
             String capacity = commandRequest.getParams().getValue("capacity");
+
             if (name != null && location != null) {
                 ps.setString(1, name);
                 ps.setString(2, description);

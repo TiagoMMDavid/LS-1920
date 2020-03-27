@@ -2,7 +2,7 @@ package pt.isel.ls.model.paths;
 
 import java.util.Iterator;
 
-public class PathTemplate extends PathCommon {
+public class PathTemplate extends BasePath {
 
     public PathTemplate(String template) {
         super(template);
