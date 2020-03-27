@@ -10,7 +10,7 @@ Este documento contém os aspectos relevantes do desenho e implementação da fa
 
 O seguinte diagrama apresenta a modelo entidade-associação para a informação gerida pelo sistema. 
 
-![alt text](https://github.com/isel-leic-ls/1920-2-LI42D-G08/blob/master/docs/images/EA_Diagram.png "EA Diagram")
+![EA Diagram](https://github.com/isel-leic-ls/1920-2-LI42D-G08/blob/master/docs/images/EA_Diagram.png "EA Diagram")
 
 Destacam-se os seguintes aspectos deste modelo:
 
@@ -48,11 +48,37 @@ Destacam-se os seguintes aspectos deste modelo:
 
 ### Processamento de comandos
 
-(_describe the command handling interface_)
+De maneira a ser possível implementar vários tipos de comandos de um modo de uma maneira relativamente fácil, foi criada a interface CommandHandler. Esta interface é responsável por definir o "contrato" a ser cumprido por todos os *handlers* de comandos existentes. Esta interface é bastante simples, pois apenas contém um único método: o método *execute*. Será neste método que se encontra toda a lógica de um dado comando. De maneira a este se contextualizar, este método recebe como parâmetro um CommandRequest, cuja classe será descrita abaixo. Este método deverá, no final, retornar um objeto do tipo CommandResult, cuja classe será também descrita abaixo.
 
-(_describe any additional classes used internally by the command handlers_)
+Em termos de classes, foram implementadas as seguintes classes, que serão utilizadas pelos *handlers*:
 
-(_describe how command parameters are obtained and validated_)
+#### CommandResult
+Um CommandResult é responsável pelo armazenamento dos resultados obtidos de um comando. Esta classe conta com a presença de três campos:
+* boolean success               : Determina se o comando executado foi concluído com sucesso ou não;
+* String title                  : O titlo dos resultados;
+* LinkedList<String> results    : Os resultados em si.
+
+A aplicação encontra-se desenvolvida de maneira a apresentar os resultados linha a linha, começando por apresentar o titlo primeiro. No caso do comando não ter sido concluído com sucesso, a aplicação apresenta apenas o título, que deverá conter mensagem de erro correspondente. O preenchimento de um objeto deste tipo é responsabilidade de cada CommandHandler.
+
+#### CommandRequest
+Um CommandRequest é responsável pela passagem de informação de contexto a um CommandHandler, de maneira a possibilitar a execução do comando. Para isto, esta classe conta com os seguintes campos:
+* Path path                                     : Especifica o caminho do pedido, que pode ou não conter variáveis;
+* Parameters params                             : Armazena os parametros passados;
+* PsqlConnectionHandler connectionHandler       : O *handler* responsável por efetuar a conexão a uma base de dados.
+
+Todos este campos podem ser acedidos através do seu respetivo *getter*, de maneira a ser possível aceder à informação por eles armazenada. Abaixo encontram-se descritas as classes respetivas a este campos, nomeadamente como chegar à informação relevante ao CommandHandler.
+
+#### Parameters
+
+#### Paths
+##### BasePath
+
+##### Path
+
+##### PathTemplate
+
+#### PsqlConnectionHandler
+
 
 ### Encaminhamento dos comandos
 
