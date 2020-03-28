@@ -120,8 +120,16 @@ void applyTemplate(Path path)   : Preenche a lista de variáveis de uma instânc
 boolean isVariable(String dir)  : Verifica se uma diretoria é variável ou não, com base na sua representação em String. Usado durante a adição de uma diretoria à campo *path*.
 
 #### PsqlConnectionHandler
-Esta classe é responsável por estabelecer uma conexão aos servidores, é necessário passar no construtor o _ip_, o _port_, o nome da base de dados, o nome do utilizador, e a password. Com a classe instanciada, é possível obter a Connection através do método getConnection, que se limita a conectar a um servidor com a informação passada no constutor.
-Esta classe foi realizada com o intuito de se poderem estabelecer conexões a várias bases de dados, sendo que existe uma base de dados para testes, e uma para a execução da aplicação.
+A classe PsqlConnectionHandler é responsável pela conexão a um servidor PSQL. Para isto, existem os seguintes campos:
+String connectionUrl    : O url do servidor, que inclui o IP, o porto e o nome da base de dados;
+String user             : O nome de utilizador da base de dados;
+String password         : A palavra passe do utilizador acima descrito.
+
+Estes campos são preenchidos no construtor da classe.
+
+Para efetuar uma conexão, é utilizado o método *getConnection()*, que retorna uma conexão válida caso os parametros tenham sido passados corretamente.
+
+Esta classe foi realizada com o intuito de se poderem estabelecer conexões a várias bases de dados. No contexto da aplicação desenvolvida, foi utilizada para separar as conexões à base de dados principal, e à base de dados utilizada para realização de testes.
 
 
 ### Encaminhamento dos comandos
