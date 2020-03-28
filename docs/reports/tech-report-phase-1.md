@@ -55,15 +55,15 @@ Em termos de classes, foram implementadas as seguintes classes, que serão utili
 #### CommandResult
 Um CommandResult é responsável pelo armazenamento dos resultados obtidos de um comando. Esta classe conta com a presença de três campos:
 * boolean success               : Determina se o comando executado foi concluído com sucesso ou não;
-* String title                  : O titlo dos resultados;
+* String title                  : O título dos resultados;
 * LinkedList<String> results    : Os resultados em si.
 
-A aplicação encontra-se desenvolvida de maneira a apresentar os resultados linha a linha, começando por apresentar o titlo primeiro. No caso do comando não ter sido concluído com sucesso, a aplicação apresenta apenas o título, que deverá conter mensagem de erro correspondente. O preenchimento de um objeto deste tipo é responsabilidade de cada CommandHandler.
+A aplicação encontra-se desenvolvida de maneira a apresentar os resultados linha a linha, começando por apresentar o título primeiro. No caso do comando não ter sido concluído com sucesso, a aplicação apresenta apenas o título, que deverá conter uma mensagem de erro correspondente. O preenchimento de um objeto deste tipo é responsabilidade de cada CommandHandler.
 
 #### CommandRequest
 Um CommandRequest é responsável pela passagem de informação de contexto a um CommandHandler, de maneira a possibilitar a execução do comando. Para isto, esta classe conta com os seguintes campos:
 * Path path                                     : Especifica o caminho do pedido, que pode ou não conter variáveis;
-* Parameters params                             : Armazena os parametros passados;
+* Parameters params                             : Armazena os parâmetros passados;
 * PsqlConnectionHandler connectionHandler       : O *handler* responsável por efetuar a conexão a uma base de dados.
 
 Todos este campos podem ser acedidos através do seu respetivo *getter*, de maneira a ser possível aceder à informação por eles armazenada. Abaixo encontram-se descritas as classes respetivas a este campos, nomeadamente como chegar à informação relevante ao CommandHandler.
