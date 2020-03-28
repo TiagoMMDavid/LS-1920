@@ -69,33 +69,55 @@ Um CommandRequest é responsável pela passagem de informação de contexto a um
 Todos este campos podem ser acedidos através do seu respetivo *getter*, de maneira a ser possível aceder à informação por eles armazenada. Abaixo encontram-se descritas as classes respetivas a este campos, nomeadamente como chegar à informação relevante ao CommandHandler.
 
 #### Parameters
-A classe Parameters é responsável pelo processo dos parâmetros em dado comando. Por esta razão, é instanciado um objeto do tipo Parameters sempre que é instanciado um CommandRequest. Com esta classe, a informação sobre os parâmetros fica sintetizada e de fácil acesso para as outras classes que necessitem de consular os parâmetros.
+A classe Parameters é responsável pelo processamento de parâmetros de um dado comando. Por esta razão, é instanciado um objeto deste tipo sempre que é instanciado um CommandRequest. Com esta classe, a informação sobre os parâmetros fica sintetizada e de fácil acesso para as outras classes que necessitem de consular os mesmos.
 
-A classe Parameters apenas contém um campo:
+A classe Parameters contém apenas um campo:
 * HashMap<String, LinkedList\<String>> params : Armazena o nome dos parâmetros e os seus valores.
     
-Para resumir a informação dos parâmetros, utilizámos um HashMap para armazenar o conteúdo dos parâmetros. Esta estrutura de dados utiliza como chave o nome do parâmetro, e como valor apresenta uma lista com os respetivos valores. É utilizado uma lista para armazenar os valores de dado parâmetro de forma a conseguir atribuir vários valores ao mesmo parâmetro.
+Para resumir a informação dos parâmetros, utilizámos um HashMap para armazenar o valor dos mesmos. Esta estrutura de dados utiliza como chave o nome do parâmetro, e como valor apresenta uma lista com os respetivos valores. É utilizado uma lista para armazenar os valores de dado parâmetro de forma a permitir a atribuição de vários valores ao mesmo parâmetro.
 
-No construtor de Parameters é chamado um método privado que se responsabiliza pelo preenchimento do HashMap certificando-se que não houve erros na escrita dos parâmetros. Caso sejam detetados erros será lançada uma exceção.
+No construtor de Parameters é chamado um método privado que se responsabiliza pelo preenchimento do HashMap. Este mesmo método é responsável pela deteção de erros de escrita/formatação na String que contém os parametros. Caso sejam detetados erros, será lançada uma exceção.
 
-Visto que o HashMap apresenta como valor uma lista, tem de suportar o acesso a parâmetros com apenas um valor e a parâmetros com mais do que um valor. Para isso, a classe dispõe de dois métodos públicos:
-* String getValue(String key) : Retorna apenas o único valor associado a dado parâmetro;
-* Iterable\<String> getValues(String key) : Retorna um iterável que permite percorrer os valores associados a dado parâmetro.
+De modo a facilitar o acesso aos valores dos parametros, esta classe disponibiliza dois métodos de acesso a dados:
+* String getValue(String key)               : Retorna o primeiro valor da lista associada a um parâmetro (facilita o acesso a parâmetros com um único valor);
+* Iterable\<String> getValues(String key)   : Retorna um iterável que permite percorrer os vários valores associados a dado parâmetro.
 
 #### Paths
+Para armazenar informações sobre caminhos, foi decidido separar a informação relativa a estes em classes distintas. Com isto, dá-se a existência de uma classe com informação sobre uma diretoria, uma classe com informação sobre um dado caminho, e uma classe com informação sobre um *template* de uma diretoria. Abaixo estão descritas estas mesmas classes.
 
-#### Directory
-Um Directory representa uma secção de um Path (por exemplo, quando se executa o comando _GET /rooms_, rooms é considerado um directory), sendo assim, trata-se de uma classe simples, composta por dois campos:
-* String name : Indica o nome da diretória. Caso seja uma variável, este nome sera encurtado com o propósito de remover as parêntesis curvas;
-* boolean isVariable : Determina se a secção é ou não uma variável (por exemplo, {rid} );
+##### Directory
+Um Directory representa uma diretoria, ou seja, uma seccção de um caminho (por exemplo, quando se executa o comando _GET /rooms_, rooms é considerado um Directory), logo, trata-se de uma classe simples, composta por dois campos:
 
-Ambos os campos são obtidos através do respetivo *getter* tal como na maioria das outras classes.
+* String name           : Indica o nome da diretória. Caso seja uma variável, este nome sera encurtado com o propósito de remover os parêntesis curvos;
+* boolean isVariable    : Determina se a secção é ou não uma variável (por exemplo, {rid}).
+
+Ambos os campos são obtidos através do respetivo *getter*.
+
 ##### BasePath
+Devido às semelhanças existentes entre um caminho e um *template* de um caminho, foi criada a classe abstrata BasePath, cujo propósito é juntar todas estas semelhanças numa só classe, de maneira a evitar repetição de código no projeto.
 
+Esta classe contém apenas um único campo:
+LinkedList<Directory> path  : Armazena um caminho como uma lista de diretorias.
+
+De maneira a preencher a lista acima listada, existe o método *parsePath(String path)*, que recebe uma String que representa um caminho, e preenche a lista chamando o método *addDirectory(String dir)* para cada diretória válida. Este último método terá de ser implementado pelas classes específicas. Caso o caminho passado não seja válido (verificação através do método *isValid(String path)*), o método lança uma exceção.
 
 ##### Path
+A classe Path estende a classe BasePath, descrita anteriormente, e tem a função de armazenar informação relativa a um caminho. Nesta classe, existe um novo campo que é específico a caminhos concretos:
+
+HashMap<String, String> variables : Armazena o nome de uma variável, assim como o valor da mesma.
+
+Foi utilizado um HashMap para armazenar as variáveis presentes num caminho. A razão por esta escolha deve-se ao facto de que uma variável tem por norma um nome único dentro do mesmo caminho, e desta forma é possível efetuar o acesso ao valor da mesma através do nome dela. Para efetuar o acesso a uma variável, basta passar o nome desta ao método *getVariable(String varName)*.
+
+Para preencher este HashMap, tem-me o método *addVariable(String varName, String var)*. A classe responsável por chamar este método é a classe PathTemplate, que se encontra descrita abaixo.
+
+O método *addDirectory(String dir)* assume sempre que o caminho a adicionar não é variável, pois não se consegue obter esta informação neste contexto.
 
 ##### PathTemplate
+A classe PathTemplate armazena informação relativa a *templates* de caminhos (caminhos codificados desta forma: /dir1/{var1}/dir2 ...). Esta classe não contém nenhum campo específico, sendo que apenas contém o campo da superclasse. Em termos de métodos, tem-se:
+
+boolean isTemplateOf(Path path) : Verifica se a instância atual é *template* de uma instância de Path. Usado durante o encaminhamento de comandos;
+void applyTemplate(Path path)   : Preenche a lista de variáveis de uma instância de Path com a informação da *template*. Necessário pois não é possível saber quais as diretorias variáveis apenas com a informação do caminho concreto;
+boolean isVariable(String dir)  : Verifica se uma diretoria é variável ou não, com base na sua representação em String. Usado durante a adição de uma diretoria à campo *path*.
 
 #### PsqlConnectionHandler
 Esta classe é responsável por estabelecer uma conexão aos servidores, é necessário passar no construtor o _ip_, o _port_, o nome da base de dados, o nome do utilizador, e a password. Com a classe instanciada, é possível obter a Connection através do método getConnection, que se limita a conectar a um servidor com a informação passada no constutor.
