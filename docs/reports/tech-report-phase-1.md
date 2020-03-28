@@ -71,13 +71,23 @@ Todos este campos podem ser acedidos através do seu respetivo *getter*, de mane
 #### Parameters
 
 #### Paths
+
+#### Directory
+Um Directory representa uma secção de um Path (por exemplo, quando se executa o comando _GET /rooms_, rooms é considerado um directory), sendo assim, trata-se de uma classe simples, composta por dois campos:
+* String name : Indica o nome da diretória. Caso seja uma variável, este nome sera encurtado com o propósito de remover as parêntesis curvas;
+* boolean isVariable : Determina se a secção é ou não uma variável (por exemplo, {rid} );
+
+Ambos os campos são obtidos através do respetivo *getter* tal como na maioria das outras classes.
 ##### BasePath
+
 
 ##### Path
 
 ##### PathTemplate
 
 #### PsqlConnectionHandler
+Esta classe é responsável por estabelecer uma conexão aos servidores, é necessário passar no construtor o _ip_, o _port_, o nome da base de dados, o nome do utilizador, e a password. Com a classe instanciada, é possível obter a Connection através do método getConnection, que se limita a conectar a um servidor com a informação passada no constutor.
+Esta classe foi realizada com o intuito de se poderem estabelecer conexões a várias bases de dados, sendo que existe uma base de dados para testes, e uma para a execução da aplicação.
 
 
 ### Encaminhamento dos comandos
@@ -90,9 +100,13 @@ Todos este campos podem ser acedidos através do seu respetivo *getter*, de mane
 
 ### Acesso a dados
 
-(_describe any created classes to help on data access_).
+Cada um dos comandos está refletido numa classe com o sufixo Command, todas elas implementam a interface CommandHandler. Nos nomes das classes também é possível encontrar o Method, que é utilizado como prefixo.
+Dentro do mesmo Method, os handlers são semelhantes, sendo assim, basta explicar de forma geral como é que cada um opera. É importante realçar que em todos os comandos (à exeção do EXIT) é efetuada uma conexão à base de dados.
+* EXIT - É retornado null para que a App se encarregue de terminar a aplicação.
+* GET - São realizadas queries à base de dados, utilizando o path para sabermos quais são as tabelas, e, em alguns casos, um parâmetro, para obter resultados específicos. O resultado da query é refletido num ResultSet, que irá ser iterado, colocando a informação nele armazenada num CommandResult, para apresentar ao utilizador no final da execução. Todas as queries presentes nestes comandos seguem uma estrutura simples, em alguns casos sendo necessário um _WHERE_, como quando se quer obter um _room_ através do seu _rid_.
+* POST - Em cada um destes comandos, o utilizador fornece sempre a informação que quer colocar na base de dados sob a forma de parâmetros. Assim sendo, todos os comandos consistem em _inserts_. É pertinente realçar que quando se instância o PreparedStatement, se fornece um parâmetro adicional, _Statement.RETURN\_GENERATED\_KEYS_, para que no ResultSet estejam presentes as chaves primárias que foram geradas através da auto-incrementação.
 
-(_identify any non-trivial used SQL statements_).
+Por via do nosso modelo de base de dados, não existem nenhuns _statements_ em _SQL_ que consideramos não-triviais, assim sendo, não achamos pertinente realçar nenhum deles.
 
 ### Processamento de erros
 
