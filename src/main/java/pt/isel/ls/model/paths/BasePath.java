@@ -19,7 +19,7 @@ abstract class BasePath {
      * Splits the string and parses it accordingly, adding each valid string to the list of Directories.
      */
     protected void parsePath(String path) throws IllegalArgumentException {
-        if (path == null || !isValid(path)) {
+        if (!isValid(path)) {
             throw new IllegalArgumentException("Wrong template format");
         }
         path = path.substring(1);
@@ -37,9 +37,9 @@ abstract class BasePath {
         }
     }
 
-    protected abstract void addDirectory(String str);
+    protected abstract void addDirectory(String dir);
 
     protected boolean isValid(String path) {
-        return !path.isEmpty() && path.charAt(0) == '/';
+        return path != null && !path.isEmpty() && path.charAt(0) == '/';
     }
 }

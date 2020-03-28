@@ -22,7 +22,7 @@ public class GetBookingByRoomAndBookingId implements CommandHandler {
             ps.setInt(1, roomId);
             ps.setInt(2, bookingId);
             ResultSet rs = ps.executeQuery();
-            if(!rs.next()) {
+            if (!rs.next()) {
                 result.addResult("No results found");
             } else {
                 result.addResult("booking id (bid): " + rs.getInt("bid"));

@@ -103,7 +103,7 @@ public class GetCommandsTest {
     public void getBookingsByUserIdTest() {
         Router router = new Router();
         router.addRoute(Method.GET, new PathTemplate("/users/{uid}/bookings"), new GetBookingsByUserIdCommand());
-        CommandRequest cmd = new CommandRequest( new Path("/users/0/bookings"), connectionHandler);
+        CommandRequest cmd = new CommandRequest(new Path("/users/0/bookings"), connectionHandler);
 
         CommandHandler handler = router.findRoute(Method.GET, cmd.getPath());
         CommandResult result = handler.execute(cmd);

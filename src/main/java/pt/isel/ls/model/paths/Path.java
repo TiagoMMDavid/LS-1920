@@ -10,7 +10,7 @@ public class Path extends BasePath {
      */
     private HashMap<String, String> variables;
 
-    public void addVariable(String varName, String var) {
+    void addVariable(String varName, String var) {
         if (variables == null) {
             variables = new HashMap<>();
         }
@@ -25,12 +25,12 @@ public class Path extends BasePath {
         return variables.get(varName);
     }
 
-    public LinkedList<Directory> getPath() {
+    LinkedList<Directory> getPath() {
         return path;
     }
 
     @Override
-    protected void addDirectory(String str) {
-        super.path.add(new Directory(str,false));
+    protected void addDirectory(String dir) {
+        super.path.add(new Directory(dir,false));
     }
 }
