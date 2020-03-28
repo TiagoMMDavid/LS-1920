@@ -4,7 +4,6 @@ import pt.isel.ls.model.commands.common.CommandHandler;
 import pt.isel.ls.model.commands.common.Method;
 import pt.isel.ls.model.paths.Path;
 import pt.isel.ls.model.paths.PathTemplate;
-import pt.isel.ls.utils.MethodNode;
 import pt.isel.ls.utils.NTree;
 
 public class Router {
@@ -21,7 +20,6 @@ public class Router {
 
     //Searches the NTree for a valid route
     public CommandHandler findRoute(Method method, Path path) {
-        MethodNode node = routes.getMethodNode(method);
-        return node == null ? null : node.getHandlerAndApplyTemplate(path);
+        return routes.getHandlerAndApplyTemplate(method, path);
     }
 }
