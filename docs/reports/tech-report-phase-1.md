@@ -56,7 +56,7 @@ Em termos de classes, foram implementadas as seguintes classes, que serão utili
 Um CommandResult é responsável pelo armazenamento dos resultados obtidos de um comando. Esta classe conta com a presença de três campos:
 * boolean success               : Determina se o comando executado foi concluído com sucesso ou não;
 * String title                  : O título dos resultados;
-* LinkedList<String> results    : Os resultados em si.
+* LinkedList\<String> results    : Os resultados em si.
 
 A aplicação encontra-se desenvolvida de maneira a apresentar os resultados linha a linha, começando por apresentar o título primeiro. No caso do comando não ter sido concluído com sucesso, a aplicação apresenta apenas o título, que deverá conter uma mensagem de erro correspondente. O preenchimento de um objeto deste tipo é responsabilidade de cada CommandHandler.
 
@@ -69,6 +69,18 @@ Um CommandRequest é responsável pela passagem de informação de contexto a um
 Todos este campos podem ser acedidos através do seu respetivo *getter*, de maneira a ser possível aceder à informação por eles armazenada. Abaixo encontram-se descritas as classes respetivas a este campos, nomeadamente como chegar à informação relevante ao CommandHandler.
 
 #### Parameters
+A classe Parameters é responsável pelo processo dos parâmetros em dado comando. Por esta razão, é instanciado um objeto do tipo Parameters sempre que é instanciado um CommandRequest. Com esta classe, a informação sobre os parâmetros fica sintetizada e de fácil acesso para as outras classes que necessitem de consular os parâmetros.
+
+A classe Parameters apenas contém um campo:
+* HashMap<String, LinkedList\<String>> params : Armazena o nome dos parâmetros e os seus valores.
+    
+Para resumir a informação dos parâmetros, utilizámos um HashMap para armazenar o conteúdo dos parâmetros. Esta estrutura de dados utiliza como chave o nome do parâmetro, e como valor apresenta uma lista com os respetivos valores. É utilizado uma lista para armazenar os valores de dado parâmetro de forma a conseguir atribuir vários valores ao mesmo parâmetro.
+
+No construtor de Parameters é chamado um método privado que se responsabiliza pelo preenchimento do HashMap certificando-se que não houve erros na escrita dos parâmetros. Caso sejam detetados erros será lançada uma exceção.
+
+Visto que o HashMap apresenta como valor uma lista, tem de suportar o acesso a parâmetros com apenas um valor e a parâmetros com mais do que um valor. Para isso, a classe dispõe de dois métodos públicos:
+* String getValue(String key) : Retorna apenas o único valor associado a dado parâmetro;
+* Iterable\<String> getValues(String key) : Retorna um iterável que permite percorrer os valores associados a dado parâmetro.
 
 #### Paths
 ##### BasePath
