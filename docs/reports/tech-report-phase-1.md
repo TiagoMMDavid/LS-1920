@@ -133,8 +133,33 @@ Esta classe foi realizada com o intuito de se poderem estabelecer conexões a v�
 
 
 ### Encaminhamento dos comandos
+Para efetuar o encaminhamento dos vários comandos, existe a classe Router. Esta classe permite que, através da passagem de um método e de um caminho, seja retornado um CommandHandler associado aos parametros passados.
 
-(_describe how the router works and how path parameters are extracted_)
+Para o efeito, foi utilizada como estrutura de suporte, uma árvore n-ária, representada pela classe NTree na package *utils*. Esta árvore é composta por 2 níveis:
+
+Nível 1 : Composto pelos vários Métodos, representados pela classe MethodNode
+Nível 2 : Composto pelas PathTemplates e respetivos Handlers, representados pela classe HandlerNode
+
+A classe da árvore n-ária encontra-se descrita em baixo, assim como a informação dos vários passos do encaminhamento dos comandos.
+
+#### NTree
+A classe NTree representa uma árvore n-ária. Esta classe conta com a presença de apenas um campo:
+
+HashMap<Method,MethodNode> methods  : Armazena os nós dos vários métodos presentes na árvore.
+
+A razão pela implementação do primeiro nível da árvore em forma de um HashMap deve-se ao alto desempenho na procura de um nó associado a um dado método.
+
+De maneira a adicionar uma nova entrada à àrvore, existe o método *add(Method method, PathTemplate template, CommandHandler cmd)*, que 
+adiciona um novo nó de método à árvore (se necessário), e chama o método *addHandler(template, cmd)* desse mesmo nó (método este que se encontra descrito abaixo).
+
+#### MethodNode
+
+#### HandlerNode
+
+#### Preenchimento da árvore
+O preenchimento da árvore n-ária é feito no arranque da aplicação, no método *App.addCommands(Router router)*. Este método chama o método *addRoute(Method method, PathTemplate path, CommandHandler handler)* do Router correspondente. Já este chama o método *add(Method method, PathTemplate template, CommandHandler cmd)* da NTree.
+
+#### Obtenção de um Handler
 
 ### Gestão de ligações
 
