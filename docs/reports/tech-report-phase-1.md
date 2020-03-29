@@ -172,7 +172,13 @@ O preenchimento da árvore n-ária é feito no arranque da aplicação, no méto
 
 ### Gestão de ligações
 
-(_describe how connections are created, used and disposed_, namely its relation with transaction scopes).
+Para cada *CommandHandler* é necessário estabelecer a conexão com a base de dados de modo a possibilitar a consulta de dados e a inserção de novos dados. Para isso, foi criada a classe *PsqlConnectionHandler* descrita anteriormente. Esta classe recebe no seu construtor os parâmetros necessários para estabelecer uma conexão com dada base de dados.
+
+Visto que as conexões apenas são estabelecidas e utilizadas dentro dos *CommandHandlers*, e por sua vez os *CommandHandlers* recebem um *CommandRequest* por parâmetro dá-se que os objetos do tipo *PsqlConnectionHandler* são instanciados dentro de *CommandRequest*. Desta forma, é possível criar a ligação com a base de dados e interagir com a mesma dentro dos *handlers* dos comandos.
+
+Como referido anteriormente, *PsqlConnectionHandler* apenas dispõe de um construtor que se encarrega de formar a String de conexão à base de dados e armazenar o *username* e *password* utilizado para o acesso da base de dados e de um método que retorna a respetiva conexão. A presença de um construtor permite estabelecer ligações a base de dados diferentes. A conexão retornada no método *getConnection()* é estabelecida com *AutoCommit* a *false*, desta maneira, só serão feitas mudanças à base de dados caso seja explicitamente chamado o método *commit()* para dada *Connection*.
+
+Dadas estas caraterísticas, dentro de todos os *CommandHandler* é chamado o método *getConnection()* dentro de um *try-with-resources*. Dentro deste bloco, são feitas todas as interrogações e inserções à base de dados necessárias para realizar um dado comando. Através de um *catch (SQLException e)* são garantidos os procedimentos que simbolizam a ocorrência de um erro. Nomeadamente, a alteração dos valores de *CommandResult* e o *rollback* dos possíveis valores inseridos na base de dados. Caso não haja nenhuma exceção detetada na execução dos comandos SQL o *CommandHandler* faz *commit* aos dados.
 
 ### Acesso a dados
 
