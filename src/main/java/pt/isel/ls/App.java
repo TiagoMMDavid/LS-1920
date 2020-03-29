@@ -29,19 +29,19 @@ import pt.isel.ls.model.commands.ExitCommand;
 public class App {
     private static PsqlConnectionHandler connectionHandler = new PsqlConnectionHandler("localhost", 5432, "postgres",
             "postgres","123macaco");
+    private static Router router = new Router();
 
     public static void main(String[] args) {
-        Router router = new Router();
-        addCommands(router);
+        addCommands();
 
         if (args.length > 0) {
-            executeCommand(args, router);
+            executeCommand(args);
         } else {
-            run(router);
+            run();
         }
     }
 
-    private static void run(Router router) {
+    private static void run() {
         Scanner in = new Scanner(System.in);
         boolean running = true;
         while (running) {
@@ -51,7 +51,7 @@ public class App {
             if (!isCommandValid(commands)) {
                 System.out.println("> Wrong format.");
             } else {
-                running = executeCommand(commands, router);
+                running = executeCommand(commands);
             }
         }
     }
@@ -61,7 +61,7 @@ public class App {
     }
 
     //Returned value determines if the app should continue running or not
-    private static boolean executeCommand(String[] commands, Router router) {
+    private static boolean executeCommand(String[] commands) {
         CommandRequest cmd;
         Method method = Method.valueOf(commands[0].toUpperCase());
         if (commands.length == 3) {
@@ -80,7 +80,7 @@ public class App {
         CommandResult result = handler.execute(cmd);
         if (result != null) {
             if (result.isSuccess()) {
-                displayResult(result, method);
+                displayResult(result);
             } else {
                 // Title should contain the error message
                 System.out.println(result.getTitle());
@@ -90,7 +90,7 @@ public class App {
         return result != null;
     }
 
-    private static void displayResult(CommandResult result, Method method) {
+    private static void displayResult(CommandResult result) {
         System.out.println(result.getTitle());
         Iterator<String> itr = result.iterator();
         if (itr != null) {
@@ -100,7 +100,7 @@ public class App {
         }
     }
 
-    private static void addCommands(Router router) {
+    private static void addCommands() {
         //Path Templates (shared between different commands)
         PathTemplate roomsTemplate = new PathTemplate("/rooms");
         PathTemplate labelsTemplate = new PathTemplate("/labels");
