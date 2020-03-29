@@ -207,6 +207,10 @@ Desta maneira, após o comando ser processado e ser retornado um CommandResult p
 
 ## Avaliação crítica
 
-(_enumerate the functionality that is not concluded and the identified defects_)
+À medida que se desenvolveu o projeto, demos conta de alguns defeitos que podem vir a prejudicar o desenvolvimento (nomeadamente no que toca à complexidade temporal, e no acesso à base de dados).
+Entre eles achamos pertinente destacar:
+* Repetição de código em todos os Handlers, para efetuar o acesso à base de dados;
+* Algoritmo de procura de HandlerNodes não revela ser o mais eficiente;
+* O acesso à base de dados não se encontra confinado numa única classe, estando no entanto distribuído por várias classes que não dizem respeito à ligação com a base de dados, isto é, não existe uma _interface_ concreta que comunica com a base de dados, estando então dividida entre várias classes.
 
-(_identify improvements to be made on the next phase_)
+Para a próxima fase podemos melhorar os aspetos referidos na lista anterior, tanto como há sempre a possibilidade de encontrarmos mais defeitos e necessitarmos de soluções para os mesmos. É possível que o código não esteja completamente legível, ou com falta de comentários, no entanto, isso é um esforço que tem de ser feito ao longo do desenvolvimento. Dito isto, esperemos melhorar na próxima fase em todas as vertentes.
