@@ -39,6 +39,7 @@ public class PostCommandsTest {
         assertNotNull(result);
         assertTrue(result.isSuccess());
         assertEquals("Booking in room <0> added successfully", result.getTitle());
+        assertEquals("BID = 1", result.iterator().next());
     }
 
     @Test
@@ -55,6 +56,7 @@ public class PostCommandsTest {
         assertNotNull(result);
         assertTrue(result.isSuccess());
         assertEquals("Label <projector> added successfully", result.getTitle());
+        assertEquals("LID = 2", result.iterator().next());
     }
 
     @Test
@@ -71,6 +73,7 @@ public class PostCommandsTest {
         assertNotNull(result);
         assertTrue(result.isSuccess());
         assertEquals("Room <LS3> added successfully", result.getTitle());
+        assertEquals("RID = 1", result.iterator().next());
     }
 
     @Test
@@ -87,6 +90,7 @@ public class PostCommandsTest {
         assertNotNull(result);
         assertTrue(result.isSuccess());
         assertEquals("User <David> added successfully", result.getTitle());
+        assertEquals("UID = 1", result.iterator().next());
     }
 
     @BeforeClass
