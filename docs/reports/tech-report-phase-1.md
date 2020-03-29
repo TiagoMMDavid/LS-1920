@@ -153,13 +153,23 @@ De maneira a adicionar uma nova entrada à àrvore, existe o método *add(Method
 adiciona um novo nó de método à árvore (se necessário), e chama o método *addHandler(template, cmd)* desse mesmo nó (método este que se encontra descrito abaixo).
 
 #### MethodNode
+A classe MethodNode é a representação num nó de um Method. Representa o primeiro nível da NTree. Esta classe contém apenas um campo:
+HashSet<HandlerNode> cmdhandlers    : Contém todos os Handlers associados a este método.
+
+A utilização de um HashSet tem como utilidade evitar nós duplicados. Este HashSet será depois iterado no método *getHandlerAndApplyTemplate(Path path)*, que irá procurar pelo template correto do Path em questão, e retornar o CommandHandler associado ao HandlerNode em análise.
 
 #### HandlerNode
+HandlerNode é uma classe simples cuja função é armazenar um PathTemplate e um CommandHandler. Esta classe encontra-se associada a um MethodNode, sendo que será o último nível da NTree.
+
+Para além dos campos armazenados, e do *getter* do *handler*, esta classe contém o seguinte método:
+
+boolean checkTemplateAndApply(Path path)    : Verifica se o PathTemplate presente na instância atual é *template* do Path passado como parâmetro. Caso o seja, aplica a *template* ao Path, e retorna *true*. Caso contrário, retorna *false*.
 
 #### Preenchimento da árvore
-O preenchimento da árvore n-ária é feito no arranque da aplicação, no método *App.addCommands(Router router)*. Este método chama o método *addRoute(Method method, PathTemplate path, CommandHandler handler)* do Router correspondente. Já este chama o método *add(Method method, PathTemplate template, CommandHandler cmd)* da NTree.
+O preenchimento da árvore n-ária é feito no arranque da aplicação, no método *App.addCommands(Router router)*. Este método chama, para cada comando existente, o método *addRoute(Method method, PathTemplate path, CommandHandler handler)* do Router correspondente, que por sua vez chama o método *add(Method method, PathTemplate template, CommandHandler cmd)* da NTree. Este método encontra-se descrito acima.
 
 #### Obtenção de um Handler
+(*describe the process of obtaining a CommandHandler, beginning and ending in App*)
 
 ### Gestão de ligações
 
