@@ -86,10 +86,10 @@ De modo a facilitar o acesso aos valores dos parametros, esta classe disponibili
 Para armazenar informações sobre caminhos, foi decidido separar a informação relativa a estes em classes distintas. Com isto, dá-se a existência de uma classe com informação sobre uma diretoria, uma classe com informação sobre um dado caminho, e uma classe com informação sobre um *template* de uma diretoria. Abaixo estão descritas estas mesmas classes.
 
 ##### Directory
-Um Directory representa uma diretoria, ou seja, uma seção de um caminho (por exemplo, quando se executa o comando _GET /rooms_, rooms é considerado um Directory), logo, trata-se de uma classe simples, composta por dois campos:
+Um Directory representa uma diretoria, ou seja, uma secção de um caminho (por exemplo, quando se executa o comando _GET /rooms_, rooms é considerado um Directory), logo, trata-se de uma classe simples, composta por dois campos:
 
 * String name           : Indica o nome da diretória. Caso seja uma variável, este nome será encurtado com o propósito de remover os parêntesis curvos;
-* boolean isVariable    : Determina se a seção é ou não uma variável (por exemplo, {rid}).
+* boolean isVariable    : Determina se a secção é ou não uma variável (por exemplo, {rid}).
 
 Ambos os campos são obtidos através do respetivo *getter*.
 
