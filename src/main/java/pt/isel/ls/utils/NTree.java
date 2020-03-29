@@ -19,8 +19,13 @@ public class NTree {
             this.cmdHandler = cmd;
         }
 
-        public PathTemplate getTemplate() {
-            return template;
+        public boolean checkTemplateAndApply(Path path) {
+            if (template.isTemplateOf(path)) {
+                template.applyTemplate(path);
+                return true;
+            } else {
+                return false;
+            }
         }
 
         public CommandHandler getCmdHandler() {
@@ -42,9 +47,7 @@ public class NTree {
 
         public CommandHandler getHandlerAndApplyTemplate(Path path) {
             for (HandlerNode handlerNode : cmdhandlers) {
-                PathTemplate template = handlerNode.getTemplate();
-                if (template.isTemplateOf(path)) {
-                    template.applyTemplate(path);
+                if (handlerNode.checkTemplateAndApply(path)) {
                     return handlerNode.getCmdHandler();
                 }
             }
