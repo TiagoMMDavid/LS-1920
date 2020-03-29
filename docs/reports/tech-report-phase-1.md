@@ -86,10 +86,10 @@ De modo a facilitar o acesso aos valores dos parametros, esta classe disponibili
 Para armazenar informações sobre caminhos, foi decidido separar a informação relativa a estes em classes distintas. Com isto, dá-se a existência de uma classe com informação sobre uma diretoria, uma classe com informação sobre um dado caminho, e uma classe com informação sobre um *template* de uma diretoria. Abaixo estão descritas estas mesmas classes.
 
 ##### Directory
-Um Directory representa uma diretoria, ou seja, uma seccção de um caminho (por exemplo, quando se executa o comando _GET /rooms_, rooms é considerado um Directory), logo, trata-se de uma classe simples, composta por dois campos:
+Um Directory representa uma diretoria, ou seja, uma seção de um caminho (por exemplo, quando se executa o comando _GET /rooms_, rooms é considerado um Directory), logo, trata-se de uma classe simples, composta por dois campos:
 
-* String name           : Indica o nome da diretória. Caso seja uma variável, este nome sera encurtado com o propósito de remover os parêntesis curvos;
-* boolean isVariable    : Determina se a secção é ou não uma variável (por exemplo, {rid}).
+* String name           : Indica o nome da diretória. Caso seja uma variável, este nome será encurtado com o propósito de remover os parêntesis curvos;
+* boolean isVariable    : Determina se a seção é ou não uma variável (por exemplo, {rid}).
 
 Ambos os campos são obtidos através do respetivo *getter*.
 
@@ -97,9 +97,9 @@ Ambos os campos são obtidos através do respetivo *getter*.
 Devido às semelhanças existentes entre um caminho e um *template* de um caminho, foi criada a classe abstrata BasePath, cujo propósito é juntar todas estas semelhanças numa só classe, de maneira a evitar repetição de código no projeto.
 
 Esta classe contém apenas um único campo:
-LinkedList<Directory> path  : Armazena um caminho como uma lista de diretorias.
+LinkedList\<Directory> path  : Armazena um caminho como uma lista de diretorias.
 
-De maneira a preencher a lista acima listada, existe o método *parsePath(String path)*, que recebe uma String que representa um caminho, e preenche a lista chamando o método *addDirectory(String dir)* para cada diretória válida. Este último método terá de ser implementado pelas classes específicas. Caso o caminho passado não seja válido (verificação através do método *isValid(String path)*), o método lança uma exceção.
+De maneira a preencher a lista acima listada, existe o método *parsePath(String path)*, que recebe uma String que representa um caminho, e preenche a lista chamando o método *addDirectory(String dir)* para cada diretoria válida. Este último método terá de ser implementado pelas classes específicas. Caso o caminho passado não seja válido (verificação através do método *isValid(String path)*), o método lança uma exceção.
 
 ##### Path
 A classe Path estende a classe BasePath, descrita anteriormente, e tem a função de armazenar informação relativa a um caminho. Nesta classe, existe um novo campo que é específico a caminhos concretos:
@@ -108,32 +108,32 @@ HashMap<String, String> variables : Armazena o nome de uma variável, assim como
 
 Foi utilizado um HashMap para armazenar as variáveis presentes num caminho. A razão por esta escolha deve-se ao facto de que uma variável tem por norma um nome único dentro do mesmo caminho, e desta forma é possível efetuar o acesso ao valor da mesma através do nome dela. Para efetuar o acesso a uma variável, basta passar o nome desta ao método *getVariable(String varName)*.
 
-Para preencher este HashMap, tem-me o método *addVariable(String varName, String var)*. A classe responsável por chamar este método é a classe PathTemplate, que se encontra descrita abaixo.
+Para preencher este HashMap, tem-se o método *addVariable(String varName, String var)*. A classe responsável por chamar este método é a classe PathTemplate, que se encontra descrita abaixo.
 
 O método *addDirectory(String dir)* assume sempre que o caminho a adicionar não é variável, pois não se consegue obter esta informação neste contexto.
 
 ##### PathTemplate
 A classe PathTemplate armazena informação relativa a *templates* de caminhos (caminhos codificados desta forma: /dir1/{var1}/dir2 ...). Esta classe não contém nenhum campo específico, sendo que apenas contém o campo da superclasse. Em termos de métodos, tem-se:
 
-boolean isTemplateOf(Path path) : Verifica se a instância atual é *template* de uma instância de Path. Usado durante o encaminhamento de comandos;
-void applyTemplate(Path path)   : Preenche a lista de variáveis de uma instância de Path com a informação da *template*. Necessário pois não é possível saber quais as diretorias variáveis apenas com a informação do caminho concreto;
-boolean isVariable(String dir)  : Verifica se uma diretoria é variável ou não, com base na sua representação em String. Usado durante a adição de uma diretoria à campo *path*.
+* boolean isTemplateOf(Path path) : Verifica se a instância atual é *template* de uma instância de Path. Usado durante o encaminhamento de comandos;
+* void applyTemplate(Path path)   : Preenche a lista de variáveis de uma instância de Path com a informação da *template*. Necessário pois não é possível saber quais as diretorias variáveis apenas com a informação do caminho concreto;
+* boolean isVariable(String dir)  : Verifica se uma diretoria é variável ou não, com base na sua representação em String. Usado durante a adição de uma diretoria à campo *path*.
 
 #### PsqlConnectionHandler
 A classe PsqlConnectionHandler é responsável pela conexão a um servidor PSQL. Para isto, existem os seguintes campos:
-String connectionUrl    : O url do servidor, que inclui o IP, o porto e o nome da base de dados;
-String user             : O nome de utilizador da base de dados;
-String password         : A palavra passe do utilizador acima descrito.
+* String connectionUrl    : O url do servidor, que inclui o IP, o porto e o nome da base de dados;
+* String user             : O nome de utilizador da base de dados;
+* String password         : A palavra passe do utilizador acima descrito.
 
 Estes campos são preenchidos no construtor da classe.
 
-Para efetuar uma conexão, é utilizado o método *getConnection()*, que retorna uma conexão válida caso os parametros tenham sido passados corretamente.
+Para efetuar uma conexão, é utilizado o método *getConnection()*, que retorna uma conexão válida caso os parâmetros tenham sido passados corretamente.
 
 Esta classe foi realizada com o intuito de se poderem estabelecer conexões a várias bases de dados. No contexto da aplicação desenvolvida, foi utilizada para separar as conexões à base de dados principal, e à base de dados utilizada para realização de testes.
 
 
 ### Encaminhamento dos comandos
-Para efetuar o encaminhamento dos vários comandos, existe a classe Router. Esta classe permite que, através da passagem de um método e de um caminho, seja retornado um CommandHandler associado aos parametros passados.
+Para efetuar o encaminhamento dos vários comandos, existe a classe Router. Esta classe permite que, através da passagem de um método e de um caminho, seja retornado um CommandHandler associado aos parâmetros passados.
 
 Para o efeito, foi utilizada como estrutura de suporte, uma árvore n-ária, representada pela classe NTree na package *utils*. Esta árvore é composta por 2 níveis:
 
@@ -145,16 +145,15 @@ A classe da árvore n-ária encontra-se descrita em baixo, assim como a informa�
 #### NTree
 A classe NTree representa uma árvore n-ária. Esta classe conta com a presença de apenas um campo:
 
-HashMap<Method,MethodNode> methods  : Armazena os nós dos vários métodos presentes na árvore.
+HashMap<Method, MethodNode> methods  : Armazena os nós dos vários métodos presentes na árvore.
 
 A razão pela implementação do primeiro nível da árvore em forma de um HashMap deve-se ao alto desempenho na procura de um nó associado a um dado método.
 
-De maneira a adicionar uma nova entrada à àrvore, existe o método *add(Method method, PathTemplate template, CommandHandler cmd)*, que 
-adiciona um novo nó de método à árvore (se necessário), e chama o método *addHandler(template, cmd)* desse mesmo nó (método este que se encontra descrito abaixo).
+De maneira a adicionar uma nova entrada à àrvore, existe o método *add(Method method, PathTemplate template, CommandHandler cmd)*, que adiciona um novo nó de método à árvore (se necessário), e chama o método *addHandler(template, cmd)* desse mesmo nó (método este que se encontra descrito abaixo).
 
 #### MethodNode
-A classe MethodNode é a representação num nó de um Method. Representa o primeiro nível da NTree. Esta classe contém apenas um campo:
-HashSet<HandlerNode> cmdhandlers    : Contém todos os Handlers associados a este método.
+A classe MethodNode é a representação em nó de um Method. Representa o primeiro nível da NTree. Esta classe contém apenas um campo:
+* HashSet\<HandlerNode> cmdhandlers    : Contém todos os Handlers associados a este método.
 
 A utilização de um HashSet tem como utilidade evitar nós duplicados. Este HashSet será depois iterado no método *getHandlerAndApplyTemplate(Path path)*, que irá procurar pelo template correto do Path em questão, e retornar o CommandHandler associado ao HandlerNode em análise.
 
@@ -163,7 +162,7 @@ HandlerNode é uma classe simples cuja função é armazenar um PathTemplate e u
 
 Para além dos campos armazenados, e do *getter* do *handler*, esta classe contém o seguinte método:
 
-boolean checkTemplateAndApply(Path path)    : Verifica se o PathTemplate presente na instância atual é *template* do Path passado como parâmetro. Caso o seja, aplica a *template* ao Path, e retorna *true*. Caso contrário, retorna *false*.
+* boolean checkTemplateAndApply(Path path)    : Verifica se o PathTemplate presente na instância atual é *template* do Path passado como parâmetro. Caso o seja, aplica a *template* ao Path, e retorna *true*. Caso contrário, retorna *false*.
 
 #### Preenchimento da árvore
 O preenchimento da árvore n-ária é feito no arranque da aplicação, no método *App.addCommands(Router router)*. Este método chama, para cada comando existente, o método *addRoute(Method method, PathTemplate path, CommandHandler handler)* do Router correspondente, que por sua vez chama o método *add(Method method, PathTemplate template, CommandHandler cmd)* da NTree. Este método encontra-se descrito acima.
@@ -178,9 +177,9 @@ O preenchimento da árvore n-ária é feito no arranque da aplicação, no méto
 ### Acesso a dados
 
 Cada um dos comandos está refletido numa classe com o sufixo Command, todas elas implementam a interface CommandHandler. Nos nomes das classes também é possível encontrar o Method, que é utilizado como prefixo.
-Dentro do mesmo Method, os handlers são semelhantes, sendo assim, basta explicar de forma geral como é que cada um opera. É importante realçar que em todos os comandos (à exeção do EXIT) é efetuada uma conexão à base de dados.
+Dentro do mesmo Method, os handlers são semelhantes, sendo assim, basta explicar de forma geral como é que cada um opera. É importante realçar que em todos os comandos (à exceção do EXIT) é efetuada uma conexão à base de dados.
 * EXIT - É retornado null para que a App se encarregue de terminar a aplicação.
-* GET - São realizadas queries à base de dados, utilizando o path para sabermos quais são as tabelas, e, em alguns casos, um parâmetro, para obter resultados específicos. O resultado da query é refletido num ResultSet, que irá ser iterado, colocando a informação nele armazenada num CommandResult, para apresentar ao utilizador no final da execução. Todas as queries presentes nestes comandos seguem uma estrutura simples, em alguns casos sendo necessário um _WHERE_, como quando se quer obter um _room_ através do seu _rid_.
+* GET - São realizadas queries à base de dados, utilizando o path para sabermos quais são as tabelas, e, em alguns casos, um parâmetro, para obter resultados específicos. O resultado da query é refletido num ResultSet, que irá ser iterado, colocando a informação nele armazenada num CommandResult, para apresentar ao utilizador no final da execução. Todas as queries presentes nestes comandos seguem uma estrutura simples, em alguns casos sendo necessário um _WHERE_, como por exemplo quando se quer obter um _room_ através do seu _rid_.
 * POST - Em cada um destes comandos, o utilizador fornece sempre a informação que quer colocar na base de dados sob a forma de parâmetros. Assim sendo, todos os comandos consistem em _inserts_. É pertinente realçar que quando se instância o PreparedStatement, se fornece um parâmetro adicional, _Statement.RETURN\_GENERATED\_KEYS_, para que no ResultSet estejam presentes as chaves primárias que foram geradas através da auto-incrementação.
 
 Por via do nosso modelo de base de dados, não existem nenhuns _statements_ em _SQL_ que consideramos não-triviais, assim sendo, não achamos pertinente realçar nenhum deles.
