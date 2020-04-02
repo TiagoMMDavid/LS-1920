@@ -27,12 +27,10 @@ public class TransactionManager {
         try {
             f.execute(con);
             con.commit();
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             con.rollback();
             toReturn = false;
-        }
-        finally {
+        } finally {
             con.close();
         }
         return toReturn;

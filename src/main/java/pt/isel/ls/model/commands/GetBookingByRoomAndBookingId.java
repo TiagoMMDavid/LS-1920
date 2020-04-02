@@ -13,7 +13,7 @@ public class GetBookingByRoomAndBookingId implements CommandHandler {
     public CommandResult execute(CommandRequest commandRequest) throws Exception {
         CommandResult result = new CommandResult();
         TransactionManager trans = commandRequest.getTransactionHandler();
-        if(!trans.executeTransaction(con -> {
+        if (!trans.executeTransaction(con -> {
             PreparedStatement ps = con.prepareStatement("SELECT * "
                     + "FROM BOOKING WHERE rid = ? AND bid = ?");
 
