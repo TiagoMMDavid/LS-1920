@@ -21,7 +21,11 @@ public class Path extends BasePath {
         super(path);
     }
 
-    public String getVariable(String varName) {
+    public int getInt(String varName) {
+        return Integer.parseInt(variables.get(varName));
+    }
+
+    public String getString(String varName) {
         return variables.get(varName);
     }
 

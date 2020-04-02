@@ -1,22 +1,21 @@
-package pt.isel.ls.model.commands.common;
+package pt.isel.ls.model.commands.sql;
 
 import org.postgresql.ds.PGSimpleDataSource;
 
 import java.sql.Connection;
-import java.sql.SQLException;
 
-public class PsqlConnectionHandler {
+public class TransactionManager {
     private final String connectionUrl;
     private final String user;
     private final String password;
 
-    public PsqlConnectionHandler(String ip, int port, String dbName, String user, String password) {
+    public TransactionManager(String ip, int port, String dbName, String user, String password) {
         this.connectionUrl = "jdbc:postgresql://" + ip + ":" + port + "/" + dbName;
         this.user = user;
         this.password = password;
     }
 
-    public Connection getConnection() throws SQLException {
+    public boolean executeTransaction(SqlFunction f) throws Exception {
         PGSimpleDataSource ds = new PGSimpleDataSource();
         ds.setURL(connectionUrl);
         ds.setUser(user);
@@ -24,6 +23,18 @@ public class PsqlConnectionHandler {
 
         Connection con = ds.getConnection();
         con.setAutoCommit(false);
-        return con;
+        boolean toReturn = true;
+        try {
+            f.execute(con);
+            con.commit();
+        }
+        catch (Exception e) {
+            con.rollback();
+            toReturn = false;
+        }
+        finally {
+            con.close();
+        }
+        return toReturn;
     }
 }

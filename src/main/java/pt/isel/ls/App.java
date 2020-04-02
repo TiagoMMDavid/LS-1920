@@ -8,7 +8,7 @@ import pt.isel.ls.model.commands.common.Method;
 import pt.isel.ls.model.commands.common.Parameters;
 import pt.isel.ls.model.commands.common.CommandResult;
 import pt.isel.ls.model.commands.common.CommandHandler;
-import pt.isel.ls.model.commands.common.PsqlConnectionHandler;
+import pt.isel.ls.model.commands.sql.TransactionManager;
 
 import pt.isel.ls.model.paths.Path;
 import pt.isel.ls.model.paths.PathTemplate;
@@ -27,8 +27,8 @@ import pt.isel.ls.model.commands.PostLabelsCommand;
 import pt.isel.ls.model.commands.ExitCommand;
 
 public class App {
-    private static PsqlConnectionHandler connectionHandler = new PsqlConnectionHandler("localhost", 5432, "postgres",
-            "postgres","123macaco");
+    private static TransactionManager trans = new TransactionManager("localhost", 5432, "postgres",
+            System.getenv("jdbcUser"), System.getenv("jdbcPass"));
     private static Router router = new Router();
 
     public static void main(String[] args) {
@@ -67,24 +67,24 @@ public class App {
         if (commands.length == 3) {
             cmd = new CommandRequest(new Path(commands[1]),
                     new Parameters(commands[2]),
-                    connectionHandler);
+                    trans);
         } else {
             cmd = new CommandRequest(new Path(commands[1]),
-                    connectionHandler);
+                    trans);
         }
         CommandHandler handler = router.findRoute(method, cmd.getPath());
         if (handler == null) {
             return true;
         }
 
-        CommandResult result = handler.execute(cmd);
-        if (result != null) {
-            if (result.isSuccess()) {
+        CommandResult result = null;
+        try {
+            result = handler.execute(cmd);
+            if (result != null && result.isSuccess()) {
                 displayResult(result);
-            } else {
-                // Title should contain the error message
-                System.out.println(result.getTitle());
             }
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
         }
 
         return result != null;

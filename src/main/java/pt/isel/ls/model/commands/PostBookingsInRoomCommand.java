@@ -3,8 +3,8 @@ package pt.isel.ls.model.commands;
 import pt.isel.ls.model.commands.common.CommandHandler;
 import pt.isel.ls.model.commands.common.CommandRequest;
 import pt.isel.ls.model.commands.common.CommandResult;
+import pt.isel.ls.model.commands.sql.TransactionManager;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -15,15 +15,16 @@ import java.util.TimeZone;
 
 public class PostBookingsInRoomCommand implements CommandHandler {
     @Override
-    public CommandResult execute(CommandRequest commandRequest) {
+    public CommandResult execute(CommandRequest commandRequest) throws Exception {
         CommandResult result = new CommandResult();
-        try (Connection con = commandRequest.getConnectionHandler().getConnection()) {
+        TransactionManager trans = commandRequest.getTransactionHandler();
+        if (!trans.executeTransaction(con -> {
             PreparedStatement ps = con.prepareStatement("INSERT INTO BOOKING "
                             + "(uid, rid, begin_inst, end_inst) Values(?,?,?,?)",
                             Statement.RETURN_GENERATED_KEYS
             );
             String uid = commandRequest.getParams().getValue("uid");
-            String rid = commandRequest.getPath().getVariable("rid");
+            String rid = commandRequest.getPath().getString("rid");
             String duration = commandRequest.getParams().getValue("duration");
             String begin = commandRequest.getParams().getValue("begin");
             if (uid != null && rid != null && duration != null && begin != null) {
@@ -50,10 +51,9 @@ public class PostBookingsInRoomCommand implements CommandHandler {
             }
             ps.close();
 
-        } catch (Exception e) {
+        })) {
             result.setSuccess(false);
             result.clearResults();
-            result.setTitle(e.getMessage());
         }
         return result;
     }

@@ -1,6 +1,7 @@
 package pt.isel.ls.model.commands.common;
 
 import org.junit.Test;
+import org.postgresql.ds.PGSimpleDataSource;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -11,19 +12,28 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 public class JdbcTests {
-    private static PsqlConnectionHandler connectionHandler = new PsqlConnectionHandler("localhost", 5432,
-            "postgrestests", "postgres","123macaco");
+
+    private Connection getConnection() throws SQLException {
+        PGSimpleDataSource ds = new PGSimpleDataSource();
+        ds.setURL("jdbc:postgresql://localhost:5432/postgrestests");
+        ds.setUser(System.getenv("jdbcUser"));
+        ds.setPassword(System.getenv("jdbcPass"));
+
+        Connection con = ds.getConnection();
+        con.setAutoCommit(false);
+        return con;
+    }
 
     @Test
     public void connectionToDatabaseTest() throws SQLException {
-        Connection con = connectionHandler.getConnection();
+        Connection con = getConnection();
         assertNotNull(con);
         con.close();
     }
 
     @Test
     public void createTableTest() throws SQLException {
-        Connection con = connectionHandler.getConnection();
+        Connection con = getConnection();
         try {
             createTableAux(con);
         } finally {
@@ -44,7 +54,7 @@ public class JdbcTests {
 
     @Test
     public void fillTableWithDataTest() throws SQLException {
-        Connection con = connectionHandler.getConnection();
+        Connection con = getConnection();
         createTableAux(con);
         try {
             fillTableAux(con);
@@ -64,7 +74,7 @@ public class JdbcTests {
 
     @Test
     public void selectQueryTest() throws SQLException {
-        Connection con = connectionHandler.getConnection();
+        Connection con = getConnection();
         createTableAux(con);
         fillTableAux(con);
         try {
@@ -89,7 +99,7 @@ public class JdbcTests {
 
     @Test
     public void clearTableTest() throws SQLException {
-        Connection con = connectionHandler.getConnection();
+        Connection con = getConnection();
         createTableAux(con);
         fillTableAux(con);
 
@@ -105,7 +115,7 @@ public class JdbcTests {
 
     @Test
     public void dropTableTest() throws SQLException {
-        Connection con = connectionHandler.getConnection();
+        Connection con = getConnection();
         createTableAux(con);
         fillTableAux(con);
 

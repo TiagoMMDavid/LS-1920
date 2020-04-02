@@ -5,7 +5,7 @@ import pt.isel.ls.model.commands.GetRoomsCommand;
 import pt.isel.ls.model.commands.common.CommandHandler;
 import pt.isel.ls.model.commands.common.CommandRequest;
 import pt.isel.ls.model.commands.common.Method;
-import pt.isel.ls.model.commands.common.PsqlConnectionHandler;
+import pt.isel.ls.model.commands.sql.TransactionManager;
 import pt.isel.ls.model.paths.Path;
 import pt.isel.ls.model.paths.PathTemplate;
 
@@ -15,15 +15,15 @@ import static org.junit.Assert.assertNull;
 
 
 public class RouterTest {
-    private static PsqlConnectionHandler connectionHandler = new PsqlConnectionHandler("localhost", 5432,
-            "postgrestests", "postgres","123macaco");
+    private static TransactionManager trans = new TransactionManager("localhost", 5432,
+            "postgrestests", System.getenv("jdbcUser"),System.getenv("jdbcPass"));
 
     @Test
     public void addValidRouteAndFindRouteTest() {
         //Arrange
         Router router = new Router();
         router.addRoute(Method.GET, new PathTemplate("/rooms/{rid}"), new GetRoomsCommand());
-        CommandRequest cmd = new CommandRequest(new Path("/rooms/92"), connectionHandler);
+        CommandRequest cmd = new CommandRequest(new Path("/rooms/92"), trans);
 
         //Act
         CommandHandler handler = router.findRoute(Method.GET, cmd.getPath());
@@ -37,7 +37,7 @@ public class RouterTest {
     public void findNonExistingRoute() {
         //Arrange
         Router router = new Router();
-        CommandRequest cmd = new CommandRequest(new Path("/rooms"), connectionHandler);
+        CommandRequest cmd = new CommandRequest(new Path("/rooms"), trans);
 
         //Act
         CommandHandler handler = router.findRoute(Method.GET, cmd.getPath());

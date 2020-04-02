@@ -1,19 +1,20 @@
 package pt.isel.ls.model.commands.common;
 
+import pt.isel.ls.model.commands.sql.TransactionManager;
 import pt.isel.ls.model.paths.Path;
 
 public class CommandRequest {
     private Path path;
     private Parameters params;
-    private PsqlConnectionHandler connectionHandler;
+    private TransactionManager trans;
 
-    public CommandRequest(Path path, PsqlConnectionHandler connectionHandler) {
+    public CommandRequest(Path path, TransactionManager trans) {
         this.path = path;
-        this.connectionHandler = connectionHandler;
+        this.trans = trans;
     }
 
-    public CommandRequest(Path path, Parameters params, PsqlConnectionHandler connectionHandler) {
-        this(path, connectionHandler);
+    public CommandRequest(Path path, Parameters params, TransactionManager trans) {
+        this(path, trans);
         this.params = params;
     }
 
@@ -25,7 +26,7 @@ public class CommandRequest {
         return params;
     }
 
-    public PsqlConnectionHandler getConnectionHandler() {
-        return connectionHandler;
+    public TransactionManager getTransactionHandler() {
+        return trans;
     }
 }
