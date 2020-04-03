@@ -4,24 +4,24 @@ import pt.isel.ls.model.commands.common.CommandHandler;
 import pt.isel.ls.model.commands.common.CommandRequest;
 import pt.isel.ls.model.commands.common.CommandResult;
 import pt.isel.ls.model.commands.sql.TransactionManager;
+import pt.isel.ls.model.entities.Booking;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.TimeZone;
+
+import static pt.isel.ls.utils.DateUtils.parseTime;
 
 public class PostBookingsInRoomCommand implements CommandHandler {
     @Override
     public CommandResult execute(CommandRequest commandRequest) throws Exception {
-        CommandResult result = new CommandResult();
+        CommandResult<Booking> result = new CommandResult<>();
         TransactionManager trans = commandRequest.getTransactionHandler();
         if (!trans.executeTransaction(con -> {
             PreparedStatement ps = con.prepareStatement("INSERT INTO BOOKING "
                             + "(uid, rid, begin_inst, end_inst) Values(?,?,?,?)",
-                            Statement.RETURN_GENERATED_KEYS
+                    Statement.RETURN_GENERATED_KEYS
             );
             String uid = commandRequest.getParams().getValue("uid");
             String rid = commandRequest.getPath().getString("rid");
@@ -40,11 +40,10 @@ public class PostBookingsInRoomCommand implements CommandHandler {
 
                 int success = ps.executeUpdate();
                 result.setSuccess(success > 0);
-                result.setTitle("Booking in room <" + rid + "> added successfully");
                 //Get bid
                 ResultSet rs = ps.getGeneratedKeys();
                 rs.next();
-                result.addResult("BID = " + rs.getInt("bid"));
+                result.addResult(new Booking(rs.getInt("bid")));
                 con.commit();
             } else {
                 throw new IllegalArgumentException("No arguments found / Invalid arguments");
@@ -56,12 +55,5 @@ public class PostBookingsInRoomCommand implements CommandHandler {
             result.clearResults();
         }
         return result;
-    }
-
-    private Date parseTime(String date, String pattern) throws ParseException {
-        TimeZone tz = TimeZone.getTimeZone("UTC");
-        SimpleDateFormat formatDate = new SimpleDateFormat(pattern);
-        formatDate.setTimeZone(tz);
-        return formatDate.parse(date);
     }
 }

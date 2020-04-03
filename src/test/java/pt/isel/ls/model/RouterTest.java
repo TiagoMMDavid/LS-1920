@@ -15,8 +15,7 @@ import static org.junit.Assert.assertNull;
 
 
 public class RouterTest {
-    private static TransactionManager trans = new TransactionManager("localhost", 5432,
-            "postgrestests", System.getenv("jdbcUser"),System.getenv("jdbcPass"));
+    private static TransactionManager trans = new TransactionManager(System.getenv("postgresTestUrl"));
 
     @Test
     public void addValidRouteAndFindRouteTest() {

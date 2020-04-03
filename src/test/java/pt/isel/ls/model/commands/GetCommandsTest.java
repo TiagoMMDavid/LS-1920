@@ -20,8 +20,7 @@ import java.sql.PreparedStatement;
 import java.util.Iterator;
 
 public class GetCommandsTest {
-    private static TransactionManager trans = new TransactionManager("localhost", 5432,
-            "postgrestests", System.getenv("jdbcUser"),System.getenv("jdbcPass"));
+    private static TransactionManager trans = new TransactionManager(System.getenv("postgresTestUrl"));
 
     @BeforeClass
     public static void fillTables() throws Exception {

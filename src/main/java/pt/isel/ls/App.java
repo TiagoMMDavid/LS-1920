@@ -27,8 +27,7 @@ import pt.isel.ls.model.commands.PostLabelsCommand;
 import pt.isel.ls.model.commands.ExitCommand;
 
 public class App {
-    private static TransactionManager trans = new TransactionManager("localhost", 5432, "postgres",
-            System.getenv("jdbcUser"), System.getenv("jdbcPass"));
+    private static TransactionManager trans = new TransactionManager(System.getenv("postgresUrl"));
     private static Router router = new Router();
 
     public static void main(String[] args) {

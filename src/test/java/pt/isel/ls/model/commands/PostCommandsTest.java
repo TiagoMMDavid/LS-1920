@@ -20,8 +20,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 public class PostCommandsTest {
-    private static TransactionManager trans = new TransactionManager("localhost", 5432,
-            "postgrestests", System.getenv("jdbcUser"),System.getenv("jdbcPass"));
+    private static TransactionManager trans = new TransactionManager(System.getenv("postgresTestUrl"));
 
     @BeforeClass
     public static void insertTestValues() throws Exception {

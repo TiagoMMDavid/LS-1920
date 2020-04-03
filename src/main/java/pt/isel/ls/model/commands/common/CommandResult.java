@@ -3,29 +3,23 @@ package pt.isel.ls.model.commands.common;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-public class CommandResult implements Iterable<String> {
+public class CommandResult<T> implements Iterable<T>{
     private boolean success;
-    private String title;
-    private LinkedList<String> results;
+    private LinkedList<T> results = new LinkedList<>();
 
     public CommandResult() {
         this.success = true;
     }
 
-    public CommandResult(boolean success, String msg) {
+    public CommandResult(boolean success) {
         this.success = success;
-        this.title = msg;
     }
 
     public void setSuccess(boolean success) {
         this.success = success;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void addResult(String result) {
+    public void addResult(T result) {
         if (results == null) {
             results = new LinkedList<>();
         }
@@ -39,16 +33,12 @@ public class CommandResult implements Iterable<String> {
         }
     }
 
-    public String getTitle() {
-        return title;
-    }
-
     public boolean isSuccess() {
         return success;
     }
 
     @Override
-    public Iterator<String> iterator() {
-        return results != null ? results.iterator() : null;
+    public Iterator<T> iterator() {
+        return results.iterator();
     }
 }

@@ -4,6 +4,7 @@ import pt.isel.ls.model.commands.common.CommandHandler;
 import pt.isel.ls.model.commands.common.CommandRequest;
 import pt.isel.ls.model.commands.common.CommandResult;
 import pt.isel.ls.model.commands.sql.TransactionManager;
+import pt.isel.ls.model.entities.Room;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -18,7 +19,7 @@ import java.util.LinkedList;
 public class PostRoomsCommand implements CommandHandler {
     @Override
     public CommandResult execute(CommandRequest commandRequest) throws Exception {
-        CommandResult result = new CommandResult();
+        CommandResult<Room> result = new CommandResult<>();
         TransactionManager trans = commandRequest.getTransactionHandler();
         if (!trans.executeTransaction(con -> {
             PreparedStatement ps = con.prepareStatement("INSERT INTO ROOM "
@@ -47,7 +48,7 @@ public class PostRoomsCommand implements CommandHandler {
                 ResultSet rs = ps.getGeneratedKeys();
                 rs.next();
                 int rid = rs.getInt("rid");
-                result.addResult("RID = " + rid);
+                result.addResult(new Room(rid));
 
                 Iterable<String> labels = commandRequest.getParams().getValues("label");
                 if (labels != null) {
@@ -56,7 +57,6 @@ public class PostRoomsCommand implements CommandHandler {
                 }
 
                 result.setSuccess(success > 0);
-                result.setTitle("Room <" + name + "> added successfully");
 
                 con.commit();
             } else {

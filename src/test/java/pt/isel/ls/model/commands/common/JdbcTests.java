@@ -15,9 +15,7 @@ public class JdbcTests {
 
     private Connection getConnection() throws SQLException {
         PGSimpleDataSource ds = new PGSimpleDataSource();
-        ds.setURL("jdbc:postgresql://localhost:5432/postgrestests");
-        ds.setUser(System.getenv("jdbcUser"));
-        ds.setPassword(System.getenv("jdbcPass"));
+        ds.setURL(System.getenv("postgresTestUrl"));
 
         Connection con = ds.getConnection();
         con.setAutoCommit(false);
