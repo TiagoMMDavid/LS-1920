@@ -19,7 +19,7 @@ import java.util.LinkedList;
 public class PostRoomsCommand implements CommandHandler {
     @Override
     public CommandResult execute(CommandRequest commandRequest) throws Exception {
-        CommandResult<Room> result = new CommandResult<>();
+        CommandResult result = new CommandResult();
         TransactionManager trans = commandRequest.getTransactionHandler();
         if (!trans.executeTransaction(con -> {
             PreparedStatement ps = con.prepareStatement("INSERT INTO ROOM "

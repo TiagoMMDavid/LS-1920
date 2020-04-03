@@ -2,10 +2,10 @@ package pt.isel.ls.model.entities;
 
 import java.util.Date;
 
-public class Booking {
+public class Booking implements Entity {
     private int bid;
-    private int uid;
-    private int rid;
+    private int uid = -1;
+    private int rid = -1;
     private Date begin_inst;
     private Date end_inst;
 
@@ -33,11 +33,16 @@ public class Booking {
         return rid;
     }
 
-    public Date getBegin_inst() {
+    public Date getBeginInst() {
         return begin_inst;
     }
 
-    public Date getEnd_inst() {
+    public Date getEndInst() {
         return end_inst;
+    }
+
+    @Override
+    public EntityType getEntityType() {
+        return EntityType.BOOKING;
     }
 }

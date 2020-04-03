@@ -1,6 +1,6 @@
 package pt.isel.ls.model.entities;
 
-public class Room {
+public class Room implements Entity {
     private int rid;
     private String name;
     private String description;
@@ -41,5 +41,10 @@ public class Room {
 
     public int getCapacity() {
         return capacity;
+    }
+
+    @Override
+    public EntityType getEntityType() {
+        return EntityType.ROOM;
     }
 }

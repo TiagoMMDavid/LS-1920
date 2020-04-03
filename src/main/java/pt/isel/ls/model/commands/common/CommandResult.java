@@ -1,11 +1,13 @@
 package pt.isel.ls.model.commands.common;
 
+import pt.isel.ls.model.entities.Entity;
+
 import java.util.Iterator;
 import java.util.LinkedList;
 
-public class CommandResult<T> implements Iterable<T>{
+public class CommandResult implements Iterable<Entity> {
     private boolean success;
-    private LinkedList<T> results = new LinkedList<>();
+    private LinkedList<Entity> results = new LinkedList<>();
 
     public CommandResult() {
         this.success = true;
@@ -19,18 +21,12 @@ public class CommandResult<T> implements Iterable<T>{
         this.success = success;
     }
 
-    public void addResult(T result) {
-        if (results == null) {
-            results = new LinkedList<>();
-        }
+    public void addResult(Entity result) {
         results.add(result);
     }
 
     public void clearResults() {
-        if (results != null) {
-            results.clear();
-            results = null;
-        }
+        results.clear();
     }
 
     public boolean isSuccess() {
@@ -38,7 +34,7 @@ public class CommandResult<T> implements Iterable<T>{
     }
 
     @Override
-    public Iterator<T> iterator() {
+    public Iterator<Entity> iterator() {
         return results.iterator();
     }
 }

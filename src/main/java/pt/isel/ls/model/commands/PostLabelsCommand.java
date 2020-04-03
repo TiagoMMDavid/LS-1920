@@ -14,7 +14,7 @@ import java.sql.ResultSet;
 public class PostLabelsCommand implements CommandHandler {
     @Override
     public CommandResult execute(CommandRequest commandRequest) throws Exception {
-        CommandResult<Label> result = new CommandResult<>();
+        CommandResult result = new CommandResult();
         TransactionManager trans = commandRequest.getTransactionHandler();
         if (!trans.executeTransaction(con -> {
             PreparedStatement ps = con.prepareStatement("INSERT INTO LABEL "

@@ -1,6 +1,6 @@
 package pt.isel.ls;
 
-import java.util.Iterator;
+import java.io.IOException;
 import java.util.Scanner;
 import pt.isel.ls.model.Router;
 import pt.isel.ls.model.commands.common.CommandRequest;
@@ -10,6 +10,7 @@ import pt.isel.ls.model.commands.common.CommandResult;
 import pt.isel.ls.model.commands.common.CommandHandler;
 import pt.isel.ls.model.commands.sql.TransactionManager;
 
+import pt.isel.ls.model.entities.Entity;
 import pt.isel.ls.model.paths.Path;
 import pt.isel.ls.model.paths.PathTemplate;
 
@@ -25,6 +26,7 @@ import pt.isel.ls.model.commands.PostBookingsInRoomCommand;
 import pt.isel.ls.model.commands.PostUsersCommand;
 import pt.isel.ls.model.commands.PostLabelsCommand;
 import pt.isel.ls.model.commands.ExitCommand;
+import pt.isel.ls.view.View;
 
 public class App {
     private static TransactionManager trans = new TransactionManager(System.getenv("postgresUrl"));
@@ -90,11 +92,15 @@ public class App {
     }
 
     private static void displayResult(CommandResult result) {
-        System.out.println(result.getTitle());
-        Iterator<String> itr = result.iterator();
-        if (itr != null) {
-            while (itr.hasNext()) {
-                System.out.println(" - " + itr.next());
+        for (Entity ent: result) {
+            View view = View.getInstance(ent);
+            if (view != null) {
+                try {
+                    view.displayText(System.out);
+                } catch (IOException e) {
+                    System.out.println("Failed to open output stream");
+                    return;
+                }
             }
         }
     }
