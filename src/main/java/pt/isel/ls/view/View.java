@@ -9,7 +9,7 @@ public abstract class View {
     protected Entity context;
 
     public static View getInstance(Entity ent) {
-        switch(ent.getEntityType()) {
+        switch (ent.getEntityType()) {
             case BOOKING:
                 return new BookingView(ent);
             case USER:

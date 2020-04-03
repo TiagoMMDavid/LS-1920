@@ -14,7 +14,7 @@ public class RoomView extends View {
 
     @Override
     public void displayText(OutputStream out) throws IOException {
-        Room room = (Room)context;
+        Room room = (Room) context;
         StringBuilder builder = new StringBuilder();
 
         appendId(room, builder);
@@ -34,7 +34,7 @@ public class RoomView extends View {
 
     public void appendName(Room room, StringBuilder builder) {
         String name = room.getName();
-        if(name != null) {
+        if (name != null) {
             builder.append("\nName: ");
             builder.append(name);
         }
@@ -42,7 +42,7 @@ public class RoomView extends View {
 
     public void appendDescription(Room room, StringBuilder builder) {
         String desc = room.getDescription();
-        if(desc != null) {
+        if (desc != null) {
             builder.append("\nDescription: ");
             builder.append(desc);
         }
@@ -50,7 +50,7 @@ public class RoomView extends View {
 
     public void appendLocation(Room room, StringBuilder builder) {
         String location = room.getLocation();
-        if(location != null) {
+        if (location != null) {
             builder.append("\nLocation: ");
             builder.append(location);
         }
@@ -58,7 +58,7 @@ public class RoomView extends View {
 
     public void appendCapacity(Room room, StringBuilder builder) {
         int capacity = room.getCapacity();
-        if(capacity > 0) {
+        if (capacity > 0) {
             builder.append("\nCapacity: ");
             builder.append(capacity);
         }

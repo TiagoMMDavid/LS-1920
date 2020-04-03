@@ -5,6 +5,7 @@ import pt.isel.ls.model.entities.Entity;
 import java.util.Iterator;
 import java.util.LinkedList;
 
+
 public class CommandResult implements Iterable<Entity> {
     private boolean success;
     private LinkedList<Entity> results = new LinkedList<>();

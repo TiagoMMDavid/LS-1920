@@ -31,7 +31,7 @@ public class GetBookingByRoomAndBookingId implements CommandHandler {
                         rs.getInt("uid"),
                         rs.getInt("rid"),
                         parseTime(rs.getString("begin_inst"), "yyyy-MM-dd HH:mm:ss"),
-                        parseTime(rs.getString("end_inst"),"yyyy-MM-dd HH:mm:ss" )
+                        parseTime(rs.getString("end_inst"),"yyyy-MM-dd HH:mm:ss")
                 ));
 
             }

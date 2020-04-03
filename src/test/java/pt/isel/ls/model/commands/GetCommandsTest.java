@@ -9,8 +9,14 @@ import pt.isel.ls.model.commands.common.Method;
 import pt.isel.ls.model.commands.common.CommandResult;
 import pt.isel.ls.model.commands.common.CommandHandler;
 import pt.isel.ls.model.commands.sql.TransactionManager;
+import pt.isel.ls.model.entities.Booking;
+import pt.isel.ls.model.entities.Label;
+import pt.isel.ls.model.entities.User;
+import pt.isel.ls.model.entities.Room;
+import pt.isel.ls.model.entities.Entity;
 import pt.isel.ls.model.paths.Path;
 import pt.isel.ls.model.paths.PathTemplate;
+import pt.isel.ls.utils.DateUtils;
 
 import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -21,6 +27,7 @@ import java.util.Iterator;
 
 public class GetCommandsTest {
     private static TransactionManager trans = new TransactionManager(System.getenv("postgresTestUrl"));
+    private String pattern = "yyyy-MM-dd HH:mm:ss";
 
     @BeforeClass
     public static void fillTables() throws Exception {
@@ -73,15 +80,16 @@ public class GetCommandsTest {
 
         CommandHandler handler = router.findRoute(Method.GET, cmd.getPath());
         CommandResult result = handler.execute(cmd);
-        Iterator<String> itr = result.iterator();
+        Iterator<Entity> itr = result.iterator();
 
         assertNotNull(result);
         assertTrue(result.isSuccess());
-        assertEquals("booking id (bid): 4", itr.next());
-        assertEquals("reservation by user id (uid): 0", itr.next());
-        assertEquals("room id (rid): 0", itr.next());
-        assertEquals("begin instant: 2016-06-22 19:10:10", itr.next());
-        assertEquals("end instant: 2016-06-22 22:10:10", itr.next());
+        Booking booking = (Booking) itr.next();
+        assertEquals(4, booking.getBid());
+        assertEquals(0, booking.getUid());
+        assertEquals(0, booking.getRid());
+        assertEquals(DateUtils.parseTime("2016-06-22 19:10:10", pattern), booking.getBeginInst());
+        assertEquals(DateUtils.parseTime("2016-06-22 22:10:10", pattern), booking.getEndInst());
     }
 
     @Test
@@ -92,14 +100,14 @@ public class GetCommandsTest {
 
         CommandHandler handler = router.findRoute(Method.GET, cmd.getPath());
         CommandResult result = handler.execute(cmd);
-        Iterator<String> itr = result.iterator();
+        Iterator<Entity> itr = result.iterator();
 
         assertNotNull(result);
         assertTrue(result.isSuccess());
-        assertEquals("booking id (bid): 0", itr.next());
-        assertEquals("booking id (bid): 1", itr.next());
-        assertEquals("booking id (bid): 3", itr.next());
-        assertEquals("booking id (bid): 4", itr.next());
+        assertEquals(0, ((Booking) itr.next()).getBid());
+        assertEquals(1, ((Booking) itr.next()).getBid());
+        assertEquals(3, ((Booking) itr.next()).getBid());
+        assertEquals(4, ((Booking) itr.next()).getBid());
     }
 
     @Test
@@ -110,13 +118,13 @@ public class GetCommandsTest {
 
         CommandHandler handler = router.findRoute(Method.GET, cmd.getPath());
         CommandResult result = handler.execute(cmd);
-        Iterator<String> itr = result.iterator();
+        Iterator<Entity> itr = result.iterator();
 
         assertNotNull(result);
         assertTrue(result.isSuccess());
-        assertEquals("Has Projector (lid: 0)", itr.next());
-        assertEquals("Has Food (lid: 1)", itr.next());
-        assertEquals("Has Board (lid: 2)", itr.next());
+        assertEquals(0, ((Label) itr.next()).getLid());
+        assertEquals(1, ((Label) itr.next()).getLid());
+        assertEquals(2, ((Label) itr.next()).getLid());
 
     }
 
@@ -128,12 +136,13 @@ public class GetCommandsTest {
 
         CommandHandler handler = router.findRoute(Method.GET, cmd.getPath());
         CommandResult result = handler.execute(cmd);
-        Iterator<String> itr = result.iterator();
+        Iterator<Entity> itr = result.iterator();
 
         assertNotNull(result);
         assertTrue(result.isSuccess());
-        assertEquals("room id (rid): 0", itr.next());
-        assertEquals("name: Meeting Room", itr.next());
+        Room room = (Room) itr.next();
+        assertEquals(0, room.getRid());
+        assertEquals("Meeting Room", room.getName());
     }
 
     @Test
@@ -144,12 +153,16 @@ public class GetCommandsTest {
 
         CommandHandler handler = router.findRoute(Method.GET, cmd.getPath());
         CommandResult result = handler.execute(cmd);
-        Iterator<String> itr = result.iterator();
+        Iterator<Entity> itr = result.iterator();
 
         assertNotNull(result);
         assertTrue(result.isSuccess());
-        assertEquals("Meeting Room (rid: 0)", itr.next());
-        assertEquals("Snack Room (rid: 1)", itr.next());
+        Room room1 = (Room) itr.next();
+        assertEquals(0, room1.getRid());
+        assertEquals("Meeting Room", room1.getName());
+        Room room2 = (Room) itr.next();
+        assertEquals(1, room2.getRid());
+        assertEquals("Snack Room", room2.getName());
     }
 
     @Test
@@ -160,11 +173,11 @@ public class GetCommandsTest {
 
         CommandHandler handler = router.findRoute(Method.GET, cmd.getPath());
         CommandResult result = handler.execute(cmd);
-        Iterator<String> itr = result.iterator();
+        Iterator<Entity> itr = result.iterator();
 
         assertNotNull(result);
         assertTrue(result.isSuccess());
-        assertEquals("room id (rid): 1", itr.next());
+        assertEquals(1, ((Room) itr.next()).getRid());
     }
 
     @Test
@@ -175,11 +188,12 @@ public class GetCommandsTest {
 
         CommandHandler handler = router.findRoute(Method.GET, cmd.getPath());
         CommandResult result = handler.execute(cmd);
-        Iterator<String> itr = result.iterator();
+        Iterator<Entity> itr = result.iterator();
 
         assertNotNull(result);
         assertTrue(result.isSuccess());
-        assertEquals("user id (uid): 0", itr.next());
-        assertEquals("name: John Frank", itr.next());
+        User user = (User) itr.next();
+        assertEquals(0, user.getUid());
+        assertEquals("John Frank", user.getName());
     }
 }

@@ -6,15 +6,15 @@ public class Booking implements Entity {
     private int bid;
     private int uid = -1;
     private int rid = -1;
-    private Date begin_inst;
-    private Date end_inst;
+    private Date beginInst;
+    private Date endInst;
 
-    public Booking(int bid, int uid, int rid, Date begin_inst, Date end_inst) {
+    public Booking(int bid, int uid, int rid, Date beginInst, Date endInst) {
         this.bid = bid;
         this.uid = uid;
         this.rid = rid;
-        this.begin_inst = begin_inst;
-        this.end_inst = end_inst;
+        this.beginInst = beginInst;
+        this.endInst = endInst;
     }
 
     public Booking(int bid) {
@@ -34,11 +34,11 @@ public class Booking implements Entity {
     }
 
     public Date getBeginInst() {
-        return begin_inst;
+        return beginInst;
     }
 
     public Date getEndInst() {
-        return end_inst;
+        return endInst;
     }
 
     @Override
