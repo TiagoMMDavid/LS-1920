@@ -30,7 +30,9 @@ public class GetBookingsByUserIdCommand implements CommandHandler {
 
             rs.close();
             ps.close();
-        })) {
+        }
+        )
+        ) {
             result.setSuccess(false);
             result.clearResults();
         }

@@ -3,7 +3,7 @@ package pt.isel.ls.model.commands.common;
 import java.util.Iterator;
 import java.util.LinkedList;
 
-public class CommandResult<T> implements Iterable<T>{
+public class CommandResult<T> implements Iterable<T> {
     private boolean success;
     private LinkedList<T> results = new LinkedList<>();
 

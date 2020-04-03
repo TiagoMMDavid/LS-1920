@@ -7,6 +7,13 @@ import java.util.TimeZone;
 
 public class DateUtils {
     public static Date parseTime(String date, String pattern) throws ParseException {
+        TimeZone tz = TimeZone.getDefault();
+        SimpleDateFormat formatDate = new SimpleDateFormat(pattern);
+        formatDate.setTimeZone(tz);
+        return formatDate.parse(date);
+    }
+
+    public static Date parseUniversalTime(String date, String pattern) throws ParseException {
         TimeZone tz = TimeZone.getTimeZone("UTC");
         SimpleDateFormat formatDate = new SimpleDateFormat(pattern);
         formatDate.setTimeZone(tz);

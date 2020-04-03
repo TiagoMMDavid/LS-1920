@@ -14,4 +14,16 @@ public class User {
     public User(int uid) {
         this.uid = uid;
     }
+
+    public int getUid() {
+        return uid;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getEmail() {
+        return email;
+    }
 }

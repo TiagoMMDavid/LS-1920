@@ -4,6 +4,7 @@ import pt.isel.ls.model.commands.common.CommandHandler;
 import pt.isel.ls.model.commands.common.CommandRequest;
 import pt.isel.ls.model.commands.common.CommandResult;
 import pt.isel.ls.model.commands.sql.TransactionManager;
+import pt.isel.ls.model.entities.Room;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,14 +21,11 @@ public class GetRoomsWithLabelCommand implements CommandHandler {
             int labelId = commandRequest.getPath().getInt("lid");
             ps.setInt(1, labelId);
             ResultSet rs = ps.executeQuery();
-            if (!rs.next()) {
-                result.addResult("No results found");
-            } else {
+            if (rs.next()) {
                 do {
-                    result.addResult("room id (rid): " + rs.getInt("rid"));
+                    result.addResult(new Room(rs.getInt("rid")));
                 } while (rs.next());
             }
-            result.setTitle("List of rooms that have label " + labelId);
             result.setSuccess(true);
 
             rs.close();

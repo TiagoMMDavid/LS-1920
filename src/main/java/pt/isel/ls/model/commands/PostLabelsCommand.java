@@ -30,7 +30,7 @@ public class PostLabelsCommand implements CommandHandler {
                 //Get lid
                 ResultSet rs = ps.getGeneratedKeys();
                 rs.next();
-                result.addResult(new Label(rs.getInt("lid")));
+                result.addResult(new Label(rs.getInt("lid"), label));
                 con.commit();
             } else {
                 throw new IllegalArgumentException("No arguments found / Invalid arguments");

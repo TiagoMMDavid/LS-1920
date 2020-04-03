@@ -90,7 +90,7 @@ public class App {
     }
 
     private static void displayResult(CommandResult result) {
-        System.out.println(result.getTitle());
+        //System.out.println(result.getTitle());
         Iterator<String> itr = result.iterator();
         if (itr != null) {
             while (itr.hasNext()) {

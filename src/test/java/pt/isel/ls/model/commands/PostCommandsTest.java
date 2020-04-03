@@ -10,10 +10,15 @@ import pt.isel.ls.model.commands.common.Parameters;
 import pt.isel.ls.model.commands.common.CommandResult;
 import pt.isel.ls.model.commands.common.CommandHandler;
 import pt.isel.ls.model.commands.sql.TransactionManager;
+import pt.isel.ls.model.entities.Booking;
+import pt.isel.ls.model.entities.Label;
+import pt.isel.ls.model.entities.Room;
+import pt.isel.ls.model.entities.User;
 import pt.isel.ls.model.paths.Path;
 import pt.isel.ls.model.paths.PathTemplate;
 
 import java.sql.PreparedStatement;
+import java.util.Iterator;
 
 import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -66,8 +71,10 @@ public class PostCommandsTest {
 
         assertNotNull(result);
         assertTrue(result.isSuccess());
-        assertEquals("Booking in room <0> added successfully", result.getTitle());
-        assertEquals("BID = 1", result.iterator().next());
+        Iterator<Booking> itr = result.iterator();
+        Booking booking = itr.next();
+        assertEquals(0, booking.getRid());
+        assertEquals(1, booking.getBid());
     }
 
     @Test
@@ -83,8 +90,9 @@ public class PostCommandsTest {
 
         assertNotNull(result);
         assertTrue(result.isSuccess());
-        assertEquals("Label <projector> added successfully", result.getTitle());
-        assertEquals("LID = 2", result.iterator().next());
+        Iterator<Label> itr = result.iterator();
+        Label label = itr.next();
+        assertEquals(2, label.getLid());
     }
 
     @Test
@@ -100,8 +108,9 @@ public class PostCommandsTest {
 
         assertNotNull(result);
         assertTrue(result.isSuccess());
-        assertEquals("Room <LS3> added successfully", result.getTitle());
-        assertEquals("RID = 1", result.iterator().next());
+        Iterator<Room> itr = result.iterator();
+        Room room = itr.next();
+        assertEquals(1, room.getRid());
     }
 
     @Test
@@ -117,7 +126,8 @@ public class PostCommandsTest {
 
         assertNotNull(result);
         assertTrue(result.isSuccess());
-        assertEquals("User <David> added successfully", result.getTitle());
-        assertEquals("UID = 1", result.iterator().next());
+        Iterator<User> itr = result.iterator();
+        User user = itr.next();
+        assertEquals(1, user.getUid());
     }
 }

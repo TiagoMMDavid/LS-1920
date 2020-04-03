@@ -6,15 +6,15 @@ public class Booking {
     private int bid;
     private int uid;
     private int rid;
-    private Date begin_inst;
-    private Date end_inst;
+    private Date beginInst;
+    private Date endInst;
 
-    public Booking(int bid, int uid, int rid, Date begin_inst, Date end_inst) {
+    public Booking(int bid, int uid, int rid, Date beginInst, Date endInst) {
         this.bid = bid;
         this.uid = uid;
         this.rid = rid;
-        this.begin_inst = begin_inst;
-        this.end_inst = end_inst;
+        this.beginInst = beginInst;
+        this.endInst = endInst;
     }
 
     public Booking(int bid) {
@@ -33,11 +33,11 @@ public class Booking {
         return rid;
     }
 
-    public Date getBegin_inst() {
-        return begin_inst;
+    public Date getBeginInst() {
+        return beginInst;
     }
 
-    public Date getEnd_inst() {
-        return end_inst;
+    public Date getEndInst() {
+        return endInst;
     }
 }
