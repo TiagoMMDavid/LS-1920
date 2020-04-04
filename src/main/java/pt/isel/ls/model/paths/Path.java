@@ -22,7 +22,8 @@ public class Path extends BasePath {
     }
 
     public int getInt(String varName) {
-        return Integer.parseInt(variables.get(varName));
+        String res = variables.get(varName);
+        return res == null ? -1 : Integer.parseInt(res);
     }
 
     public String getString(String varName) {

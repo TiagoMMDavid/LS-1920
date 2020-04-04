@@ -22,7 +22,7 @@ public class PostLabelsCommand implements CommandHandler {
                     Statement.RETURN_GENERATED_KEYS
             );
 
-            String label = commandRequest.getParams().getValue("name");
+            String label = commandRequest.getParams().getString("name");
             if (label != null) {
                 ps.setString(1, label);
                 int success = ps.executeUpdate();
@@ -31,7 +31,6 @@ public class PostLabelsCommand implements CommandHandler {
                 ResultSet rs = ps.getGeneratedKeys();
                 rs.next();
                 result.addResult(new Label(rs.getInt("lid"), label));
-                con.commit();
             } else {
                 throw new IllegalArgumentException("No arguments found / Invalid arguments");
             }

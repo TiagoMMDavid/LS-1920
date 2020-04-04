@@ -21,8 +21,8 @@ public class PostUsersCommand implements CommandHandler {
                     Statement.RETURN_GENERATED_KEYS
             );
 
-            String name = commandRequest.getParams().getValue("name");
-            String email = commandRequest.getParams().getValue("email");
+            String name = commandRequest.getParams().getString("name");
+            String email = commandRequest.getParams().getString("email");
             if (name != null && email != null) {
                 ps.setString(1, name);
                 ps.setString(2, email);
@@ -32,7 +32,6 @@ public class PostUsersCommand implements CommandHandler {
                 ResultSet rs = ps.getGeneratedKeys();
                 rs.next();
                 result.addResult(new User(rs.getInt("uid")));
-                con.commit();
             } else {
                 throw new IllegalArgumentException("No arguments found / Invalid arguments");
             }

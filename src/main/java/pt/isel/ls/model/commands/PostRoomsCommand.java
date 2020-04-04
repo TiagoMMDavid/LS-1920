@@ -26,20 +26,20 @@ public class PostRoomsCommand implements CommandHandler {
                             + "(name, description, location, capacity) Values(?,?,?,?)",
                             Statement.RETURN_GENERATED_KEYS
             );
-            String name = commandRequest.getParams().getValue("name");
-            String description = commandRequest.getParams().getValue("description");
-            String location = commandRequest.getParams().getValue("location");
-            String capacity = commandRequest.getParams().getValue("capacity");
+            String name = commandRequest.getParams().getString("name");
+            String description = commandRequest.getParams().getString("description");
+            String location = commandRequest.getParams().getString("location");
+            int capacity = commandRequest.getParams().getInt("capacity");
 
             if (name != null && location != null) {
                 ps.setString(1, name);
                 ps.setString(2, description);
                 ps.setString(3, location);
 
-                if (capacity == null) {
+                if (capacity == -1) {
                     ps.setNull(4, Types.INTEGER);
                 } else {
-                    ps.setInt(4, Integer.parseInt(capacity));
+                    ps.setInt(4, capacity);
                 }
 
                 final int success = ps.executeUpdate();
@@ -57,8 +57,6 @@ public class PostRoomsCommand implements CommandHandler {
                 }
 
                 result.setSuccess(success > 0);
-
-                con.commit();
             } else {
                 throw new IllegalArgumentException("No arguments found / Invalid arguments");
             }
