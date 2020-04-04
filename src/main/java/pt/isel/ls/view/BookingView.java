@@ -8,8 +8,8 @@ import java.io.OutputStream;
 import java.util.Date;
 
 public class BookingView extends View {
-    public BookingView(Entity obj) {
-        super(obj);
+    protected BookingView(Entity entity) {
+        super(entity);
     }
 
     @Override

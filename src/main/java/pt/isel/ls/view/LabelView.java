@@ -7,8 +7,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 public class LabelView extends View {
-    public LabelView(Entity obj) {
-        super(obj);
+    protected LabelView(Entity entity) {
+        super(entity);
     }
 
 

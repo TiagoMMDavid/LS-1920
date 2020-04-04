@@ -8,8 +8,8 @@ import java.io.OutputStream;
 
 public class RoomView extends View {
 
-    public RoomView(Entity obj) {
-        super(obj);
+    protected RoomView(Entity entity) {
+        super(entity);
     }
 
     @Override

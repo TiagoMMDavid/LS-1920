@@ -23,8 +23,8 @@ public abstract class View {
         }
     }
 
-    public View(Entity obj) {
-        context = obj;
+    protected View(Entity entity) {
+        context = entity;
     }
 
     public abstract void displayText(OutputStream out) throws IOException;

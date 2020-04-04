@@ -69,7 +69,7 @@ public class PostBookingsInRoomCommand implements CommandHandler {
     private boolean hasOverlaps(Date begin, Date end, int rid, Connection con) throws SQLException {
         PreparedStatement ps = con.prepareStatement("select rid, begin_inst, end_inst"
                 + " from booking"
-                + " where tsrange(?, ?, '()') && tsrange(begin_inst, end_inst, '()')"
+                + " where (?, ?) overlaps (begin_inst, end_inst)"
                 + " and ? = rid");
         ps.setTimestamp(1, new java.sql.Timestamp(begin.getTime()));
         ps.setTimestamp(2, new java.sql.Timestamp(end.getTime()));

@@ -8,8 +8,8 @@ import java.io.OutputStream;
 
 public class UserView extends View {
 
-    public UserView(Entity obj) {
-        super(obj);
+    protected UserView(Entity entity) {
+        super(entity);
     }
 
     @Override

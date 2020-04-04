@@ -81,7 +81,7 @@ public class App {
         CommandResult result = null;
         try {
             result = handler.execute(cmd);
-            if (result != null && result.isSuccess()) {
+            if (result != null) {
                 displayResult(result);
             }
         } catch (Exception e) {
@@ -92,14 +92,18 @@ public class App {
     }
 
     private static void displayResult(CommandResult result) {
-        for (Entity ent: result) {
-            View view = View.getInstance(ent);
-            if (view != null) {
-                try {
-                    view.displayText(System.out);
-                } catch (IOException e) {
-                    System.out.println("Failed to open output stream");
-                    return;
+        if (!result.isSuccess()) {
+            System.out.println("Error while executing command");
+        } else {
+            for (Entity ent: result) {
+                View view = View.getInstance(ent);
+                if (view != null) {
+                    try {
+                        view.displayText(System.out);
+                    } catch (IOException e) {
+                        System.out.println("Failed to open output stream");
+                        return;
+                    }
                 }
             }
         }
