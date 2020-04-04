@@ -88,8 +88,8 @@ public class GetCommandsTest {
         assertEquals(4, booking.getBid());
         assertEquals(0, booking.getUid());
         assertEquals(0, booking.getRid());
-        assertEquals(DateUtils.parseTime("2016-06-22 19:10:10", pattern), booking.getBeginInst());
-        assertEquals(DateUtils.parseTime("2016-06-22 22:10:10", pattern), booking.getEndInst());
+        assertEquals(DateUtils.parseTimeWithTimezone("2016-06-22 19:10:10", pattern), booking.getBeginInst());
+        assertEquals(DateUtils.parseTimeWithTimezone("2016-06-22 22:10:10", pattern), booking.getEndInst());
     }
 
     @Test

@@ -11,8 +11,8 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.Date;
 
+import static pt.isel.ls.utils.DateUtils.parseTimeWithTimezone;
 import static pt.isel.ls.utils.DateUtils.parseTime;
-import static pt.isel.ls.utils.DateUtils.parseUniversalTime;
 
 public class PostBookingsInRoomCommand implements CommandHandler {
     @Override
@@ -32,10 +32,10 @@ public class PostBookingsInRoomCommand implements CommandHandler {
                 ps.setInt(1, Integer.parseInt(uid));
                 ps.setInt(2, Integer.parseInt(rid));
 
-                //Calculate end time
-                Date beginDate = parseTime(begin, "yyyy-MM-dd HH:mm");
-                //Parsed Universal time because the duration is independent of Timezones
-                Date durationDate = parseUniversalTime(duration, "HH:mm");
+                //Get beginDate and calculate end time
+                Date beginDate = parseTimeWithTimezone(begin, "yyyy-MM-dd HH:mm");
+                //Parsed time without timezone because the duration is independent of Timezones
+                Date durationDate = parseTime(duration, "HH:mm");
                 Date endDate = new Date(beginDate.getTime() + durationDate.getTime());
                 ps.setTimestamp(3, new java.sql.Timestamp(beginDate.getTime()));
                 ps.setTimestamp(4, new java.sql.Timestamp(endDate.getTime()));

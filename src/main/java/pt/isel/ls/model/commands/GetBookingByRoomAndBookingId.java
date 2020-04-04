@@ -9,7 +9,7 @@ import pt.isel.ls.model.entities.Booking;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-import static pt.isel.ls.utils.DateUtils.parseTime;
+import static pt.isel.ls.utils.DateUtils.parseTimeWithTimezone;
 
 public class GetBookingByRoomAndBookingId implements CommandHandler {
     @Override
@@ -30,8 +30,8 @@ public class GetBookingByRoomAndBookingId implements CommandHandler {
                         rs.getInt("bid"),
                         rs.getInt("uid"),
                         rs.getInt("rid"),
-                        parseTime(rs.getString("begin_inst"), "yyyy-MM-dd HH:mm:ss"),
-                        parseTime(rs.getString("end_inst"),"yyyy-MM-dd HH:mm:ss")
+                        parseTimeWithTimezone(rs.getString("begin_inst"), "yyyy-MM-dd HH:mm:ss"),
+                        parseTimeWithTimezone(rs.getString("end_inst"),"yyyy-MM-dd HH:mm:ss")
                 ));
 
             }
