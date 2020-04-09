@@ -65,7 +65,7 @@ public class PostCommandsTest {
         router.addRoute(Method.POST, new PathTemplate("/rooms/{rid}/bookings"), new PostBookingsInRoomCommand());
         CommandRequest cmd = new CommandRequest(new Path("/rooms/0/bookings"),
                 new Parameters("begin=2020-12-20+10:20&duration=00:10&uid=0"),
-                trans);
+                trans, null);
 
         CommandHandler handler = router.findRoute(Method.POST, cmd.getPath());
         CommandResult result = handler.execute(cmd);
@@ -83,7 +83,7 @@ public class PostCommandsTest {
         router.addRoute(Method.POST, new PathTemplate("/labels"), new PostLabelsCommand());
         CommandRequest cmd = new CommandRequest(new Path("/labels"),
                 new Parameters("name=projector"),
-                trans);
+                trans, null);
 
         CommandHandler handler = router.findRoute(Method.POST, cmd.getPath());
         CommandResult result = handler.execute(cmd);
@@ -101,7 +101,7 @@ public class PostCommandsTest {
         router.addRoute(Method.POST, new PathTemplate("/rooms"), new PostRoomsCommand());
         CommandRequest cmd = new CommandRequest(new Path("/rooms"),
                 new Parameters("name=LS3&location=Building+F+floor+-1&label=monitors&label=windows"),
-                trans);
+                trans, null);
 
         CommandHandler handler = router.findRoute(Method.POST, cmd.getPath());
         CommandResult result = handler.execute(cmd);
@@ -119,7 +119,7 @@ public class PostCommandsTest {
         router.addRoute(Method.POST, new PathTemplate("/users"), new PostUsersCommand());
         CommandRequest cmd = new CommandRequest(new Path("/users"),
                 new Parameters("name=David&email=davidp@email.org"),
-                trans);
+                trans, null);
 
         CommandHandler handler = router.findRoute(Method.POST, cmd.getPath());
         CommandResult result = handler.execute(cmd);

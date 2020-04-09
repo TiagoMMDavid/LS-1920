@@ -14,7 +14,7 @@ public class UserView extends View {
 
     @Override
     public void displayText(OutputStream out) throws IOException {
-        User user = (User) context;
+        User user = (User) entity;
         StringBuilder builder = new StringBuilder();
 
         appendId(user, builder);

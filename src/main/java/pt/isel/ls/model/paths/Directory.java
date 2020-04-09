@@ -20,4 +20,9 @@ class Directory {
     public boolean isVariable() {
         return isVariable;
     }
+
+    @Override
+    public String toString() {
+        return name;
+    }
 }

@@ -14,7 +14,7 @@ public class RoomView extends View {
 
     @Override
     public void displayText(OutputStream out) throws IOException {
-        Room room = (Room) context;
+        Room room = (Room) entity;
         StringBuilder builder = new StringBuilder();
 
         appendId(room, builder);

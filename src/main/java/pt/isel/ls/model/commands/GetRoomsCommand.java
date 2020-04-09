@@ -33,4 +33,9 @@ public class GetRoomsCommand implements CommandHandler {
         }
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "returns a list with all existing rooms";
+    }
 }

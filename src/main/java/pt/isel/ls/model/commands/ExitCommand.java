@@ -9,4 +9,9 @@ public class ExitCommand implements CommandHandler {
     public CommandResult execute(CommandRequest commandRequest) {
         return null;
     }
+
+    @Override
+    public String toString() {
+        return "terminates the application";
+    }
 }

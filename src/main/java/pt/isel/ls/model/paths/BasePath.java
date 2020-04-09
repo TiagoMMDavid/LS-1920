@@ -9,6 +9,7 @@ abstract class BasePath {
      * A path is composed of a List of Directories, which store the name, and whether or not it is a variable.
      */
     protected LinkedList<Directory> path;
+    protected String pathString;
 
     protected BasePath(String path) {
         this.path = new LinkedList<>();
@@ -19,6 +20,7 @@ abstract class BasePath {
      * Splits the string and parses it accordingly, adding each valid string to the list of Directories.
      */
     protected void parsePath(String path) throws IllegalArgumentException {
+        StringBuilder pathStringBuilder = new StringBuilder();
         if (!isValid(path)) {
             throw new IllegalArgumentException("Wrong template format");
         }
@@ -33,13 +35,23 @@ abstract class BasePath {
                     throw new IllegalArgumentException("Wrong format");
                 }
                 addDirectory(str);
+                pathStringBuilder.append("/");
+                pathStringBuilder.append(str);
             }
+        } else {
+            pathStringBuilder.append("/");
         }
+        pathString = pathStringBuilder.toString();
     }
 
     protected abstract void addDirectory(String dir);
 
     protected boolean isValid(String path) {
         return path != null && !path.isEmpty() && path.charAt(0) == '/';
+    }
+
+    @Override
+    public String toString() {
+        return pathString;
     }
 }

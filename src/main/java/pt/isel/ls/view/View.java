@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 public abstract class View {
-    protected Entity context;
+    protected Entity entity;
 
     public static View getInstance(Entity ent) {
         switch (ent.getEntityType()) {
@@ -18,13 +18,17 @@ public abstract class View {
                 return new LabelView(ent);
             case ROOM:
                 return new RoomView(ent);
+            case COMMAND:
+                return new CommandView(ent);
+            case TIME:
+                return new TimeView(ent);
             default:
                 return null;
         }
     }
 
     protected View(Entity entity) {
-        context = entity;
+        this.entity = entity;
     }
 
     public abstract void displayText(OutputStream out) throws IOException;

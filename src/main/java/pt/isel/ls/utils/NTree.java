@@ -7,8 +7,10 @@ import pt.isel.ls.model.paths.PathTemplate;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
-public class NTree {
+public class NTree implements Iterable<Object> {
 
     static class HandlerNode {
         private PathTemplate template;
@@ -30,6 +32,11 @@ public class NTree {
 
         public CommandHandler getCmdHandler() {
             return cmdHandler;
+        }
+
+        @Override
+        public String toString() {
+            return template.toString() + " - " + cmdHandler.toString();
         }
     }
 
@@ -75,5 +82,47 @@ public class NTree {
     public CommandHandler getHandlerAndApplyTemplate(Method method, Path path) {
         MethodNode node = getMethodNode(method);
         return node == null ? null : node.getHandlerAndApplyTemplate(path);
+    }
+
+    @Override
+    public Iterator<Object> iterator() {
+        return new Iterator<>() {
+
+            Iterator<Method> method = methods.keySet().iterator();
+            Method currMethod = method.next();
+
+            Iterator<HandlerNode> handlers = methods.get(currMethod).cmdhandlers.iterator();
+
+            Pair<Method,HandlerNode> curr = null;
+
+            @Override
+            public boolean hasNext() {
+                if (curr != null) {
+                    return true;
+                }
+
+                while (!handlers.hasNext() && method.hasNext()) {
+                    currMethod = method.next();
+                    handlers = methods.get(currMethod).cmdhandlers.iterator();
+                }
+
+                if (handlers.hasNext()) {
+                    HandlerNode handler = handlers.next();
+                    curr = new Pair<>(currMethod, handler);
+                }
+
+                return curr != null;
+            }
+
+            @Override
+            public Pair<Method,HandlerNode> next() {
+                if (!hasNext()) {
+                    throw new NoSuchElementException();
+                }
+                Pair<Method,HandlerNode> aux = curr;
+                curr = null;
+                return aux;
+            }
+        };
     }
 }

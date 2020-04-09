@@ -45,4 +45,9 @@ public class GetBookingByRoomAndBookingId implements CommandHandler {
         }
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "returns the detailed information for the bid booking";
+    }
 }

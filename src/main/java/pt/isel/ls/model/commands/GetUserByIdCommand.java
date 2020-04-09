@@ -38,4 +38,9 @@ public class GetUserByIdCommand implements CommandHandler {
         }
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "returns the detailed information for the uid user";
+    }
 }

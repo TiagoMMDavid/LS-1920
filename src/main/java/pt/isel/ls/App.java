@@ -3,29 +3,34 @@ package pt.isel.ls;
 import java.io.IOException;
 import java.util.Scanner;
 import pt.isel.ls.model.Router;
+import pt.isel.ls.model.commands.GetBookingByRoomAndBookingId;
+import pt.isel.ls.model.commands.GetRoomByIdCommand;
+import pt.isel.ls.model.commands.GetRoomsCommand;
+import pt.isel.ls.model.commands.GetUserByIdCommand;
+import pt.isel.ls.model.commands.GetBookingsByUserIdCommand;
+import pt.isel.ls.model.commands.GetLabelsCommand;
+import pt.isel.ls.model.commands.GetRoomsWithLabelCommand;
+import pt.isel.ls.model.commands.GetTimeCommand;
+
+import pt.isel.ls.model.commands.PostRoomsCommand;
+import pt.isel.ls.model.commands.PostBookingsInRoomCommand;
+import pt.isel.ls.model.commands.PostUsersCommand;
+import pt.isel.ls.model.commands.PostLabelsCommand;
+import pt.isel.ls.model.commands.ExitCommand;
+
+import pt.isel.ls.model.commands.OptionCommand;
+
+import pt.isel.ls.model.commands.common.CommandHandler;
 import pt.isel.ls.model.commands.common.CommandRequest;
 import pt.isel.ls.model.commands.common.Method;
 import pt.isel.ls.model.commands.common.Parameters;
 import pt.isel.ls.model.commands.common.CommandResult;
-import pt.isel.ls.model.commands.common.CommandHandler;
 import pt.isel.ls.model.commands.sql.TransactionManager;
 
 import pt.isel.ls.model.entities.Entity;
 import pt.isel.ls.model.paths.Path;
 import pt.isel.ls.model.paths.PathTemplate;
 
-import pt.isel.ls.model.commands.GetRoomsCommand;
-import pt.isel.ls.model.commands.GetRoomByIdCommand;
-import pt.isel.ls.model.commands.GetBookingByRoomAndBookingId;
-import pt.isel.ls.model.commands.GetUserByIdCommand;
-import pt.isel.ls.model.commands.GetBookingsByUserIdCommand;
-import pt.isel.ls.model.commands.GetLabelsCommand;
-import pt.isel.ls.model.commands.GetRoomsWithLabelCommand;
-import pt.isel.ls.model.commands.PostRoomsCommand;
-import pt.isel.ls.model.commands.PostBookingsInRoomCommand;
-import pt.isel.ls.model.commands.PostUsersCommand;
-import pt.isel.ls.model.commands.PostLabelsCommand;
-import pt.isel.ls.model.commands.ExitCommand;
 import pt.isel.ls.view.View;
 
 public class App {
@@ -68,10 +73,12 @@ public class App {
         if (commands.length == 3) {
             cmd = new CommandRequest(new Path(commands[1]),
                     new Parameters(commands[2]),
-                    trans);
+                    trans,
+                    router.getCommands());
         } else {
             cmd = new CommandRequest(new Path(commands[1]),
-                    trans);
+                    trans,
+                    router.getCommands());
         }
         CommandHandler handler = router.findRoute(method, cmd.getPath());
         if (handler == null) {
@@ -123,6 +130,7 @@ public class App {
         router.addRoute(Method.GET, new PathTemplate("/users/{uid}/bookings"), new GetBookingsByUserIdCommand());
         router.addRoute(Method.GET, labelsTemplate, new GetLabelsCommand());
         router.addRoute(Method.GET, new PathTemplate("/labels/{lid}/rooms"), new GetRoomsWithLabelCommand());
+        router.addRoute(Method.GET, new PathTemplate("/time"), new GetTimeCommand());
 
         //POST commands
         router.addRoute(Method.POST, roomsTemplate, new PostRoomsCommand());
@@ -132,5 +140,8 @@ public class App {
 
         //EXIT command
         router.addRoute(Method.EXIT, new PathTemplate("/"), new ExitCommand());
+
+        // OPTION command
+        router.addRoute(Method.OPTION, new PathTemplate("/"), new OptionCommand());
     }
 }

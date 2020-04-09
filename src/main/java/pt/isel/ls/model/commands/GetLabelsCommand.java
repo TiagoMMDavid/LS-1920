@@ -33,4 +33,9 @@ public class GetLabelsCommand implements CommandHandler {
         }
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "returns a list with all the labels";
+    }
 }

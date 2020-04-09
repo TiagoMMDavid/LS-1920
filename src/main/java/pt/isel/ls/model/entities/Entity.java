@@ -6,7 +6,9 @@ public interface Entity {
         BOOKING,
         LABEL,
         ROOM,
-        USER
+        USER,
+        COMMAND,
+        TIME
     }
 
     EntityType getEntityType();

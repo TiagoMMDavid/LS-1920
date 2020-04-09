@@ -14,6 +14,7 @@ import pt.isel.ls.model.entities.Label;
 import pt.isel.ls.model.entities.User;
 import pt.isel.ls.model.entities.Room;
 import pt.isel.ls.model.entities.Entity;
+import pt.isel.ls.model.entities.Time;
 import pt.isel.ls.model.paths.Path;
 import pt.isel.ls.model.paths.PathTemplate;
 import pt.isel.ls.utils.DateUtils;
@@ -23,6 +24,8 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
 import java.sql.PreparedStatement;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Iterator;
 
 public class GetCommandsTest {
@@ -76,7 +79,7 @@ public class GetCommandsTest {
         Router router = new Router();
         router.addRoute(Method.GET, new PathTemplate("/rooms/{rid}/bookings/{bid}"),
                 new GetBookingByRoomAndBookingId());
-        CommandRequest cmd = new CommandRequest(new Path("/rooms/0/bookings/4"), trans);
+        CommandRequest cmd = new CommandRequest(new Path("/rooms/0/bookings/4"), trans, null);
 
         CommandHandler handler = router.findRoute(Method.GET, cmd.getPath());
         CommandResult result = handler.execute(cmd);
@@ -96,7 +99,7 @@ public class GetCommandsTest {
     public void getBookingsByUserIdTest() throws Exception {
         Router router = new Router();
         router.addRoute(Method.GET, new PathTemplate("/users/{uid}/bookings"), new GetBookingsByUserIdCommand());
-        CommandRequest cmd = new CommandRequest(new Path("/users/0/bookings"), trans);
+        CommandRequest cmd = new CommandRequest(new Path("/users/0/bookings"), trans, null);
 
         CommandHandler handler = router.findRoute(Method.GET, cmd.getPath());
         CommandResult result = handler.execute(cmd);
@@ -114,7 +117,7 @@ public class GetCommandsTest {
     public void getLabelsTest() throws Exception {
         Router router = new Router();
         router.addRoute(Method.GET, new PathTemplate("/labels"), new GetLabelsCommand());
-        CommandRequest cmd = new CommandRequest(new Path("/labels"), trans);
+        CommandRequest cmd = new CommandRequest(new Path("/labels"), trans, null);
 
         CommandHandler handler = router.findRoute(Method.GET, cmd.getPath());
         CommandResult result = handler.execute(cmd);
@@ -132,7 +135,7 @@ public class GetCommandsTest {
     public void getRoomsByIdTest() throws Exception {
         Router router = new Router();
         router.addRoute(Method.GET, new PathTemplate("/rooms/{rid}"), new GetRoomByIdCommand());
-        CommandRequest cmd = new CommandRequest(new Path("/rooms/0"), trans);
+        CommandRequest cmd = new CommandRequest(new Path("/rooms/0"), trans, null);
 
         CommandHandler handler = router.findRoute(Method.GET, cmd.getPath());
         CommandResult result = handler.execute(cmd);
@@ -149,7 +152,7 @@ public class GetCommandsTest {
     public void getRoomsTest() throws Exception {
         Router router = new Router();
         router.addRoute(Method.GET, new PathTemplate("/rooms"), new GetRoomsCommand());
-        CommandRequest cmd = new CommandRequest(new Path("/rooms"), trans);
+        CommandRequest cmd = new CommandRequest(new Path("/rooms"), trans, null);
 
         CommandHandler handler = router.findRoute(Method.GET, cmd.getPath());
         CommandResult result = handler.execute(cmd);
@@ -169,7 +172,7 @@ public class GetCommandsTest {
     public void getRoomsWithLabelTest() throws Exception {
         Router router = new Router();
         router.addRoute(Method.GET, new PathTemplate("/labels/{lid}/rooms"), new GetRoomsWithLabelCommand());
-        CommandRequest cmd = new CommandRequest(new Path("/labels/1/rooms"), trans);
+        CommandRequest cmd = new CommandRequest(new Path("/labels/1/rooms"), trans, null);
 
         CommandHandler handler = router.findRoute(Method.GET, cmd.getPath());
         CommandResult result = handler.execute(cmd);
@@ -184,7 +187,7 @@ public class GetCommandsTest {
     public void getUsersByIdTest() throws Exception {
         Router router = new Router();
         router.addRoute(Method.GET, new PathTemplate("/users/{uid}"), new GetUserByIdCommand());
-        CommandRequest cmd = new CommandRequest(new Path("/users/0"), trans);
+        CommandRequest cmd = new CommandRequest(new Path("/users/0"), trans, null);
 
         CommandHandler handler = router.findRoute(Method.GET, cmd.getPath());
         CommandResult result = handler.execute(cmd);
@@ -195,5 +198,21 @@ public class GetCommandsTest {
         User user = (User) itr.next();
         assertEquals(0, user.getUid());
         assertEquals("John Frank", user.getName());
+    }
+
+    @Test
+    public void getTimeTest() throws Exception {
+        Router router = new Router();
+        router.addRoute(Method.GET, new PathTemplate("/time"), new GetTimeCommand());
+        CommandRequest cmd = new CommandRequest(new Path("/time"), trans, null);
+        CommandHandler handler = router.findRoute(Method.GET, cmd.getPath());
+
+        CommandResult res = handler.execute(cmd);
+        Date expected = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        assertTrue(res.isSuccess());
+        Time actual = (Time) res.iterator().next();
+
+        assertEquals(formatter.format(expected.getTime()), formatter.format(actual.getTime()));
     }
 }

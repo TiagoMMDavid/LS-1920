@@ -40,4 +40,9 @@ public class GetRoomByIdCommand implements CommandHandler {
         }
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "returns the detailed information for the room identified by rid";
+    }
 }

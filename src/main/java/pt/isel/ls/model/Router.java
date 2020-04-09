@@ -6,6 +6,8 @@ import pt.isel.ls.model.paths.Path;
 import pt.isel.ls.model.paths.PathTemplate;
 import pt.isel.ls.utils.NTree;
 
+import java.util.Iterator;
+
 public class Router {
     /**
      * A NTree is used to store the routes.
@@ -21,5 +23,9 @@ public class Router {
     //Searches the NTree for a valid route
     public CommandHandler findRoute(Method method, Path path) {
         return routes.getHandlerAndApplyTemplate(method, path);
+    }
+
+    public Iterator<Object> getCommands() {
+        return routes.iterator();
     }
 }

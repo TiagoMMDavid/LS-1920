@@ -14,7 +14,7 @@ public class BookingView extends View {
 
     @Override
     public void displayText(OutputStream out) throws IOException {
-        Booking booking = (Booking) context;
+        Booking booking = (Booking) entity;
         StringBuilder builder = new StringBuilder();
 
         appendBid(booking, builder);

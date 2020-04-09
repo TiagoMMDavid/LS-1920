@@ -14,7 +14,7 @@ public class LabelView extends View {
 
     @Override
     public void displayText(OutputStream out) throws IOException {
-        Label label = (Label) context;
+        Label label = (Label) entity;
         StringBuilder builder = new StringBuilder();
 
         appendId(label, builder);

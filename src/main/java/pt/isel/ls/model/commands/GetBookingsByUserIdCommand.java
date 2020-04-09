@@ -38,4 +38,9 @@ public class GetBookingsByUserIdCommand implements CommandHandler {
         }
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "returns the list of all bookings owned by the uid user";
+    }
 }

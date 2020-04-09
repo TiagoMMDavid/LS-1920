@@ -43,4 +43,11 @@ public class PostUsersCommand implements CommandHandler {
         }
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "creates a new user, given the following parameters\n"
+                + "• name - the user's name.\n"
+                + "• email - the user's email.";
+    }
 }
