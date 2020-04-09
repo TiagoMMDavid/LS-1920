@@ -45,13 +45,13 @@ public class Parameters {
         return params.get(key);
     }
 
-    public String getString(String key) {
-        LinkedList<String> curr = params.get(key);
+    public String getString(String varName) {
+        LinkedList<String> curr = params.get(varName);
         return curr == null ? null : curr.getFirst();
     }
 
-    public int getInt(String key) {
-        String res = getString(key);
+    public int getInt(String varName) {
+        String res = getString(varName);
         return res == null ? -1 : Integer.parseInt(res);
     }
 }

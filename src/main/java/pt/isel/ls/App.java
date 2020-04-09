@@ -3,23 +3,23 @@ package pt.isel.ls;
 import java.io.IOException;
 import java.util.Scanner;
 import pt.isel.ls.model.Router;
+
+import pt.isel.ls.model.commands.DeleteBookingInRoom;
+import pt.isel.ls.model.commands.ExitCommand;
 import pt.isel.ls.model.commands.GetBookingByRoomAndBookingId;
-import pt.isel.ls.model.commands.GetRoomByIdCommand;
-import pt.isel.ls.model.commands.GetRoomsCommand;
-import pt.isel.ls.model.commands.GetUserByIdCommand;
 import pt.isel.ls.model.commands.GetBookingsByUserIdCommand;
 import pt.isel.ls.model.commands.GetLabelsCommand;
+import pt.isel.ls.model.commands.GetRoomByIdCommand;
+import pt.isel.ls.model.commands.GetRoomsCommand;
 import pt.isel.ls.model.commands.GetRoomsWithLabelCommand;
 import pt.isel.ls.model.commands.GetTimeCommand;
-
-import pt.isel.ls.model.commands.PostRoomsCommand;
-import pt.isel.ls.model.commands.PostBookingsInRoomCommand;
-import pt.isel.ls.model.commands.PostUsersCommand;
-import pt.isel.ls.model.commands.PostLabelsCommand;
-import pt.isel.ls.model.commands.ExitCommand;
-
+import pt.isel.ls.model.commands.GetUserByIdCommand;
 import pt.isel.ls.model.commands.OptionCommand;
-
+import pt.isel.ls.model.commands.PostBookingsInRoomCommand;
+import pt.isel.ls.model.commands.PostLabelsCommand;
+import pt.isel.ls.model.commands.PostRoomsCommand;
+import pt.isel.ls.model.commands.PostUsersCommand;
+import pt.isel.ls.model.commands.PutBookingInRoom;
 import pt.isel.ls.model.commands.common.CommandHandler;
 import pt.isel.ls.model.commands.common.CommandRequest;
 import pt.isel.ls.model.commands.common.Method;
@@ -55,7 +55,7 @@ public class App {
             String[] commands = in.nextLine().split(" ");
 
             if (!isCommandValid(commands)) {
-                System.out.println("> Wrong format.");
+                System.out.println("Wrong format.");
             } else {
                 running = executeCommand(commands);
             }
@@ -82,6 +82,7 @@ public class App {
         }
         CommandHandler handler = router.findRoute(method, cmd.getPath());
         if (handler == null) {
+            System.out.println("Command not found");
             return true;
         }
 
@@ -137,6 +138,13 @@ public class App {
         router.addRoute(Method.POST, new PathTemplate("/rooms/{rid}/bookings"), new PostBookingsInRoomCommand());
         router.addRoute(Method.POST, new PathTemplate("/users"), new PostUsersCommand());
         router.addRoute(Method.POST, labelsTemplate, new PostLabelsCommand());
+
+        //DELETE command
+        router.addRoute(Method.DELETE, new PathTemplate("/rooms/{rid}/bookings/{bid}"), new DeleteBookingInRoom());
+
+        //PUT command
+        router.addRoute(Method.PUT, new PathTemplate("/rooms/{rid}/bookings/{bid}"),
+                new PutBookingInRoom());
 
         //EXIT command
         router.addRoute(Method.EXIT, new PathTemplate("/"), new ExitCommand());
