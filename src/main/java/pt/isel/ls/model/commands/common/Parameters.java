@@ -50,8 +50,8 @@ public class Parameters {
         return curr == null ? null : curr.getFirst();
     }
 
-    public int getInt(String varName) {
+    public Integer getInt(String varName) {
         String res = getString(varName);
-        return res == null ? -1 : Integer.parseInt(res);
+        return res == null ? null : Integer.parseInt(res);
     }
 }

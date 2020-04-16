@@ -8,6 +8,7 @@ import pt.isel.ls.model.commands.common.CommandRequest;
 import pt.isel.ls.model.commands.common.Method;
 import pt.isel.ls.model.commands.common.CommandResult;
 import pt.isel.ls.model.commands.common.CommandHandler;
+import pt.isel.ls.model.commands.common.Parameters;
 import pt.isel.ls.model.commands.sql.TransactionManager;
 import pt.isel.ls.model.entities.Booking;
 import pt.isel.ls.model.entities.Label;
@@ -30,7 +31,7 @@ import java.util.Iterator;
 
 public class GetCommandsTest {
     private static TransactionManager trans = new TransactionManager(System.getenv("postgresTestUrl"));
-    private String pattern = "yyyy-MM-dd HH:mm:ss";
+    private String pattern = "yyyy-MM-dd HH:mm";
 
     @BeforeClass
     public static void fillTables() throws Exception {
@@ -49,10 +50,10 @@ public class GetCommandsTest {
                             + "insert into ROOMLABEL values(0, 0);"
                             + "insert into ROOMLABEL values(1, 1);"
                             + "insert into ROOMLABEL values(2, 0);"
-                            + "INSERT INTO BOOKING VALUES (0, 0, 0, '2016-06-22 19:10:10', '2017-06-22 19:20:10');"
-                            + "INSERT INTO BOOKING VALUES (1, 0, 0, '2016-06-22 19:10:10', '2017-06-22 19:10:10');"
-                            + "INSERT INTO BOOKING VALUES (3, 0, 0, '2016-06-22 19:10', '2017-06-22 19:30');"
-                            + "INSERT INTO BOOKING VALUES (4, 0, 0, '2016-06-22 19:10:10', '2016-06-22 22:10:10');");
+                            + "INSERT INTO BOOKING VALUES (0, 0, 1, '2016-06-22 19:40', '2016-06-22 19:50');"
+                            + "INSERT INTO BOOKING VALUES (1, 0, 1, '2016-06-22 19:30', '2016-06-22 19:40');"
+                            + "INSERT INTO BOOKING VALUES (3, 0, 1, '2016-06-22 19:20', '2016-06-22 19:30');"
+                            + "INSERT INTO BOOKING VALUES (4, 0, 0, '2016-06-22 19:10', '2016-06-22 19:20');");
             ps.execute();
         });
 
@@ -91,8 +92,8 @@ public class GetCommandsTest {
         assertEquals(4, booking.getBid());
         assertEquals(0, booking.getUid());
         assertEquals(0, booking.getRid());
-        assertEquals(DateUtils.parseTimeWithTimezone("2016-06-22 19:10:10", pattern), booking.getBeginInst());
-        assertEquals(DateUtils.parseTimeWithTimezone("2016-06-22 22:10:10", pattern), booking.getEndInst());
+        assertEquals(DateUtils.parseTimeWithTimezone("2016-06-22 19:10", pattern), booking.getBeginInst());
+        assertEquals(DateUtils.parseTimeWithTimezone("2016-06-22 19:20", pattern), booking.getEndInst());
     }
 
     @Test
@@ -166,6 +167,60 @@ public class GetCommandsTest {
         Room room2 = (Room) itr.next();
         assertEquals(1, room2.getRid());
         assertEquals("Snack Room", room2.getName());
+    }
+
+    @Test
+    public void getRoomsWithLabelParametersTest() throws Exception {
+        Router router = new Router();
+        router.addRoute(Method.GET, new PathTemplate("/rooms"), new GetRoomsCommand());
+        CommandRequest cmd = new CommandRequest(new Path("/rooms"),
+                new Parameters("label=Has+Board&label=Has+Projector"), trans, null);
+
+        CommandHandler handler = router.findRoute(Method.GET, cmd.getPath());
+        CommandResult result = handler.execute(cmd);
+        Iterator<Entity> itr = result.iterator();
+
+        assertNotNull(result);
+        assertTrue(result.isSuccess());
+        Room room1 = (Room) itr.next();
+        assertEquals(0, room1.getRid());
+        assertEquals("Meeting Room", room1.getName());
+    }
+
+    @Test
+    public void getRoomsWithCapacityParametersTest() throws Exception {
+        Router router = new Router();
+        router.addRoute(Method.GET, new PathTemplate("/rooms"), new GetRoomsCommand());
+        CommandRequest cmd = new CommandRequest(new Path("/rooms"),
+                new Parameters("capacity=10"), trans, null);
+
+        CommandHandler handler = router.findRoute(Method.GET, cmd.getPath());
+        CommandResult result = handler.execute(cmd);
+        Iterator<Entity> itr = result.iterator();
+
+        assertNotNull(result);
+        assertTrue(result.isSuccess());
+        Room room1 = (Room) itr.next();
+        assertEquals(0, room1.getRid());
+        assertEquals("Meeting Room", room1.getName());
+    }
+
+    @Test
+    public void getAvailableRoomsInDurationTest() throws Exception {
+        Router router = new Router();
+        router.addRoute(Method.GET, new PathTemplate("/rooms"), new GetRoomsCommand());
+        CommandRequest cmd = new CommandRequest(new Path("/rooms"),
+                new Parameters("begin=2016-06-22+19:20&duration=00:30"), trans, null);
+
+        CommandHandler handler = router.findRoute(Method.GET, cmd.getPath());
+        CommandResult result = handler.execute(cmd);
+        Iterator<Entity> itr = result.iterator();
+
+        assertNotNull(result);
+        assertTrue(result.isSuccess());
+        Room room = (Room) itr.next();
+        assertEquals(0, room.getRid());
+        assertEquals("Meeting Room", room.getName());
     }
 
     @Test

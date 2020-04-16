@@ -13,8 +13,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Types;
 
-import java.util.Iterator;
 import java.util.LinkedList;
+
+import static pt.isel.ls.model.commands.helpers.LabelsHelper.getLids;
 
 public class PostRoomsCommand implements CommandHandler {
     @Override
@@ -29,14 +30,14 @@ public class PostRoomsCommand implements CommandHandler {
             String name = commandRequest.getParams().getString("name");
             String description = commandRequest.getParams().getString("description");
             String location = commandRequest.getParams().getString("location");
-            int capacity = commandRequest.getParams().getInt("capacity");
+            Integer capacity = commandRequest.getParams().getInt("capacity");
 
             if (name != null && location != null) {
                 ps.setString(1, name);
                 ps.setString(2, description);
                 ps.setString(3, location);
 
-                if (capacity == -1) {
+                if (capacity == null) {
                     ps.setNull(4, Types.INTEGER);
                 } else {
                     ps.setInt(4, capacity);
@@ -67,34 +68,6 @@ public class PostRoomsCommand implements CommandHandler {
             result.clearResults();
         }
         return result;
-    }
-
-    private LinkedList<Integer> getLids(Connection con, Iterable<String> labels) throws SQLException {
-        StringBuilder builder = new StringBuilder("SELECT lid FROM LABEL WHERE name in (?");
-        Iterator<String> iter = labels.iterator();
-        // We are assured that there's at least one label in the iterable "labels", so we skip the first one.
-        iter.next();
-
-        while (iter.hasNext()) {
-            builder.append(",?");
-            iter.next();
-        }
-        builder.append(')');
-        PreparedStatement ps = con.prepareStatement(builder.toString());
-
-        int i = 1;
-        for (String label : labels) {
-            ps.setString(i++, label);
-        }
-
-        ResultSet rs = ps.executeQuery();
-
-        LinkedList<Integer> toReturn = new LinkedList<>();
-        while (rs.next()) {
-            toReturn.add(rs.getInt("lid"));
-        }
-
-        return toReturn;
     }
 
     private void fillRoomLabelTable(Connection con, int rid, LinkedList<Integer> lids) throws SQLException {

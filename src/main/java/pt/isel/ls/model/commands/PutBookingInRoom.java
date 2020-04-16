@@ -24,12 +24,12 @@ public class PutBookingInRoom implements CommandHandler {
                             + "SET uid = ?, begin_inst = ?, end_inst = ? "
                             + "WHERE rid = ? AND bid = ?"
             );
-            int uid = commandRequest.getParams().getInt("uid");
-            int rid = commandRequest.getPath().getInt("rid");
-            int bid = commandRequest.getPath().getInt("bid");
+            Integer uid = commandRequest.getParams().getInt("uid");
+            Integer rid = commandRequest.getPath().getInt("rid");
+            Integer bid = commandRequest.getPath().getInt("bid");
             String duration = commandRequest.getParams().getString("duration");
             String begin = commandRequest.getParams().getString("begin");
-            if (uid >= 0 && rid >= 0 && bid >= 0 && duration != null && begin != null) {
+            if (uid != null && rid != null && bid != null && duration != null && begin != null) {
                 ps.setInt(1, uid);
                 ps.setInt(4, rid);
                 ps.setInt(5, bid);
@@ -70,5 +70,13 @@ public class PutBookingInRoom implements CommandHandler {
         ps.setInt(4, bid);
         ResultSet rs = ps.executeQuery();
         return rs.next();
+    }
+
+    @Override
+    public String toString() {
+        return "Changes the identified booking, given the following additional parameters\n"
+                + "• begin - the begin instant for the booking period.\n"
+                + "• duration - the booking duration.\n"
+                + "• uid - the identifier of the user making the booking.";
     }
 }

@@ -4,17 +4,17 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import pt.isel.ls.model.Router;
-import pt.isel.ls.model.commands.common.*;
+import pt.isel.ls.model.commands.common.CommandHandler;
+import pt.isel.ls.model.commands.common.CommandRequest;
+import pt.isel.ls.model.commands.common.CommandResult;
+import pt.isel.ls.model.commands.common.Method;
+import pt.isel.ls.model.commands.common.Parameters;
 import pt.isel.ls.model.commands.sql.TransactionManager;
-import pt.isel.ls.model.entities.Booking;
-import pt.isel.ls.model.entities.Entity;
 import pt.isel.ls.model.paths.Path;
 import pt.isel.ls.model.paths.PathTemplate;
 
 import java.sql.PreparedStatement;
-import java.util.Iterator;
 
-import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -56,7 +56,8 @@ public class PutCommandsTest {
         Router router = new Router();
         router.addRoute(Method.PUT, new PathTemplate("/rooms/{rid}/bookings/{bid}"),
                 new PutBookingInRoom());
-        CommandRequest cmd = new CommandRequest(new Path("/rooms/0/bookings/0"), new Parameters("begin=2020-12-20+10:20&duration=00:10&uid=0"), trans, null);
+        CommandRequest cmd = new CommandRequest(new Path("/rooms/0/bookings/0"),
+                new Parameters("begin=2020-12-20+10:20&duration=00:10&uid=0"), trans, null);
         CommandHandler handler = router.findRoute(Method.PUT, cmd.getPath());
         CommandResult result = handler.execute(cmd);
         assertNotNull(result);
