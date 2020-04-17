@@ -15,4 +15,9 @@ public class GetTimeCommand implements CommandHandler {
         res.setSuccess(true);
         return res;
     }
+
+    @Override
+    public String toString() {
+        return "presents the current time";
+    }
 }

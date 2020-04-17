@@ -35,20 +35,21 @@ public class GetRoomsCommand implements CommandHandler {
                 labels = commandRequest.getParams().getValues("label");
                 rids = getRidsWithLabels(con, labels);
             }
+            if (rids == null || !rids.isEmpty()) {
+                PreparedStatement ps = con.prepareStatement(getQueryString(capacity, begin, dur, rids));
+                fillStatementWithParameters(ps, capacity, begin, dur, rids);
+                ResultSet rs = ps.executeQuery();
+                if (rs.next()) {
+                    do {
+                        result.addResult(new Room(rs.getInt("rid"), rs.getString("name")));
+                    } while (rs.next());
+                }
+                result.setSuccess(true);
 
-            PreparedStatement ps = con.prepareStatement(getQueryString(capacity, begin, dur, rids));
-            fillStatementWithParameters(ps, capacity, begin, dur, rids);
-
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                do {
-                    result.addResult(new Room(rs.getInt("rid"), rs.getString("name")));
-                } while (rs.next());
+                rs.close();
+                ps.close();
             }
             result.setSuccess(true);
-
-            rs.close();
-            ps.close();
         })) {
             result.setSuccess(false);
             result.clearResults();

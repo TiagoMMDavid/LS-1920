@@ -46,18 +46,16 @@ public class LabelsHelper {
             return null;
         }
 
-        StringBuilder builder = new StringBuilder("SELECT rid FROM ROOMLABEL WHERE lid in (?");
+        StringBuilder builder = new StringBuilder("SELECT rid FROM ROOMLABEL WHERE lid = ?");
         for (int i = 0; i < lids.size() - 1; i++) {
-            builder.append(",?");
+            builder.append(" INTERSECT SELECT rid FROM ROOMLABEL WHERE lid = ?");
         }
-        builder.append(") GROUP BY rid HAVING COUNT(distinct lid) = ?");
 
         PreparedStatement ps = con.prepareStatement(builder.toString());
         int i = 1;
         for (Integer lid: lids) {
             ps.setInt(i++,lid);
         }
-        ps.setInt(i++, lids.size());
 
         ResultSet rs = ps.executeQuery();
 

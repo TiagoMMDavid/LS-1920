@@ -28,4 +28,9 @@ public class DeleteBookingInRoom implements CommandHandler {
         }
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "removes the identified booking";
+    }
 }
