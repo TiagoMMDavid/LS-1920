@@ -90,10 +90,10 @@ public class PostRoomsCommand implements CommandHandler {
     @Override
     public String toString() {
         return "creates a new room, given the following parameters\n"
-                + "• name - the rooms's name.\n"
-                + "• description - the rooms's description.\n"
-                + "• location - the room's location.\n"
-                + "• capacity - the room's person capacity.\n"
-                + "• label - the set of labels for the room.";
+                + "- name - the rooms's name.\n"
+                + "- description - the rooms's description.\n"
+                + "- location - the room's location.\n"
+                + "- capacity - the room's person capacity.\n"
+                + "- label - the set of labels for the room.";
     }
 }

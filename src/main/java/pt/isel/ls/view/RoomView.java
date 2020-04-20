@@ -27,6 +27,11 @@ public class RoomView extends View {
         out.write(builder.toString().getBytes());
     }
 
+    @Override
+    public void displayHtml(OutputStream out) throws IOException {
+        // TODO
+    }
+
     private void appendId(Room room, StringBuilder builder) {
         builder.append("Room ID: ");
         builder.append(room.getRid());

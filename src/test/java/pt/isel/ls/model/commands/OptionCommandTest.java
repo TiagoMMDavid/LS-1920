@@ -49,7 +49,7 @@ public class OptionCommandTest {
 
     @Test
     public void optionExecuteTest() throws Exception {
-        CommandRequest cmd = new CommandRequest(new Path("/"), null, router.getCommands());
+        CommandRequest cmd = new CommandRequest(new Path("/"), null,null, router.getCommands());
         CommandHandler handler = router.findRoute(Method.OPTION, cmd.getPath());
 
         CommandResult res = handler.execute(cmd);

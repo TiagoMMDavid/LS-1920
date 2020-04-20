@@ -25,6 +25,11 @@ public class UserView extends View {
         out.write(builder.toString().getBytes());
     }
 
+    @Override
+    public void displayHtml(OutputStream out) throws IOException {
+        // TODO
+    }
+
     private void appendEmail(User user, StringBuilder builder) {
         String email = user.getEmail();
         if (email != null) {

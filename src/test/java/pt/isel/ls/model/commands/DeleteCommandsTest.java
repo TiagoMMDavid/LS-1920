@@ -55,7 +55,7 @@ public class DeleteCommandsTest {
         Router router = new Router();
         router.addRoute(Method.DELETE, new PathTemplate("/rooms/{rid}/bookings/{bid}"),
                 new DeleteBookingInRoom());
-        CommandRequest cmd = new CommandRequest(new Path("/rooms/0/bookings/0"), trans, null);
+        CommandRequest cmd = new CommandRequest(new Path("/rooms/0/bookings/0"), null, trans, null);
 
         CommandHandler handler = router.findRoute(Method.DELETE, cmd.getPath());
         CommandResult result = handler.execute(cmd);

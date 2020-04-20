@@ -107,9 +107,9 @@ public class GetRoomsCommand implements CommandHandler {
     @Override
     public String toString() {
         return "returns a list with all existing rooms. Can accept the following parameters\n"
-                + "• begin - the begin instant for the booking period.\n"
-                + "• duration - the booking duration.\n"
-                + "• capacity - the room's person capacity.\n"
-                + "• label - the set of labels for the room.";
+                + "- begin - the begin instant for the booking period.\n"
+                + "- duration - the booking duration.\n"
+                + "- capacity - the room's person capacity.\n"
+                + "- label - the set of labels for the room.";
     }
 }

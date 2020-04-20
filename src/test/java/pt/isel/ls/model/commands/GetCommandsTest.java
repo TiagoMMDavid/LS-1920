@@ -80,7 +80,7 @@ public class GetCommandsTest {
         Router router = new Router();
         router.addRoute(Method.GET, new PathTemplate("/rooms/{rid}/bookings/{bid}"),
                 new GetBookingByRoomAndBookingId());
-        CommandRequest cmd = new CommandRequest(new Path("/rooms/0/bookings/4"), trans, null);
+        CommandRequest cmd = new CommandRequest(new Path("/rooms/0/bookings/4"), null, trans, null);
 
         CommandHandler handler = router.findRoute(Method.GET, cmd.getPath());
         CommandResult result = handler.execute(cmd);
@@ -100,7 +100,7 @@ public class GetCommandsTest {
     public void getBookingsByUserIdTest() throws Exception {
         Router router = new Router();
         router.addRoute(Method.GET, new PathTemplate("/users/{uid}/bookings"), new GetBookingsByUserIdCommand());
-        CommandRequest cmd = new CommandRequest(new Path("/users/0/bookings"), trans, null);
+        CommandRequest cmd = new CommandRequest(new Path("/users/0/bookings"), null, trans, null);
 
         CommandHandler handler = router.findRoute(Method.GET, cmd.getPath());
         CommandResult result = handler.execute(cmd);
@@ -118,7 +118,7 @@ public class GetCommandsTest {
     public void getLabelsTest() throws Exception {
         Router router = new Router();
         router.addRoute(Method.GET, new PathTemplate("/labels"), new GetLabelsCommand());
-        CommandRequest cmd = new CommandRequest(new Path("/labels"), trans, null);
+        CommandRequest cmd = new CommandRequest(new Path("/labels"), null, trans, null);
 
         CommandHandler handler = router.findRoute(Method.GET, cmd.getPath());
         CommandResult result = handler.execute(cmd);
@@ -136,7 +136,7 @@ public class GetCommandsTest {
     public void getRoomsByIdTest() throws Exception {
         Router router = new Router();
         router.addRoute(Method.GET, new PathTemplate("/rooms/{rid}"), new GetRoomByIdCommand());
-        CommandRequest cmd = new CommandRequest(new Path("/rooms/0"), trans, null);
+        CommandRequest cmd = new CommandRequest(new Path("/rooms/0"), null, trans, null);
 
         CommandHandler handler = router.findRoute(Method.GET, cmd.getPath());
         CommandResult result = handler.execute(cmd);
@@ -153,7 +153,7 @@ public class GetCommandsTest {
     public void getRoomsTest() throws Exception {
         Router router = new Router();
         router.addRoute(Method.GET, new PathTemplate("/rooms"), new GetRoomsCommand());
-        CommandRequest cmd = new CommandRequest(new Path("/rooms"), trans, null);
+        CommandRequest cmd = new CommandRequest(new Path("/rooms"), null, trans, null);
 
         CommandHandler handler = router.findRoute(Method.GET, cmd.getPath());
         CommandResult result = handler.execute(cmd);
@@ -227,7 +227,7 @@ public class GetCommandsTest {
     public void getRoomsWithLabelTest() throws Exception {
         Router router = new Router();
         router.addRoute(Method.GET, new PathTemplate("/labels/{lid}/rooms"), new GetRoomsWithLabelCommand());
-        CommandRequest cmd = new CommandRequest(new Path("/labels/1/rooms"), trans, null);
+        CommandRequest cmd = new CommandRequest(new Path("/labels/1/rooms"), null, trans, null);
 
         CommandHandler handler = router.findRoute(Method.GET, cmd.getPath());
         CommandResult result = handler.execute(cmd);
@@ -242,7 +242,7 @@ public class GetCommandsTest {
     public void getUsersByIdTest() throws Exception {
         Router router = new Router();
         router.addRoute(Method.GET, new PathTemplate("/users/{uid}"), new GetUserByIdCommand());
-        CommandRequest cmd = new CommandRequest(new Path("/users/0"), trans, null);
+        CommandRequest cmd = new CommandRequest(new Path("/users/0"), null, trans, null);
 
         CommandHandler handler = router.findRoute(Method.GET, cmd.getPath());
         CommandResult result = handler.execute(cmd);
@@ -259,7 +259,7 @@ public class GetCommandsTest {
     public void getTimeTest() throws Exception {
         Router router = new Router();
         router.addRoute(Method.GET, new PathTemplate("/time"), new GetTimeCommand());
-        CommandRequest cmd = new CommandRequest(new Path("/time"), trans, null);
+        CommandRequest cmd = new CommandRequest(new Path("/time"), null, trans, null);
         CommandHandler handler = router.findRoute(Method.GET, cmd.getPath());
 
         CommandResult res = handler.execute(cmd);

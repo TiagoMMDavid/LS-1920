@@ -17,4 +17,9 @@ public class CommandView extends View {
         String output = cmd.getCommandDescription() + '\n';
         out.write(output.getBytes());
     }
+
+    @Override
+    public void displayHtml(OutputStream out) throws IOException {
+        // TODO
+    }
 }

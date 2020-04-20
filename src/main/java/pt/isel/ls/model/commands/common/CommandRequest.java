@@ -11,14 +11,10 @@ public class CommandRequest {
     private TransactionManager trans;
     private Iterator<Object> commands;
 
-    public CommandRequest(Path path, TransactionManager trans, Iterator<Object> commands) {
+    public CommandRequest(Path path, Parameters params, TransactionManager trans, Iterator<Object> commands) {
         this.path = path;
         this.trans = trans;
         this.commands = commands;
-    }
-
-    public CommandRequest(Path path, Parameters params, TransactionManager trans, Iterator<Object> commands) {
-        this(path, trans, commands);
         this.params = params;
     }
 

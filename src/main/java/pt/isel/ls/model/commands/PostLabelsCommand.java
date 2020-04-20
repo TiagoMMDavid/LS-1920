@@ -46,6 +46,6 @@ public class PostLabelsCommand implements CommandHandler {
     @Override
     public String toString() {
         return "creates a new label, given the following parameters\n"
-                + "• name - the label's name";
+                + "- name - the label's name";
     }
 }

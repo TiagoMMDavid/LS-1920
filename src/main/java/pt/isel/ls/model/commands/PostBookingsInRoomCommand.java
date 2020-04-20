@@ -81,8 +81,8 @@ public class PostBookingsInRoomCommand implements CommandHandler {
     @Override
     public String toString() {
         return "creates a new booking, given the following additional parameters\n"
-                + "• begin - the begin instant for the booking period.\n"
-                + "• duration - the booking duration.\n"
-                + "• uid - the identifier of the user making the booking.";
+                + "- begin - the begin instant for the booking period.\n"
+                + "- duration - the booking duration.\n"
+                + "- uid - the identifier of the user making the booking.";
     }
 }

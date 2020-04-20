@@ -24,6 +24,11 @@ public class LabelView extends View {
         out.write(builder.toString().getBytes());
     }
 
+    @Override
+    public void displayHtml(OutputStream out) throws IOException {
+        // TODO
+    }
+
     private void appendName(Label label, StringBuilder builder) {
         String name = label.getName();
         if (name != null) {

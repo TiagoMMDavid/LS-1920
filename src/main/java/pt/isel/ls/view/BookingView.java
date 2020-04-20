@@ -27,6 +27,11 @@ public class BookingView extends View {
         out.write(builder.toString().getBytes());
     }
 
+    @Override
+    public void displayHtml(OutputStream out) throws IOException {
+        // TODO
+    }
+
     private void appendEndInst(Booking booking, StringBuilder builder) {
         Date date = booking.getEndInst();
         if (date != null) {

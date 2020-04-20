@@ -19,4 +19,9 @@ public class TimeView extends View {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         out.write((formatter.format(time.getTime()) + '\n').getBytes());
     }
+
+    @Override
+    public void displayHtml(OutputStream out) throws IOException {
+        // TODO
+    }
 }

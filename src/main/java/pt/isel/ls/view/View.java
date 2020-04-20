@@ -31,5 +31,16 @@ public abstract class View {
         this.entity = entity;
     }
 
+    public void display(OutputStream out, String viewFormat) throws IOException {
+        if (viewFormat == null || viewFormat.equals("text/plain")) {
+            displayText(out);
+        } else if (viewFormat.equals("text/html")) {
+            displayHtml(out);
+        }
+    }
+
     public abstract void displayText(OutputStream out) throws IOException;
+
+
+    public abstract void displayHtml(OutputStream out) throws IOException;
 }
