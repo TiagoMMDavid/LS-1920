@@ -5,6 +5,7 @@ import pt.isel.ls.model.commands.common.Method;
 import pt.isel.ls.model.paths.Path;
 import pt.isel.ls.model.paths.PathTemplate;
 import pt.isel.ls.utils.NTree;
+import pt.isel.ls.utils.Pair;
 
 import java.util.Iterator;
 
@@ -25,7 +26,7 @@ public class Router {
         return routes.getHandlerAndApplyTemplate(method, path);
     }
 
-    public Iterator<Object> getCommands() {
+    public Iterator<Pair<String,String>> getCommands() {
         return routes.iterator();
     }
 }

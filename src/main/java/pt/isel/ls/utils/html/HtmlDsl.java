@@ -3,6 +3,7 @@ package pt.isel.ls.utils.html;
 import pt.isel.ls.utils.html.elements.Body;
 import pt.isel.ls.utils.html.elements.Element;
 import pt.isel.ls.utils.html.elements.H1;
+import pt.isel.ls.utils.html.elements.H2;
 import pt.isel.ls.utils.html.elements.Head;
 import pt.isel.ls.utils.html.elements.Html;
 import pt.isel.ls.utils.html.elements.Paragraph;
@@ -33,6 +34,10 @@ public class HtmlDsl {
         return new H1(text);
     }
 
+    public static Element h2(String text) {
+        return new H2(text);
+    }
+
     public static Element p(String text) {
         return new Paragraph(text);
     }
@@ -55,5 +60,9 @@ public class HtmlDsl {
 
     public static Element td(String data) {
         return new TableData(data);
+    }
+
+    public static Element td(int data) {
+        return new TableData(Integer.toString(data));
     }
 }

@@ -33,7 +33,6 @@ import pt.isel.ls.model.commands.common.Method;
 import pt.isel.ls.model.commands.common.Parameters;
 import pt.isel.ls.model.commands.sql.TransactionManager;
 
-import pt.isel.ls.model.entities.Entity;
 import pt.isel.ls.model.paths.Path;
 import pt.isel.ls.model.paths.PathTemplate;
 
@@ -140,11 +139,9 @@ public class App {
                 OutputStream out = filename == null ? System.out : getFileStream(filename);
 
                 // Present each entity
-                for (Entity ent : result) {
-                    View view = View.getInstance(ent);
-                    if (view != null) {
-                        view.display(out, viewFormat);
-                    }
+                View view = View.getInstance(result);
+                if (view != null) {
+                    view.display(out, viewFormat);
                 }
 
                 // Close output stream only if it isn't System.out

@@ -28,7 +28,7 @@ public abstract class Element {
         delimiters = new Pair<>(startDelimiter, endDelimiter);
     }
 
-    protected void addChild(Element element) {
+    public void addChild(Element element) {
         children.add(element);
     }
 

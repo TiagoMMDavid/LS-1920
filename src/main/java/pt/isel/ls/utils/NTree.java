@@ -10,7 +10,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public class NTree implements Iterable<Object> {
+public class NTree implements Iterable<Pair<String,String>> {
 
     static class HandlerNode {
         private PathTemplate template;
@@ -85,7 +85,7 @@ public class NTree implements Iterable<Object> {
     }
 
     @Override
-    public Iterator<Object> iterator() {
+    public Iterator<Pair<String,String>> iterator() {
         return new Iterator<>() {
 
             Iterator<Method> method = methods.keySet().iterator();
@@ -115,11 +115,12 @@ public class NTree implements Iterable<Object> {
             }
 
             @Override
-            public Pair<Method,HandlerNode> next() {
+            public Pair<String,String> next() {
                 if (!hasNext()) {
                     throw new NoSuchElementException();
                 }
-                Pair<Method,HandlerNode> aux = curr;
+                Pair<String,String> aux = new Pair<>(curr.first.toString() + " " + curr.second.template.toString(),
+                        curr.second.cmdHandler.toString());
                 curr = null;
                 return aux;
             }

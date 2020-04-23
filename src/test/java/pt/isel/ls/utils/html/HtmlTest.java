@@ -20,7 +20,7 @@ public class HtmlTest {
 
     @Test
     public void createBasicHtmlTest() {
-        String expected =
+        final String expected =
                 "<!DOCTYPE html>\n"
                 + "<html>\n"
                 +   "\t<head>\n"
@@ -49,12 +49,13 @@ public class HtmlTest {
                         )
                 );
 
+
         assertEquals(expected, actual.toString());
     }
 
     @Test
     public void createHtmlTableTest() {
-        String expected =
+        final String expected =
                 "<!DOCTYPE html>\n"
                 + "<html>\n"
                 + "\t<head>\n"
@@ -119,6 +120,92 @@ public class HtmlTest {
                         )
                 );
 
+        assertEquals(expected, actual.toString());
+    }
+
+    @Test
+    public void concatenateHtmlTest() {
+        final String expected =
+                "<!DOCTYPE html>\n"
+                        + "<html>\n"
+                        + "\t<head>\n"
+                        + "\t\t<title>\n"
+                        + "\t\t\tThe title\n"
+                        + "\t\t</title>\n"
+                        + "\t</head>\n"
+                        + "\t<body>\n"
+                        + "\t\t<table border=1>\n"
+                        + "\t\t\t<tr>\n"
+                        + "\t\t\t\t<th>\n"
+                        + "\t\t\t\t\tID\n"
+                        + "\t\t\t\t</th>\n"
+                        + "\t\t\t\t<th>\n"
+                        + "\t\t\t\t\tName\n"
+                        + "\t\t\t\t</th>\n"
+                        + "\t\t\t\t<th>\n"
+                        + "\t\t\t\t\tDescription\n"
+                        + "\t\t\t\t</th>\n"
+                        + "\t\t\t\t<th>\n"
+                        + "\t\t\t\t\tCapacity\n"
+                        + "\t\t\t\t</th>\n"
+                        + "\t\t\t</tr>\n"
+                        + "\t\t\t<tr>\n"
+                        + "\t\t\t\t<td>\n"
+                        + "\t\t\t\t\t1\n"
+                        + "\t\t\t\t</td>\n"
+                        + "\t\t\t\t<td>\n"
+                        + "\t\t\t\t\tMeeting Room\n"
+                        + "\t\t\t\t</td>\n"
+                        + "\t\t\t\t<td>\n"
+                        + "\t\t\t\t\tMeeting Room on CCISEL\n"
+                        + "\t\t\t\t</td>\n"
+                        + "\t\t\t\t<td>\n"
+                        + "\t\t\t\t\t16\n"
+                        + "\t\t\t\t</td>\n"
+                        + "\t\t\t</tr>\n"
+                        + "\t\t\t<tr>\n"
+                        + "\t\t\t\t<td>\n"
+                        + "\t\t\t\t\t1\n"
+                        + "\t\t\t\t</td>\n"
+                        + "\t\t\t\t<td>\n"
+                        + "\t\t\t\t\tMeeting Room\n"
+                        + "\t\t\t\t</td>\n"
+                        + "\t\t\t\t<td>\n"
+                        + "\t\t\t\t\tMeeting Room on CCISEL\n"
+                        + "\t\t\t\t</td>\n"
+                        + "\t\t\t\t<td>\n"
+                        + "\t\t\t\t\t16\n"
+                        + "\t\t\t\t</td>\n"
+                        + "\t\t\t</tr>\n"
+                        + "\t\t</table>\n"
+                        + "\t</body>\n"
+                        + "</html>";
+
+        Element tableRow = tr();
+        tableRow.addChild(th("ID"));
+        tableRow.addChild(th("Name"));
+        tableRow.addChild(th("Description"));
+        tableRow.addChild(th("Capacity"));
+
+        Element table = table();
+        table.addChild(tableRow);
+        for (int i = 0; i < 2; ++i) {
+            Element tableRowData = tr();
+            tableRowData.addChild(td("1"));
+            tableRowData.addChild(td("Meeting Room"));
+            tableRowData.addChild(td("Meeting Room on CCISEL"));
+            tableRowData.addChild(td("16"));
+            table.addChild(tableRowData);
+        }
+        Element actual =
+                html(
+                        head(
+                                title("The title")
+                        ),
+                        body(
+                                table
+                        )
+                );
         assertEquals(expected, actual.toString());
     }
 }

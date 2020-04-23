@@ -4,43 +4,58 @@ import pt.isel.ls.model.entities.Entity;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Iterator;
 
 public abstract class View {
+
+    protected Iterable<Entity> entities;
+
+    // Used for commands with a single entity, for example, GET /time
     protected Entity entity;
 
-    public static View getInstance(Entity ent) {
-        switch (ent.getEntityType()) {
+    public static View getInstance(Iterable<Entity> entities) {
+        Iterator<Entity> iter = entities.iterator();
+        if (!iter.hasNext()) {
+            return null;
+        }
+        // We know all entities in the result have the same type
+        switch (iter.next().getEntityType()) {
             case BOOKING:
-                return new BookingView(ent);
+                return new BookingView(entities);
             case USER:
-                return new UserView(ent);
+                return new UserView(entities);
             case LABEL:
-                return new LabelView(ent);
+                return new LabelView(entities);
             case ROOM:
-                return new RoomView(ent);
+                return new RoomView(entities);
             case COMMAND:
-                return new CommandView(ent);
+                return new CommandView(entities);
             case TIME:
-                return new TimeView(ent);
+                return new TimeView(entities);
             default:
                 return null;
         }
     }
 
-    protected View(Entity entity) {
-        this.entity = entity;
+    protected View(Iterable<Entity> entities) {
+        this.entities = entities;
+        this.entity = entities.iterator().next();
     }
 
     public void display(OutputStream out, String viewFormat) throws IOException {
+        String text = "";
         if (viewFormat == null || viewFormat.equals("text/plain")) {
-            displayText(out);
+            text = displayText();
+
         } else if (viewFormat.equals("text/html")) {
-            displayHtml(out);
+            text = displayHtml() + '\n';
         }
+        out.write((text).getBytes());
     }
 
-    public abstract void displayText(OutputStream out) throws IOException;
+
+    public abstract String displayText();
 
 
-    public abstract void displayHtml(OutputStream out) throws IOException;
+    public abstract String displayHtml();
 }

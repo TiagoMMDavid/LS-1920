@@ -1,10 +1,16 @@
 package pt.isel.ls.model.entities;
 
-public class Command implements Entity {
-    private String commandDescription;
+import pt.isel.ls.utils.Pair;
 
-    public Command(String commandDescription) {
-        this.commandDescription = commandDescription;
+public class Command implements Entity {
+    private Pair<String,String> commandInfo;
+
+    public Command(String commandName, String commandDescription) {
+        this.commandInfo = new Pair<>(commandName, commandDescription);
+    }
+
+    public Command(Pair<String,String> commandInfo) {
+        this.commandInfo = commandInfo;
     }
 
     @Override
@@ -12,7 +18,11 @@ public class Command implements Entity {
         return EntityType.COMMAND;
     }
 
-    public String getCommandDescription() {
-        return commandDescription;
+    public String getName() {
+        return commandInfo.first;
+    }
+
+    public String getDescription() {
+        return commandInfo.second;
     }
 }

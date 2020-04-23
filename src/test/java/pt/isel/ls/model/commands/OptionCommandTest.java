@@ -7,7 +7,6 @@ import pt.isel.ls.model.commands.common.CommandHandler;
 import pt.isel.ls.model.commands.common.CommandRequest;
 import pt.isel.ls.model.commands.common.CommandResult;
 import pt.isel.ls.model.commands.common.Method;
-import pt.isel.ls.model.entities.Entity;
 import pt.isel.ls.model.paths.Path;
 import pt.isel.ls.model.paths.PathTemplate;
 import pt.isel.ls.view.View;
@@ -54,9 +53,7 @@ public class OptionCommandTest {
 
         CommandResult res = handler.execute(cmd);
         assertTrue(res.isSuccess());
-        for (Entity ent: res) {
-            View view = View.getInstance(ent);
-            view.displayText(System.out);
-        }
+        View view = View.getInstance(res);
+        view.display(System.out, null);
     }
 }

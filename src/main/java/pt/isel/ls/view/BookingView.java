@@ -2,34 +2,87 @@ package pt.isel.ls.view;
 
 import pt.isel.ls.model.entities.Booking;
 import pt.isel.ls.model.entities.Entity;
+import pt.isel.ls.utils.html.elements.Element;
 
-import java.io.IOException;
-import java.io.OutputStream;
+import static pt.isel.ls.utils.html.HtmlDsl.html;
+import static pt.isel.ls.utils.html.HtmlDsl.body;
+import static pt.isel.ls.utils.html.HtmlDsl.h1;
+import static pt.isel.ls.utils.html.HtmlDsl.head;
+import static pt.isel.ls.utils.html.HtmlDsl.table;
+import static pt.isel.ls.utils.html.HtmlDsl.td;
+import static pt.isel.ls.utils.html.HtmlDsl.th;
+import static pt.isel.ls.utils.html.HtmlDsl.tr;
+import static pt.isel.ls.utils.html.HtmlDsl.title;
+
 import java.util.Date;
 
 public class BookingView extends View {
-    protected BookingView(Entity entity) {
+    protected BookingView(Iterable<Entity> entity) {
         super(entity);
     }
 
     @Override
-    public void displayText(OutputStream out) throws IOException {
-        Booking booking = (Booking) entity;
+    public String displayText() {
         StringBuilder builder = new StringBuilder();
-
-        appendBid(booking, builder);
-        appendUid(booking, builder);
-        appendRid(booking, builder);
-        appendBeginInst(booking, builder);
-        appendEndInst(booking, builder);
-        builder.append('\n');
-
-        out.write(builder.toString().getBytes());
+        for (Entity entity : entities) {
+            Booking booking = (Booking) entity;
+            appendBid(booking, builder);
+            appendUid(booking, builder);
+            appendRid(booking, builder);
+            appendBeginInst(booking, builder);
+            appendEndInst(booking, builder);
+            builder.append("\n\n");
+        }
+        return builder.toString();
     }
 
     @Override
-    public void displayHtml(OutputStream out) throws IOException {
-        // TODO
+    public String displayHtml() {
+        Element html =
+                html(
+                        head(
+                                title("Bookings")
+                        ),
+                        body(
+                                h1("List of Bookings:"),
+                                buildHtmlTable()
+                        )
+                );
+        return html.toString();
+    }
+
+    private Element buildHtmlTable() {
+        Element tableRow = tr();
+        tableRow.addChild(th("BID"));
+        tableRow.addChild(th("UID"));
+        tableRow.addChild(th("RID"));
+        tableRow.addChild(th("Begin Instant"));
+        tableRow.addChild(th("End Instant"));
+
+        Element table = table();
+        table.addChild(tableRow);
+        for (Entity entity : entities) {
+            addHtmlTableRow(table, (Booking) entity);
+        }
+        return table;
+    }
+
+    private void addHtmlTableRow(Element table, Booking booking) {
+        Element tableRowData = tr();
+        tableRowData.addChild(td(booking.getBid()));
+        if (booking.getUid() <= 0) {
+            tableRowData.addChild(td("N/A"));
+        } else {
+            tableRowData.addChild(td(booking.getUid()));
+        }
+        if (booking.getRid() <= 0) {
+            tableRowData.addChild(td("N/A"));
+        } else {
+            tableRowData.addChild(td(booking.getRid()));
+        }
+        tableRowData.addChild(td(booking.getBeginInst() == null ? "N/A" : booking.getBeginInst().toString()));
+        tableRowData.addChild(td(booking.getEndInst() == null ? "N/A" : booking.getEndInst().toString()));
+        table.addChild(tableRowData);
     }
 
     private void appendEndInst(Booking booking, StringBuilder builder) {

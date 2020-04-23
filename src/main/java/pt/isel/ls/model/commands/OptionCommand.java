@@ -4,6 +4,7 @@ import pt.isel.ls.model.commands.common.CommandHandler;
 import pt.isel.ls.model.commands.common.CommandRequest;
 import pt.isel.ls.model.commands.common.CommandResult;
 import pt.isel.ls.model.entities.Command;
+import pt.isel.ls.utils.Pair;
 
 import java.util.Iterator;
 
@@ -12,9 +13,9 @@ public class OptionCommand implements CommandHandler {
     public CommandResult execute(CommandRequest commandRequest) throws Exception {
         CommandResult result = new CommandResult();
         result.setSuccess(commandRequest.getCommands() != null);
-        for (Iterator<Object> it = commandRequest.getCommands(); it.hasNext(); ) {
-            Object command = it.next();
-            result.addResult(new Command(command.toString()));
+        for (Iterator<Pair<String,String>> it = commandRequest.getCommands(); it.hasNext(); ) {
+            Pair<String,String> command = it.next();
+            result.addResult(new Command(command));
         }
         return result;
     }
