@@ -26,8 +26,10 @@ public class UserView extends View {
         for (Entity entity : entities) {
             User user = (User) entity;
             appendId(user, builder);
-            appendName(user, builder);
-            appendEmail(user, builder);
+            if (!user.isPost()) {
+                appendName(user, builder);
+                appendEmail(user, builder);
+            }
             builder.append("\n\n");
         }
         return builder.toString();
@@ -50,9 +52,13 @@ public class UserView extends View {
 
     private Element buildHtmlTable() {
         Element tableRow = tr();
+        User user = (User) entity;
         tableRow.addChild(th("UID"));
-        tableRow.addChild(th("Name"));
-        tableRow.addChild(th("E-mail"));
+
+        if (!user.isPost()) {
+            tableRow.addChild(th("Name"));
+            tableRow.addChild(th("E-mail"));
+        }
 
         Element table = table();
         table.addChild(tableRow);
@@ -65,25 +71,23 @@ public class UserView extends View {
     private void addHtmlTableRow(Element table, User user) {
         Element tableRowData = tr();
         tableRowData.addChild(td(user.getUid()));
-        tableRowData.addChild(td(user.getName() == null ? "N/A" : user.getName()));
-        tableRowData.addChild(td(user.getEmail() == null ? "N/A" : user.getEmail()));
+        if (!user.isPost()) {
+            tableRowData.addChild(td(user.getName() == null ? "N/A" : user.getName()));
+            tableRowData.addChild(td(user.getEmail() == null ? "N/A" : user.getEmail()));
+        }
         table.addChild(tableRowData);
     }
 
     private void appendEmail(User user, StringBuilder builder) {
         String email = user.getEmail();
-        if (email != null) {
-            builder.append("\nEmail: ");
-            builder.append(email);
-        }
+        builder.append("\nEmail: ");
+        builder.append(email == null ? "N/A" : email);
     }
 
     private void appendName(User user, StringBuilder builder) {
         String name = user.getName();
-        if (name != null) {
-            builder.append("\nName: ");
-            builder.append(name);
-        }
+        builder.append("\nName: ");
+        builder.append(name == null ? "N/A" : name);
     }
 
     private void appendId(User user, StringBuilder builder) {

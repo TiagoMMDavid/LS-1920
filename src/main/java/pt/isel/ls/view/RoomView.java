@@ -27,10 +27,16 @@ public class RoomView extends View {
         for (Entity entity : entities) {
             Room room = (Room) entity;
             appendId(room, builder);
-            appendName(room, builder);
-            appendDescription(room, builder);
-            appendLocation(room, builder);
-            appendCapacity(room, builder);
+
+            if (!room.isPost()) {
+                appendName(room, builder);
+                if (room.isDetailed()) {
+                    appendDescription(room, builder);
+                    appendLocation(room, builder);
+                    appendCapacity(room, builder);
+                }
+            }
+
             builder.append("\n\n");
         }
 
@@ -54,30 +60,38 @@ public class RoomView extends View {
 
     private Element buildHtmlTable() {
         Element tableRow = tr();
-        tableRow.addChild(th("RID"));
-        tableRow.addChild(th("Name"));
-        tableRow.addChild(th("Description"));
-        tableRow.addChild(th("Location"));
-        tableRow.addChild(th("Capacity"));
-
         Element table = table();
         table.addChild(tableRow);
+        Room room = (Room) entity;
+        tableRow.addChild(th("RID"));
+
+        if (!room.isPost()) {
+            tableRow.addChild(th("Name"));
+            if (room.isDetailed()) {
+                tableRow.addChild(th("Description"));
+                tableRow.addChild(th("Location"));
+                tableRow.addChild(th("Capacity"));
+            }
+        }
+
         for (Entity entity : entities) {
             addHtmlTableRow(table, (Room) entity);
         }
+
         return table;
     }
 
     private void addHtmlTableRow(Element table, Room room) {
         Element tableRowData = tr();
         tableRowData.addChild(td(room.getRid()));
-        tableRowData.addChild(td(room.getName() == null ? "N/A" : room.getName()));
-        tableRowData.addChild(td(room.getDescription() == null ? "N/A" : room.getDescription()));
-        tableRowData.addChild(td(room.getLocation() == null ? "N/A" : room.getLocation()));
-        if (room.getCapacity() <= 0) {
-            tableRowData.addChild(td("N/A"));
-        } else {
-            tableRowData.addChild(td(room.getCapacity()));
+
+        if (!room.isPost()) {
+            tableRowData.addChild(td(room.getName()));
+            if (room.isDetailed()) {
+                tableRowData.addChild(td(room.getDescription() == null ? "N/A" : room.getDescription()));
+                tableRowData.addChild(td(room.getLocation() == null ? "N/A" : room.getLocation()));
+                tableRowData.addChild(td(room.getCapacity() < 0 ? "N/A" : room.getCapacity()));
+            }
         }
         table.addChild(tableRowData);
     }
@@ -89,33 +103,25 @@ public class RoomView extends View {
 
     public void appendName(Room room, StringBuilder builder) {
         String name = room.getName();
-        if (name != null) {
-            builder.append("\nName: ");
-            builder.append(name);
-        }
+        builder.append("\nName: ");
+        builder.append(name);
     }
 
     public void appendDescription(Room room, StringBuilder builder) {
         String desc = room.getDescription();
-        if (desc != null) {
-            builder.append("\nDescription: ");
-            builder.append(desc);
-        }
+        builder.append("\nDescription: ");
+        builder.append(desc == null ? "N/A" : desc);
     }
 
     public void appendLocation(Room room, StringBuilder builder) {
         String location = room.getLocation();
-        if (location != null) {
-            builder.append("\nLocation: ");
-            builder.append(location);
-        }
+        builder.append("\nLocation: ");
+        builder.append(location == null ? "N/A" : location);
     }
 
     public void appendCapacity(Room room, StringBuilder builder) {
         int capacity = room.getCapacity();
-        if (capacity > 0) {
-            builder.append("\nCapacity: ");
-            builder.append(capacity);
-        }
+        builder.append("\nCapacity: ");
+        builder.append(capacity < 0 ? "N/A" : capacity);
     }
 }

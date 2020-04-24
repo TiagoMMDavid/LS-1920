@@ -9,14 +9,6 @@ public class Pair<E,F> {
         this.second = second;
     }
 
-    public boolean equals(Object o) {
-        if (!(o instanceof Pair)) {
-            return false;
-        }
-        Pair<E, F> pair = (Pair<E,F>) o;
-        return first.equals(pair.first) && second.equals(pair.second);
-    }
-
     @Override
     public String toString() {
         return first + " " + second;

@@ -1,6 +1,9 @@
 package pt.isel.ls.model.entities;
 
 public class Room implements Entity {
+    private boolean isPost = false;
+    private boolean isDetailed = false;
+
     private int rid;
     private String name;
     private String description;
@@ -9,6 +12,7 @@ public class Room implements Entity {
 
     public Room(int rid) {
         this.rid = rid;
+        this.isPost = true;
     }
 
     public Room(int rid, String name) {
@@ -21,6 +25,7 @@ public class Room implements Entity {
         this.description = description;
         this.location = location;
         this.capacity = capacity;
+        this.isDetailed = true;
     }
 
     public int getRid() {
@@ -46,5 +51,13 @@ public class Room implements Entity {
     @Override
     public EntityType getEntityType() {
         return EntityType.ROOM;
+    }
+
+    public boolean isPost() {
+        return isPost;
+    }
+
+    public boolean isDetailed() {
+        return isDetailed;
     }
 }

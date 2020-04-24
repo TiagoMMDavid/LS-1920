@@ -9,12 +9,12 @@ public class Time implements Entity {
         this.time = time;
     }
 
+    public Date getTime() {
+        return time;
+    }
+
     @Override
     public EntityType getEntityType() {
         return EntityType.TIME;
-    }
-
-    public Date getTime() {
-        return time;
     }
 }

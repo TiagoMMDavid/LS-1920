@@ -9,10 +9,6 @@ public class Label implements Entity {
         this.name = name;
     }
 
-    public Label(int lid) {
-        this.lid = lid;
-    }
-
     public int getLid() {
         return lid;
     }

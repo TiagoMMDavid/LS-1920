@@ -27,10 +27,14 @@ public class BookingView extends View {
         for (Entity entity : entities) {
             Booking booking = (Booking) entity;
             appendBid(booking, builder);
-            appendUid(booking, builder);
-            appendRid(booking, builder);
-            appendBeginInst(booking, builder);
-            appendEndInst(booking, builder);
+            if (!booking.isPost()) {
+                appendRid(booking, builder);
+                if (booking.isDetailed()) {
+                    appendUid(booking, builder);
+                    appendBeginInst(booking, builder);
+                    appendEndInst(booking, builder);
+                }
+            }
             builder.append("\n\n");
         }
         return builder.toString();
@@ -53,11 +57,17 @@ public class BookingView extends View {
 
     private Element buildHtmlTable() {
         Element tableRow = tr();
+        Booking booking = (Booking) entity;
         tableRow.addChild(th("BID"));
-        tableRow.addChild(th("UID"));
-        tableRow.addChild(th("RID"));
-        tableRow.addChild(th("Begin Instant"));
-        tableRow.addChild(th("End Instant"));
+
+        if (!booking.isPost()) {
+            tableRow.addChild(th("RID"));
+            if (booking.isDetailed()) {
+                tableRow.addChild(th("UID"));
+                tableRow.addChild(th("Begin Instant"));
+                tableRow.addChild(th("End Instant"));
+            }
+        }
 
         Element table = table();
         table.addChild(tableRow);
@@ -70,51 +80,39 @@ public class BookingView extends View {
     private void addHtmlTableRow(Element table, Booking booking) {
         Element tableRowData = tr();
         tableRowData.addChild(td(booking.getBid()));
-        if (booking.getUid() <= 0) {
-            tableRowData.addChild(td("N/A"));
-        } else {
-            tableRowData.addChild(td(booking.getUid()));
+        if (!booking.isPost()) {
+            tableRowData.addChild(td(booking.getRid() < 0 ? "N/A" : booking.getRid()));
+            if (booking.isDetailed()) {
+                tableRowData.addChild(td(booking.getUid() < 0 ? "N/A" : booking.getUid()));
+                tableRowData.addChild(td(booking.getBeginInst() == null ? "N/A" : booking.getBeginInst().toString()));
+                tableRowData.addChild(td(booking.getEndInst() == null ? "N/A" : booking.getEndInst().toString()));
+            }
         }
-        if (booking.getRid() <= 0) {
-            tableRowData.addChild(td("N/A"));
-        } else {
-            tableRowData.addChild(td(booking.getRid()));
-        }
-        tableRowData.addChild(td(booking.getBeginInst() == null ? "N/A" : booking.getBeginInst().toString()));
-        tableRowData.addChild(td(booking.getEndInst() == null ? "N/A" : booking.getEndInst().toString()));
         table.addChild(tableRowData);
     }
 
     private void appendEndInst(Booking booking, StringBuilder builder) {
         Date date = booking.getEndInst();
-        if (date != null) {
-            builder.append("\nEnd Date: ");
-            builder.append(date);
-        }
+        builder.append("\nEnd Date: ");
+        builder.append(date == null ? "N/A" : date);
     }
 
     private void appendBeginInst(Booking booking, StringBuilder builder) {
         Date date = booking.getBeginInst();
-        if (date != null) {
-            builder.append("\nBegin Date: ");
-            builder.append(date);
-        }
+        builder.append("\nBegin Date: ");
+        builder.append(date == null ? "N/A" : date);
     }
 
     private void appendRid(Booking booking, StringBuilder builder) {
         int rid = booking.getRid();
-        if (rid >= 0) {
-            builder.append("\nRoom ID: ");
-            builder.append(rid);
-        }
+        builder.append("\nRoom ID: ");
+        builder.append(rid < 0 ? "N/A" : rid);
     }
 
     private void appendUid(Booking booking, StringBuilder builder) {
         int uid = booking.getUid();
-        if (uid >= 0) {
-            builder.append("\nUser ID: ");
-            builder.append(uid);
-        }
+        builder.append("\nUser ID: ");
+        builder.append(uid < 0 ? "N/A" : uid);
     }
 
     private void appendBid(Booking booking, StringBuilder builder) {
