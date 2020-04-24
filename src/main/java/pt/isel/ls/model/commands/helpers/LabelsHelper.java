@@ -66,4 +66,20 @@ public class LabelsHelper {
 
         return toReturn;
     }
+
+    public static LinkedList<String> getLabelsFromRid(Connection con, int rid) throws SQLException {
+        PreparedStatement ps = con.prepareStatement("SELECT name "
+                + "FROM LABEL join ROOMLABEL on (ROOMLABEL.lid = LABEL.lid) "
+                + "WHERE ROOMLABEL.rid = ?");
+        ps.setInt(1, rid);
+
+        ResultSet rs = ps.executeQuery();
+
+        LinkedList<String> toReturn = new LinkedList<>();
+        while (rs.next()) {
+            toReturn.add(rs.getString("name"));
+        }
+
+        return toReturn;
+    }
 }

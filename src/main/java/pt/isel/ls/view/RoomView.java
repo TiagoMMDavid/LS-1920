@@ -4,6 +4,8 @@ import pt.isel.ls.model.entities.Entity;
 import pt.isel.ls.model.entities.Room;
 import pt.isel.ls.utils.html.elements.Element;
 
+import java.util.Iterator;
+
 import static pt.isel.ls.utils.html.HtmlDsl.html;
 import static pt.isel.ls.utils.html.HtmlDsl.body;
 import static pt.isel.ls.utils.html.HtmlDsl.h1;
@@ -34,6 +36,7 @@ public class RoomView extends View {
                     appendDescription(room, builder);
                     appendLocation(room, builder);
                     appendCapacity(room, builder);
+                    appendLabels(room, builder);
                 }
             }
 
@@ -71,6 +74,7 @@ public class RoomView extends View {
                 tableRow.addChild(th("Description"));
                 tableRow.addChild(th("Location"));
                 tableRow.addChild(th("Capacity"));
+                tableRow.addChild(th("Label(s)"));
             }
         }
 
@@ -91,6 +95,10 @@ public class RoomView extends View {
                 tableRowData.addChild(td(room.getDescription() == null ? "N/A" : room.getDescription()));
                 tableRowData.addChild(td(room.getLocation() == null ? "N/A" : room.getLocation()));
                 tableRowData.addChild(td(room.getCapacity() < 0 ? "N/A" : room.getCapacity()));
+
+                StringBuilder builder = new StringBuilder();
+                int numOfLabels = appendLabelsWithComma(builder, room.getLabels());
+                tableRowData.addChild(td(numOfLabels == 0 ? "N/A" : builder.toString()));
             }
         }
         table.addChild(tableRowData);
@@ -124,4 +132,24 @@ public class RoomView extends View {
         builder.append("\nCapacity: ");
         builder.append(capacity < 0 ? "N/A" : capacity);
     }
+
+    private void appendLabels(Room room, StringBuilder builder) {
+        builder.append("\nLabels: ");
+        appendLabelsWithComma(builder, room.getLabels());
+    }
+
+    private int appendLabelsWithComma(StringBuilder builder, Iterable<String> iter) {
+        Iterator<String> labels = iter.iterator();
+        int size = 0;
+        while (labels.hasNext()) {
+            ++size;
+            builder.append(labels.next());
+            if (labels.hasNext()) {
+                builder.append(", ");
+            }
+        }
+        return size;
+    }
+
+
 }

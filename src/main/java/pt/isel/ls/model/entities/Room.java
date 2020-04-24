@@ -9,6 +9,7 @@ public class Room implements Entity {
     private String description;
     private String location;
     private int capacity;
+    private Iterable<String> labels;
 
     public Room(int rid) {
         this.rid = rid;
@@ -20,11 +21,12 @@ public class Room implements Entity {
         this.name = name;
     }
 
-    public Room(int rid, String name, String description, String location, int capacity) {
+    public Room(int rid, String name, String description, String location, int capacity, Iterable<String> labels) {
         this(rid, name);
         this.description = description;
         this.location = location;
         this.capacity = capacity;
+        this.labels = labels;
         this.isDetailed = true;
     }
 
@@ -46,6 +48,10 @@ public class Room implements Entity {
 
     public int getCapacity() {
         return capacity;
+    }
+
+    public Iterable<String> getLabels() {
+        return labels;
     }
 
     @Override

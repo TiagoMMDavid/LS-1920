@@ -3,6 +3,7 @@ package pt.isel.ls.model.commands;
 import pt.isel.ls.model.commands.common.CommandHandler;
 import pt.isel.ls.model.commands.common.CommandRequest;
 import pt.isel.ls.model.commands.common.CommandResult;
+import pt.isel.ls.model.commands.helpers.LabelsHelper;
 import pt.isel.ls.model.commands.sql.TransactionManager;
 import pt.isel.ls.model.entities.Room;
 
@@ -27,7 +28,8 @@ public class GetRoomByIdCommand implements CommandHandler {
                         rs.getString("name"),
                         rs.getString("description"),
                         rs.getString("location"),
-                        rs.getInt("capacity")
+                        rs.getInt("capacity"),
+                        LabelsHelper.getLabelsFromRid(con, roomId)
                 ));
             }
             result.setSuccess(true);
