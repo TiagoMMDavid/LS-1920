@@ -184,7 +184,22 @@ O processo de obtenção de um Handler é realizado pelo Router. Este processo �
 Este último irá obter um MethodNode do seu HashMap, utilizando como chave o Method passado como argumento. Após essa obtenção, este método irá chamar um outro método, que se encontra presente no MethodNode obtido (*getHandlerAndApplyTemplate(Path path)*). Este método irá então percorrer o HashSet de HandlerNodes, verificando qual destes é que contém o PathTemplate correspondente ao Path passado como argumento e, quando este for encontrado, aplicará a *template* ao Path, e retornará o CommandHandler correspondente.
 
 ### Apresentação de Resultados
-# TODO! (FALAR NA VIEW E NO HTML DSL)
+# TODO! (FALAR NA VIEW)
+
+#### Representação em HTML
+
+Para efetuar a representação dos resultados no formato HTML, foi decidido criar uma domain-specific language (DSL) para que o código se mantenha simples e fácil de entender.
+
+Como ponto de partida, foi concebida a classe abstrata *Element*, sendo esta a classe de onde todos os outros elementos de HTML vão derivar (Head, Html, Table, ...).
+Esta classe conta com os seguintes campos:
+* LinkedList\<Element> children - contém todos os filhos do elemento atual, visto que a linguagem HTML se assemelha a uma árvore, em que cada elemento pode ter N outros elementos dentro do mesmo.
+* Pair\<String, String> delimiters - delimitadores do elemento atual, pois todos os elementos (excluíndo algumas exceções raras, como o break) da linguagem HTML têm delimitadores de ínicio e de fim (exemplo para o H1: `<h1> </h1>`)
+
+Esta classe conta também com a presença de um método *toString()*, que retorna a representação de um elemento em String, ou seja, o seu código HTML, com a devida indentação.
+
+Foi também criada a classe ElementText, que estende de Element, cujo objetivo é refletir elementos de HTML terminadores, ou seja, elementos que contêm apenas texto e não outros elementos, como, por exemplo, os elementos *Header* e *Paragraph*.
+
+Para aumentar a legibilidade do código e evitar a constante criação de objetos usando o operador *new*, foi concebida a classe *HTMLDsl*, constituída apenas por métodos estáticos que correspondem a cada uma das classes que foram criadas. Desta forma, para utilizar a DSL, basta importar esta última classe e utilizar os métodos estáticos da mesma.
 
 ### Gestão de ligações
 
