@@ -67,11 +67,11 @@ A *interface* Entity tem as seguintes componentes:
 De forma semelhante, existem concretizações de cada uma das tabelas da base de dados sob a forma de Views.
 
 #### CommandRequest
-# TODO (FALAR DA INCLUSÃO DO ITERÁVEL DE COMANDOS)
 Um CommandRequest é responsável pela passagem de informação de contexto a um CommandHandler, de maneira a possibilitar a execução do comando. Para isto, esta classe conta com os seguintes campos:
 * Path path                                     : Especifica o caminho do pedido, que pode ou não conter variáveis;
 * Parameters params                             : Armazena os parâmetros passados;
-* TransactionManager trans       : Responsável por efetuar a conexão a uma base de dados, e efetuar uma transação.
+* TransactionManager trans       : Responsável por efetuar a conexão a uma base de dados, e efetuar uma transação;
+* Iterator<Pair<String, String>> commands : Iterador dos nomes e descrições dos vários comandos da aplicação. 
 
 Todos este campos podem ser acedidos através do seu respetivo *getter*, de maneira a ser possível aceder à informação por eles armazenada. Abaixo encontram-se descritas as classes respetivas a este campos, nomeadamente como chegar à informação relevante ao CommandHandler.
 
@@ -95,7 +95,12 @@ De modo a facilitar o acesso aos valores dos parametros, esta classe disponibili
 * Iterable\<String> getValues(String key)   : Retorna um iterável que permite percorrer os vários valores associados a dado parâmetro.
 
 #### Headers
-# TODO!
+A classe Headers é responsável pelo processamento dos headers de um dado comando. Como, nesta fase, os comandos em si não necessitam dos headers, logo não é necessário passar um objeto deste tipo ao CommandRequest.
+
+A classe Headers contém apenas um campo:
+* HashMap<String, LinkedList\<String>> headers : Armazena o nome dos headers e os seus valores.
+
+A classe App vai-se encarregar de definir a stream de output consoante a existência do header `file-name`. Já o header `accept` é passado como parâmetro à classe View, de maneira a esta apresentar os resultados com base no valor do mesmo (html ou texto simples).
 
 #### Paths
 Para armazenar informações sobre caminhos, foi decidido separar a informação relativa a estes em classes distintas. Com isto, dá-se a existência de uma classe com informação sobre uma diretoria, uma classe com informação sobre um dado caminho, e uma classe com informação sobre um *template* de uma diretoria. Abaixo estão descritas estas mesmas classes.

@@ -33,11 +33,6 @@ public class NTree implements Iterable<Pair<String,String>> {
         public CommandHandler getCmdHandler() {
             return cmdHandler;
         }
-
-        @Override
-        public String toString() {
-            return template.toString() + " - " + cmdHandler.toString();
-        }
     }
 
     static class MethodNode {
