@@ -60,13 +60,14 @@ Um CommandResult é responsável pelo armazenamento dos resultados obtidos de um
 A aplicação encontra-se desenvolvida de maneira a apresentar os resultados um a um, obtendo sempre a View correspondente a Entity atual para realizar a apresentação da mesma. No caso do comando não ter sido concluído com sucesso, a aplicação apresenta uma mensagem, dizendo que ocorreu um erro durante a execução do comando. O preenchimento de um objeto deste tipo é responsabilidade de cada CommandHandler.
 
 ### Entities
-De forma a representar cada uma das tabelas presentes na base de dados, foi realizada a *interface* Entity, que servirá de base para todas as concretizações das linhas em classes, onde cada campo vai corresponder a um atributo.
+De forma a representar cada tipo de resultado, foi realizada a *interface* Entity, que servirá de base para, por exemplo, todas as concretizações das linhas das tabelas da base de dados em classes, onde cada campo vai corresponder a um atributo.
 A *interface* Entity tem as seguintes componentes:
-* enum EntityType               : Um enumerado que contém o nome decada uma das entidades na base de dados;
+* enum EntityType               : Um enumerado que contém o nome de cada uma das entidades na base de dados;
 * EntityType getEntityType()    : Uma função, a ser implementada por cada uma das classes, que irá retornar o tipo da entidade.
-De forma semelhante, existem concretizações de cada uma das tabelas da base de dados sob a forma de Views, no entanto, serão abordadas na próxima fase do projeto, já que, de momento, apenas se encargam de fornecer uma String com informação relativa a cada uma das linhas.
+De forma semelhante, existem concretizações de cada uma das tabelas da base de dados sob a forma de Views.
 
 #### CommandRequest
+# TODO (FALAR DA INCLUSÃO DO ITERÁVEL DE COMANDOS)
 Um CommandRequest é responsável pela passagem de informação de contexto a um CommandHandler, de maneira a possibilitar a execução do comando. Para isto, esta classe conta com os seguintes campos:
 * Path path                                     : Especifica o caminho do pedido, que pode ou não conter variáveis;
 * Parameters params                             : Armazena os parâmetros passados;
@@ -92,6 +93,9 @@ No construtor de Parameters é chamado um método privado que se responsabiliza 
 De modo a facilitar o acesso aos valores dos parametros, esta classe disponibiliza dois métodos de acesso a dados:
 * String getValue(String key)               : Retorna o primeiro valor da lista associada a um parâmetro (facilita o acesso a parâmetros com um único valor);
 * Iterable\<String> getValues(String key)   : Retorna um iterável que permite percorrer os vários valores associados a dado parâmetro.
+
+#### Headers
+# TODO!
 
 #### Paths
 Para armazenar informações sobre caminhos, foi decidido separar a informação relativa a estes em classes distintas. Com isto, dá-se a existência de uma classe com informação sobre uma diretoria, uma classe com informação sobre um dado caminho, e uma classe com informação sobre um *template* de uma diretoria. Abaixo estão descritas estas mesmas classes.
@@ -141,6 +145,7 @@ Nível 2 : Composto pelas PathTemplates e respetivos Handlers, representados pel
 A classe da árvore n-ária encontra-se descrita em baixo, assim como a informação dos vários passos do encaminhamento dos comandos.
 
 #### NTree
+# TODO (FALAR DAS MUDANÇAS AQUI)
 A classe NTree representa uma árvore n-ária. Esta classe conta com a presença de apenas um campo:
 
 HashMap<Method, MethodNode> methods  : Armazena os nós dos vários métodos presentes na árvore.
@@ -169,6 +174,9 @@ O preenchimento da árvore n-ária é feito no arranque da aplicação, no méto
 O processo de obtenção de um Handler é realizado pelo Router. Este processo é iniciado durante a execução de um comando, ou seja, dentro do método *executeCommand(String[] args)* de App. Este método chama então o *findRoute(Method method, Path path)* do Router, que por sua vez chama o método *getHandlerAndApplyTemplate(Method method, Path path)* da NTree.
 
 Este último irá obter um MethodNode do seu HashMap, utilizando como chave o Method passado como argumento. Após essa obtenção, este método irá chamar um outro método, que se encontra presente no MethodNode obtido (*getHandlerAndApplyTemplate(Path path)*). Este método irá então percorrer o HashSet de HandlerNodes, verificando qual destes é que contém o PathTemplate correspondente ao Path passado como argumento e, quando este for encontrado, aplicará a *template* ao Path, e retornará o CommandHandler correspondente.
+
+### Apresentação de Resultados
+# TODO! (FALAR NA VIEW E NO HTML DSL)
 
 ### Gestão de ligações
 
