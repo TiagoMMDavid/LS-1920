@@ -184,7 +184,15 @@ O processo de obtenção de um Handler é realizado pelo Router. Este processo �
 Este último irá obter um MethodNode do seu HashMap, utilizando como chave o Method passado como argumento. Após essa obtenção, este método irá chamar um outro método, que se encontra presente no MethodNode obtido (*getHandlerAndApplyTemplate(Path path)*). Este método irá então percorrer o HashSet de HandlerNodes, verificando qual destes é que contém o PathTemplate correspondente ao Path passado como argumento e, quando este for encontrado, aplicará a *template* ao Path, e retornará o CommandHandler correspondente.
 
 ### Apresentação de Resultados
-# TODO! (FALAR NA VIEW)
+
+Para a representação dos resultados, foi decidido separar a secção visual do resto das outras classes, com o objetivo de conter tudo o que se encarrega com apresentação de resultados num único *package*.
+Assim sendo, foi concebida a classe abstrata View, cujas concretizações vão ser as representações visuais dos vários resultados.
+Esta classe conta com dois campos:
+
+* Iterable\<Entity> entities - Contém as várias entidades resultantes da execução de um comando.
+* Entity entity - Armazena apenas a primeira entidade do conjunto de entidades recebidas. Usado para views que contam com apenas uma entidade.
+
+Para além disto, a classe base contém também um método estático designado por *getInstance*, cujo objetivo é fornecer a concretização adequada à entidade fornecida. O tipo de entidade verificado é o primeiro do conjunto recebido, o que é válido por agora devido à não existência de comandos que resultem em duas (ou mais) entidades distintas. Existem também o método de instância *display*, que recebe uma *stream* de *output* e o formato de visualização que se pretende utilizar. Este método é responsável pelo chamamento de um dos métodos específicos de *display* (*displayHtml* ou *displayText*), assim como pela escrita na *output stream* pretendida. Estes últimos métodos terão de ser implementados pelas várias concretizações de *View*, sendo estas específicas para cada uma das entidades existentes.
 
 #### Representação em HTML
 
