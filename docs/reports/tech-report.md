@@ -150,7 +150,6 @@ Nível 2 : Composto pelas PathTemplates e respetivos Handlers, representados pel
 A classe da árvore n-ária encontra-se descrita em baixo, assim como a informação dos vários passos do encaminhamento dos comandos.
 
 #### NTree
-# TODO (FALAR DAS MUDANÇAS AQUI)
 A classe NTree representa uma árvore n-ária. Esta classe conta com a presença de apenas um campo:
 
 HashMap<Method, MethodNode> methods  : Armazena os nós dos vários métodos presentes na árvore.
@@ -158,6 +157,10 @@ HashMap<Method, MethodNode> methods  : Armazena os nós dos vários métodos pre
 A razão pela implementação do primeiro nível da árvore em forma de um HashMap deve-se ao alto desempenho na procura de um nó associado a um dado método.
 
 De maneira a adicionar uma nova entrada à àrvore, existe o método *add(Method method, PathTemplate template, CommandHandler cmd)*, que adiciona um novo nó de método à árvore (se necessário), e chama o método *addHandler(template, cmd)* desse mesmo nó (método este que se encontra descrito abaixo).
+
+De maneira a ser possível percorrer todos os comandos existentes na aplicação, a classe NTree implementa a interface Iterable<Pair<String, String>>, sendo que cada objeto do tipo Pair armazena o nome (método + template do Path) e descrição de cada comando existente. Estas descrições encontram-se armazenadas nas classes de cada handler, como forma de um método *toString()*.
+
+Para possibilitar o acesso deste iterador aos handlers que necessitam dele (por exemplo, o OptionsCommand), este é passado dentro de um objeto do tipo CommandRequest, através da chamada ao método *getCommands* do Router.
 
 #### MethodNode
 A classe MethodNode é a representação em nó de um Method. Representa o primeiro nível da NTree. Esta classe contém apenas um campo:
