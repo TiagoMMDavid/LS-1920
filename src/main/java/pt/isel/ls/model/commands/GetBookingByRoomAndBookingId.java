@@ -1,5 +1,6 @@
 package pt.isel.ls.model.commands;
 
+import pt.isel.ls.model.commands.common.CommandException;
 import pt.isel.ls.model.commands.common.CommandHandler;
 import pt.isel.ls.model.commands.common.CommandRequest;
 import pt.isel.ls.model.commands.common.CommandResult;
@@ -8,15 +9,18 @@ import pt.isel.ls.model.entities.Booking;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.util.Date;
 
 import static pt.isel.ls.utils.DateUtils.parseTimeWithTimezone;
 
 public class GetBookingByRoomAndBookingId implements CommandHandler {
     @Override
-    public CommandResult execute(CommandRequest commandRequest) throws Exception {
+    public CommandResult execute(CommandRequest commandRequest) throws CommandException, SQLException {
         CommandResult result = new CommandResult();
         TransactionManager trans = commandRequest.getTransactionHandler();
-        if (!trans.executeTransaction(con -> {
+        trans.executeTransaction(con -> {
             PreparedStatement ps = con.prepareStatement("SELECT * "
                     + "FROM BOOKING WHERE rid = ? AND bid = ?");
 
@@ -26,23 +30,26 @@ public class GetBookingByRoomAndBookingId implements CommandHandler {
             ps.setInt(2, bookingId);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
+                Date beginInst;
+                Date endInst;
+                try {
+                    beginInst = parseTimeWithTimezone(rs.getString("begin_inst"), "yyyy-MM-dd HH:mm:ss");
+                    endInst = parseTimeWithTimezone(rs.getString("end_inst"),"yyyy-MM-dd HH:mm:ss");
+                } catch (ParseException e) {
+                    throw new CommandException("Failed to parse dates");
+                }
                 result.addResult(new Booking(
                         rs.getInt("bid"),
                         rs.getInt("uid"),
                         rs.getInt("rid"),
-                        parseTimeWithTimezone(rs.getString("begin_inst"), "yyyy-MM-dd HH:mm:ss"),
-                        parseTimeWithTimezone(rs.getString("end_inst"),"yyyy-MM-dd HH:mm:ss")
+                        beginInst, endInst
                 ));
 
             }
-            result.setSuccess(true);
-
             rs.close();
             ps.close();
-        })) {
-            result.setSuccess(false);
-            result.clearResults();
-        }
+        });
+
         return result;
     }
 

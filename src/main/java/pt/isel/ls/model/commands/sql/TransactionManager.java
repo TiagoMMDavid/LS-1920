@@ -1,8 +1,10 @@
 package pt.isel.ls.model.commands.sql;
 
 import org.postgresql.ds.PGSimpleDataSource;
+import pt.isel.ls.model.commands.common.CommandException;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 
 public class TransactionManager {
     private final String connectionUrl;
@@ -11,22 +13,20 @@ public class TransactionManager {
         this.connectionUrl = connectionUrl;
     }
 
-    public boolean executeTransaction(SqlFunction f) throws Exception {
+    public void executeTransaction(SqlFunction f) throws CommandException, SQLException {
         PGSimpleDataSource ds = new PGSimpleDataSource();
         ds.setURL(connectionUrl);
 
         Connection con = ds.getConnection();
         con.setAutoCommit(false);
-        boolean toReturn = true;
         try {
             f.execute(con);
             con.commit();
-        } catch (Exception e) {
+        } catch (SQLException | CommandException e) {
             con.rollback();
-            toReturn = false;
-        } finally {
             con.close();
+            throw e;
         }
-        return toReturn;
+        con.close();
     }
 }

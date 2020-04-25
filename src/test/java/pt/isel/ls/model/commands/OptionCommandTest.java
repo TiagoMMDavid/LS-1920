@@ -11,7 +11,7 @@ import pt.isel.ls.model.paths.Path;
 import pt.isel.ls.model.paths.PathTemplate;
 import pt.isel.ls.view.View;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull;
 
 public class OptionCommandTest {
     private static Router router = new Router();
@@ -52,7 +52,7 @@ public class OptionCommandTest {
         CommandHandler handler = router.findRoute(Method.OPTION, cmd.getPath());
 
         CommandResult res = handler.execute(cmd);
-        assertTrue(res.isSuccess());
+        assertNotNull(res);
         View view = View.getInstance(res);
         view.display(System.out, null);
     }

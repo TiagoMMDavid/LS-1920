@@ -22,7 +22,6 @@ import pt.isel.ls.utils.DateUtils;
 
 import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 import java.sql.PreparedStatement;
 import java.text.SimpleDateFormat;
@@ -87,7 +86,6 @@ public class GetCommandsTest {
         Iterator<Entity> itr = result.iterator();
 
         assertNotNull(result);
-        assertTrue(result.isSuccess());
         Booking booking = (Booking) itr.next();
         assertEquals(4, booking.getBid());
         assertEquals(0, booking.getUid());
@@ -107,7 +105,6 @@ public class GetCommandsTest {
         Iterator<Entity> itr = result.iterator();
 
         assertNotNull(result);
-        assertTrue(result.isSuccess());
         assertEquals(0, ((Booking) itr.next()).getBid());
         assertEquals(1, ((Booking) itr.next()).getBid());
         assertEquals(3, ((Booking) itr.next()).getBid());
@@ -125,7 +122,6 @@ public class GetCommandsTest {
         Iterator<Entity> itr = result.iterator();
 
         assertNotNull(result);
-        assertTrue(result.isSuccess());
         assertEquals(0, ((Label) itr.next()).getLid());
         assertEquals(1, ((Label) itr.next()).getLid());
         assertEquals(2, ((Label) itr.next()).getLid());
@@ -143,7 +139,6 @@ public class GetCommandsTest {
         Iterator<Entity> itr = result.iterator();
 
         assertNotNull(result);
-        assertTrue(result.isSuccess());
         Room room = (Room) itr.next();
         assertEquals(0, room.getRid());
         assertEquals("Meeting Room", room.getName());
@@ -160,7 +155,6 @@ public class GetCommandsTest {
         Iterator<Entity> itr = result.iterator();
 
         assertNotNull(result);
-        assertTrue(result.isSuccess());
         Room room1 = (Room) itr.next();
         assertEquals(0, room1.getRid());
         assertEquals("Meeting Room", room1.getName());
@@ -181,7 +175,6 @@ public class GetCommandsTest {
         Iterator<Entity> itr = result.iterator();
 
         assertNotNull(result);
-        assertTrue(result.isSuccess());
         Room room1 = (Room) itr.next();
         assertEquals(0, room1.getRid());
         assertEquals("Meeting Room", room1.getName());
@@ -199,7 +192,6 @@ public class GetCommandsTest {
         Iterator<Entity> itr = result.iterator();
 
         assertNotNull(result);
-        assertTrue(result.isSuccess());
         Room room1 = (Room) itr.next();
         assertEquals(0, room1.getRid());
         assertEquals("Meeting Room", room1.getName());
@@ -217,7 +209,6 @@ public class GetCommandsTest {
         Iterator<Entity> itr = result.iterator();
 
         assertNotNull(result);
-        assertTrue(result.isSuccess());
         Room room = (Room) itr.next();
         assertEquals(0, room.getRid());
         assertEquals("Meeting Room", room.getName());
@@ -234,7 +225,6 @@ public class GetCommandsTest {
         Iterator<Entity> itr = result.iterator();
 
         assertNotNull(result);
-        assertTrue(result.isSuccess());
         assertEquals(1, ((Room) itr.next()).getRid());
     }
 
@@ -249,7 +239,6 @@ public class GetCommandsTest {
         Iterator<Entity> itr = result.iterator();
 
         assertNotNull(result);
-        assertTrue(result.isSuccess());
         User user = (User) itr.next();
         assertEquals(0, user.getUid());
         assertEquals("John Frank", user.getName());
@@ -265,7 +254,6 @@ public class GetCommandsTest {
         CommandResult res = handler.execute(cmd);
         Date expected = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        assertTrue(res.isSuccess());
         Time actual = (Time) res.iterator().next();
 
         assertEquals(formatter.format(expected.getTime()), formatter.format(actual.getTime()));

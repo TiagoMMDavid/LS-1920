@@ -1,5 +1,6 @@
 package pt.isel.ls.model.commands;
 
+import pt.isel.ls.model.commands.common.CommandException;
 import pt.isel.ls.model.commands.common.CommandHandler;
 import pt.isel.ls.model.commands.common.CommandRequest;
 import pt.isel.ls.model.commands.common.CommandResult;
@@ -8,13 +9,14 @@ import pt.isel.ls.model.entities.Label;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class GetLabelsCommand implements CommandHandler {
     @Override
-    public CommandResult execute(CommandRequest commandRequest) throws Exception {
+    public CommandResult execute(CommandRequest commandRequest) throws CommandException, SQLException {
         CommandResult result = new CommandResult();
         TransactionManager trans = commandRequest.getTransactionHandler();
-        if (!trans.executeTransaction(con -> {
+        trans.executeTransaction(con -> {
             PreparedStatement ps = con.prepareStatement("SELECT lid, name "
                     + "FROM LABEL");
             ResultSet rs = ps.executeQuery();
@@ -23,14 +25,9 @@ public class GetLabelsCommand implements CommandHandler {
                     result.addResult(new Label(rs.getInt("lid"), rs.getString("name")));
                 } while (rs.next());
             }
-            result.setSuccess(true);
-
             rs.close();
             ps.close();
-        })) {
-            result.setSuccess(false);
-            result.clearResults();
-        }
+        });
         return result;
     }
 

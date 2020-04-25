@@ -23,7 +23,6 @@ import java.util.Iterator;
 
 import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 public class PostCommandsTest {
     private static TransactionManager trans = new TransactionManager(System.getenv("postgresTestUrl"));
@@ -71,7 +70,6 @@ public class PostCommandsTest {
         CommandResult result = handler.execute(cmd);
 
         assertNotNull(result);
-        assertTrue(result.isSuccess());
         Iterator<Entity> itr = result.iterator();
         Booking booking = (Booking) itr.next();
         assertEquals(1, booking.getBid());
@@ -89,7 +87,6 @@ public class PostCommandsTest {
         CommandResult result = handler.execute(cmd);
 
         assertNotNull(result);
-        assertTrue(result.isSuccess());
         Iterator<Entity> itr = result.iterator();
         Label label = (Label) itr.next();
         assertEquals(2, label.getLid());
@@ -107,7 +104,6 @@ public class PostCommandsTest {
         CommandResult result = handler.execute(cmd);
 
         assertNotNull(result);
-        assertTrue(result.isSuccess());
         Iterator<Entity> itr = result.iterator();
         Room room = (Room) itr.next();
         assertEquals(1, room.getRid());
@@ -125,7 +121,6 @@ public class PostCommandsTest {
         CommandResult result = handler.execute(cmd);
 
         assertNotNull(result);
-        assertTrue(result.isSuccess());
         Iterator<Entity> itr = result.iterator();
         User user = (User) itr.next();
         assertEquals(1, user.getUid());

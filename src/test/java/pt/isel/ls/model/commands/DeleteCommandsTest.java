@@ -14,7 +14,7 @@ import pt.isel.ls.model.paths.PathTemplate;
 
 import java.sql.PreparedStatement;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNotNull;
 
 public class DeleteCommandsTest {
     private static TransactionManager trans = new TransactionManager(System.getenv("postgresTestUrl"));
@@ -59,6 +59,6 @@ public class DeleteCommandsTest {
 
         CommandHandler handler = router.findRoute(Method.DELETE, cmd.getPath());
         CommandResult result = handler.execute(cmd);
-        assertTrue(result.isSuccess());
+        assertNotNull(result);
     }
 }

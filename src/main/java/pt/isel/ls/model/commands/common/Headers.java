@@ -15,13 +15,13 @@ public class Headers {
         for (String param: splitParams) {
             int indexOfEqual = param.indexOf(':');
             if (indexOfEqual < 0) {
-                throw new IllegalArgumentException();
+                throw new IllegalArgumentException("Wrong header format");
             }
 
             String name = param.substring(0, indexOfEqual);
             String value = param.substring(indexOfEqual + 1);
             if (value.isEmpty() || name.isEmpty()) {
-                throw new IllegalArgumentException();
+                throw new IllegalArgumentException("Wrong header format");
             }
 
             addToMap(name, value);

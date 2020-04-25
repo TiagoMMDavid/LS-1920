@@ -31,11 +31,10 @@ begin;
 		bid					serial PRIMARY key CHECK (bid >= 0),
 		uid 				int NOT NULL REFERENCES USERS(uid),
 		rid					int not null references ROOM(rid),
-		begin_inst			timestamp NOT null CHECK (extract(minute from begin_inst) :: int % 10 = 0),
-		end_inst			timestamp NOT null CHECK (extract(minute from end_inst) :: int % 10 = 0),
-		CHECK (begin_inst < end_inst AND 
-			  (extract(epoch from end_inst::timestamp-begin_inst::timestamp) / 60) >= 10
-		)
+		begin_inst			timestamp NOT null CONSTRAINT BEGIN_INST_MULTIPLE_OF_10 CHECK (extract(minute from begin_inst) :: int % 10 = 0),
+		end_inst			timestamp NOT null CONSTRAINT END_INST_MULTIPLE_OF_10 CHECK (extract(minute from end_inst) :: int % 10 = 0),
+		CONSTRAINT BEGIN_INST_LOWER_THAN_END_INST CHECK (begin_inst < end_inst),
+		CONSTRAINT DURATION_LESS_THAN_10 CHECK ((extract(epoch from end_inst::timestamp-begin_inst::timestamp) / 60) >= 10)
 	);
 
 commit;

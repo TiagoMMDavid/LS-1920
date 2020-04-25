@@ -1,5 +1,6 @@
 package pt.isel.ls.model.commands;
 
+import pt.isel.ls.model.commands.common.CommandException;
 import pt.isel.ls.model.commands.common.CommandHandler;
 import pt.isel.ls.model.commands.common.CommandRequest;
 import pt.isel.ls.model.commands.common.CommandResult;
@@ -19,10 +20,10 @@ import static pt.isel.ls.model.commands.helpers.LabelsHelper.getLids;
 
 public class PostRoomsCommand implements CommandHandler {
     @Override
-    public CommandResult execute(CommandRequest commandRequest) throws Exception {
+    public CommandResult execute(CommandRequest commandRequest) throws CommandException, SQLException {
         CommandResult result = new CommandResult();
         TransactionManager trans = commandRequest.getTransactionHandler();
-        if (!trans.executeTransaction(con -> {
+        trans.executeTransaction(con -> {
             PreparedStatement ps = con.prepareStatement("INSERT INTO ROOM "
                             + "(name, description, location, capacity) Values(?,?,?,?)",
                             Statement.RETURN_GENERATED_KEYS
@@ -43,7 +44,7 @@ public class PostRoomsCommand implements CommandHandler {
                     ps.setInt(4, capacity);
                 }
 
-                final int success = ps.executeUpdate();
+                ps.executeUpdate();
 
                 //Get rid
                 ResultSet rs = ps.getGeneratedKeys();
@@ -56,17 +57,12 @@ public class PostRoomsCommand implements CommandHandler {
                     LinkedList<Integer> lids = getLids(con, labels);
                     fillRoomLabelTable(con, rid, lids);
                 }
-
-                result.setSuccess(success > 0);
             } else {
-                throw new IllegalArgumentException("No arguments found / Invalid arguments");
+                throw new CommandException("No arguments found / Invalid arguments");
             }
             ps.close();
 
-        })) {
-            result.setSuccess(false);
-            result.clearResults();
-        }
+        });
         return result;
     }
 

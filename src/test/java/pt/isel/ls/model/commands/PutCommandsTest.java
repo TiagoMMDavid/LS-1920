@@ -16,7 +16,6 @@ import pt.isel.ls.model.paths.PathTemplate;
 import java.sql.PreparedStatement;
 
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
 
 public class PutCommandsTest {
     private static TransactionManager trans = new TransactionManager(System.getenv("postgresTestUrl"));
@@ -61,6 +60,5 @@ public class PutCommandsTest {
         CommandHandler handler = router.findRoute(Method.PUT, cmd.getPath());
         CommandResult result = handler.execute(cmd);
         assertNotNull(result);
-        assertTrue(result.isSuccess());
     }
 }

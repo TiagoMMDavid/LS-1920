@@ -73,28 +73,41 @@ public class App {
 
     //Returned value determines if the app should continue running or not
     private static boolean executeCommand(String[] commands) {
-        Method method = Method.valueOf(commands[0].toUpperCase());
+        Method method;
+        try {
+            method = Method.valueOf(commands[0].toUpperCase());
+        } catch (IllegalArgumentException e) {
+            System.out.println("Method \"" + commands[0] + "\" does not exist");
+            return true;
+        }
 
 
         Headers headers = null;
         Parameters params = null;
+        Path path;
 
-        switch (commands.length) {
-            case 4:
-                headers = new Headers(commands[2]);
-                params = new Parameters(commands[3]);
-                break;
-            case 3:
-                if (isHeader(commands[2])) {
+        try {
+            switch (commands.length) {
+                case 4:
                     headers = new Headers(commands[2]);
-                } else {
-                    params = new Parameters(commands[2]);
-                }
-                break;
-            default:
+                    params = new Parameters(commands[3]);
+                    break;
+                case 3:
+                    if (isHeader(commands[2])) {
+                        headers = new Headers(commands[2]);
+                    } else {
+                        params = new Parameters(commands[2]);
+                    }
+                    break;
+                default:
+            }
+            path = new Path(commands[1]);
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+            return true;
         }
 
-        CommandRequest cmd = new CommandRequest(new Path(commands[1]),
+        CommandRequest cmd = new CommandRequest(path,
                 params,
                 trans,
                 router.getCommands());
@@ -105,14 +118,15 @@ public class App {
             return true;
         }
 
-        CommandResult result = null;
+        CommandResult result;
         try {
             result = handler.execute(cmd);
             if (result != null) {
                 displayResult(result, headers);
             }
         } catch (Exception e) {
-            System.out.println(e.getMessage());
+            System.out.println(e.getMessage() + "\n");
+            return true;
         }
 
         return result != null;
@@ -123,34 +137,30 @@ public class App {
     }
 
     private static void displayResult(CommandResult result, Headers headers) {
-        if (!result.isSuccess()) {
-            System.out.println("Error while executing command");
-        } else {
-            try {
-                String filename = null;
-                String viewFormat = null;
+        try {
+            String filename = null;
+            String viewFormat = null;
 
-                // Get headers
-                if (headers != null) {
-                    filename = headers.getValue("file-name");
-                    viewFormat = headers.getValue("accept");
-                }
-                // Get output stream
-                OutputStream out = filename == null ? System.out : getFileStream(filename);
-
-                // Present each entity
-                View view = View.getInstance(result);
-                if (view != null) {
-                    view.display(out, viewFormat);
-                }
-
-                // Close output stream only if it isn't System.out
-                if (out != System.out) {
-                    out.close();
-                }
-            } catch (IOException e) {
-                System.out.println("Failed to open output stream");
+            // Get headers
+            if (headers != null) {
+                filename = headers.getValue("file-name");
+                viewFormat = headers.getValue("accept");
             }
+            // Get output stream
+            OutputStream out = filename == null ? System.out : getFileStream(filename);
+
+            // Present each entity
+            View view = View.getInstance(result);
+            if (view != null) {
+                view.display(out, viewFormat);
+            }
+
+            // Close output stream only if it isn't System.out
+            if (out != System.out) {
+                out.close();
+            }
+        } catch (IOException e) {
+            System.out.println("Failed to open output stream");
         }
     }
 

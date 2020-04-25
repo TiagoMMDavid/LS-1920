@@ -1,5 +1,6 @@
 package pt.isel.ls.model.commands;
 
+import pt.isel.ls.model.commands.common.CommandException;
 import pt.isel.ls.model.commands.common.CommandHandler;
 import pt.isel.ls.model.commands.common.CommandRequest;
 import pt.isel.ls.model.commands.common.CommandResult;
@@ -19,10 +20,10 @@ import static pt.isel.ls.utils.DateUtils.parseTimeWithTimezone;
 
 public class GetRoomsCommand implements CommandHandler {
     @Override
-    public CommandResult execute(CommandRequest commandRequest) throws Exception {
+    public CommandResult execute(CommandRequest commandRequest) throws CommandException, SQLException {
         CommandResult result = new CommandResult();
         TransactionManager trans = commandRequest.getTransactionHandler();
-        if (!trans.executeTransaction(con -> {
+        trans.executeTransaction(con -> {
             Integer capacity = null;
             String begin = null;
             String dur = null;
@@ -44,16 +45,10 @@ public class GetRoomsCommand implements CommandHandler {
                         result.addResult(new Room(rs.getInt("rid"), rs.getString("name")));
                     } while (rs.next());
                 }
-                result.setSuccess(true);
-
                 rs.close();
                 ps.close();
             }
-            result.setSuccess(true);
-        })) {
-            result.setSuccess(false);
-            result.clearResults();
-        }
+        });
         return result;
     }
 
@@ -84,7 +79,7 @@ public class GetRoomsCommand implements CommandHandler {
     }
 
     private void fillStatementWithParameters(PreparedStatement ps, Integer capacity, String begin, String dur,
-                                                 LinkedList<Integer> rids) throws SQLException, ParseException {
+                                                 LinkedList<Integer> rids) throws SQLException, CommandException {
         int currIdx = 1;
 
         if (capacity != null) {
@@ -96,8 +91,14 @@ public class GetRoomsCommand implements CommandHandler {
             }
         }
         if (begin != null && dur != null) {
-            Date beginDate = parseTimeWithTimezone(begin, "yyyy-MM-dd HH:mm");
-            Date durationDate = parseTime(dur, "HH:mm");
+            Date beginDate;
+            Date durationDate;
+            try {
+                beginDate = parseTimeWithTimezone(begin, "yyyy-MM-dd HH:mm");
+                durationDate = parseTime(dur, "HH:mm");
+            } catch (ParseException e) {
+                throw new CommandException("Failed to parse dates");
+            }
             Date endDate = new Date(beginDate.getTime() + durationDate.getTime());
             ps.setTimestamp(currIdx++, new java.sql.Timestamp(beginDate.getTime()));
             ps.setTimestamp(currIdx++, new java.sql.Timestamp(endDate.getTime()));

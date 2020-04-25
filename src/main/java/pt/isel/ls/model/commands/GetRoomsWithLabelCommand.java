@@ -1,5 +1,6 @@
 package pt.isel.ls.model.commands;
 
+import pt.isel.ls.model.commands.common.CommandException;
 import pt.isel.ls.model.commands.common.CommandHandler;
 import pt.isel.ls.model.commands.common.CommandRequest;
 import pt.isel.ls.model.commands.common.CommandResult;
@@ -8,13 +9,14 @@ import pt.isel.ls.model.entities.Room;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class GetRoomsWithLabelCommand implements CommandHandler {
     @Override
-    public CommandResult execute(CommandRequest commandRequest) throws Exception {
+    public CommandResult execute(CommandRequest commandRequest) throws CommandException, SQLException {
         CommandResult result = new CommandResult();
         TransactionManager trans = commandRequest.getTransactionHandler();
-        if (!trans.executeTransaction(con -> {
+        trans.executeTransaction(con -> {
             PreparedStatement ps = con.prepareStatement("SELECT rid "
                     + "FROM ROOMLABEL WHERE lid = ?");
 
@@ -26,14 +28,10 @@ public class GetRoomsWithLabelCommand implements CommandHandler {
                     result.addResult(new Room(rs.getInt("rid")));
                 } while (rs.next());
             }
-            result.setSuccess(true);
 
             rs.close();
             ps.close();
-        })) {
-            result.setSuccess(false);
-            result.clearResults();
-        }
+        });
         return result;
     }
 

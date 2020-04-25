@@ -22,17 +22,17 @@ abstract class BasePath {
     protected void parsePath(String path) throws IllegalArgumentException {
         StringBuilder pathStringBuilder = new StringBuilder();
         if (!isValid(path)) {
-            throw new IllegalArgumentException("Wrong template format");
+            throw new IllegalArgumentException("Wrong path format");
         }
         path = path.substring(1);
         String[] paths = path.split("/");
         if (paths.length == 0) {
-            throw new IllegalArgumentException("Wrong format");
+            throw new IllegalArgumentException("Wrong path format");
         }
         if (!paths[0].isEmpty()) {
             for (String str : paths) {
                 if (str.isEmpty()) {
-                    throw new IllegalArgumentException("Wrong format");
+                    throw new IllegalArgumentException("Wrong path format");
                 }
                 addDirectory(str);
                 pathStringBuilder.append("/");
