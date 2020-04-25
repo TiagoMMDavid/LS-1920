@@ -53,11 +53,10 @@ De maneira a ser possível implementar vários tipos de comandos de um modo de u
 Em termos de classes, foram implementadas as seguintes classes, que serão utilizadas pelos *handlers*:
 
 #### CommandResult
-Um CommandResult é responsável pelo armazenamento dos resultados obtidos de um comando. Esta classe conta com a presença de dois campos:
-* boolean success                : Determina se o comando executado foi concluído com sucesso ou não;
+Um CommandResult é responsável pelo armazenamento dos resultados obtidos de um comando. Esta classe conta com a presença de apenas um campo:
 * LinkedList\<Entity> results    : Os resultados em si.
 
-A aplicação encontra-se desenvolvida de maneira a apresentar os resultados um a um, obtendo sempre a View correspondente a Entity atual para realizar a apresentação da mesma. No caso do comando não ter sido concluído com sucesso, a aplicação apresenta uma mensagem, dizendo que ocorreu um erro durante a execução do comando. O preenchimento de um objeto deste tipo é responsabilidade de cada CommandHandler.
+A aplicação encontra-se desenvolvida de maneira a apresentar os resultados um a um, obtendo sempre a View correspondente a Entity atual para realizar a apresentação da mesma. No caso do comando não ter sido concluído com sucesso, é lançada uma exceção, dizendo qual o erro durante a execução do comando. O preenchimento de um objeto deste tipo é responsabilidade de cada CommandHandler.
 
 ### Entities
 De forma a representar cada tipo de resultado, foi realizada a *interface* Entity, que servirá de base para, por exemplo, todas as concretizações das linhas das tabelas da base de dados em classes, onde cada campo vai corresponder a um atributo.
@@ -78,7 +77,7 @@ Todos este campos podem ser acedidos através do seu respetivo *getter*, de mane
 #### TransactionManager
 A classe TransactionManager é a responsável por efetuar uma conexão a um servidor PSQL, e executar uma transação no mesmo. Para isto, esta classe contém o campo *connectionUrl*, que armazena o URL completo da base de dados. A classe App é a responsável pela obtenção do valor deste campo, que deverá estar armazenado numa variável de ambiente do sistema operativo.
 
-Para efetuar uma transação, é utilizado o método *executeTransaction()*, que recebe uma interface funcional SqlFunction como argumento. Esta interface contém um método que descreve todo o processo da transação, o qual deverá ser implementado pelos CommandHandlers. O método de execução da transação em TransactionManager começa por efetuar uma ligação à base de dados, e tenta depois executar o método da interface. Caso este seja concluído com sucesso, executa-se um *commit* da transação. Caso contrário, faz-se um *rollback* da mesma. Independentemente do resultado, a conexão estabelecida é sempre fechada. O valor de retorno da função identifica o sucesso da transação.
+Para efetuar uma transação, é utilizado o método *executeTransaction()*, que recebe uma interface funcional SqlFunction como argumento. Esta interface contém um método que descreve todo o processo da transação, o qual deverá ser implementado pelos CommandHandlers. O método de execução da transação em TransactionManager começa por efetuar uma ligação à base de dados, e tenta depois executar o método da interface. Caso este seja concluído com sucesso, executa-se um *commit* da transação. Caso contrário, faz-se um *rollback* da mesma. Independentemente do resultado, a conexão estabelecida é sempre fechada.
 
 #### Parameters
 A classe Parameters é responsável pelo processamento de parâmetros de um dado comando. Por esta razão, é instanciado um objeto deste tipo sempre que é instanciado um CommandRequest. Com esta classe, a informação sobre os parâmetros fica sintetizada e de fácil acesso para as outras classes que necessitem de consular os mesmos.
@@ -217,7 +216,7 @@ Visto que as conexões apenas são estabelecidas e utilizadas dentro dos *Comman
 
 Como referido anteriormente, *TransactionManager* apenas dispõe de um método que executa uma transação. A conexão efetuada neste método é estabelecida com *AutoCommit* a *false*. Desta forma, só serão feitas mudanças à base de dados caso seja explicitamente chamado o método *commit()* para dada *Connection*.
 
-Dadas estas caraterísticas, dentro de todos os *CommandHandlers* é chamado o método *executeTransaction()*, passando-lhe como parâmetro uma função que descreve a transação a ser efetuada. Esta transação é realizada dentro de um bloco *try-catch-finally* em TransactionManager. Através de um *catch (Exception e)*, são garantidos os procedimentos necessários no caso de ocorrência de erros, nomeadamente o *rollback* dos possíveis valores inseridos na base de dados. Caso não haja nenhuma exceção detetada na execução dos comandos SQL, é feito um *commit* aos dados.
+Dadas estas caraterísticas, dentro de todos os *CommandHandlers* é chamado o método *executeTransaction()*, passando-lhe como parâmetro uma função que descreve a transação a ser efetuada. Esta transação é realizada dentro de um bloco *try-catch* em TransactionManager. Através de um *catch (SQLException | CommandException e)*, são garantidos os procedimentos necessários no caso de ocorrência de erros, nomeadamente o *rollback* dos possíveis valores inseridos na base de dados. Caso não haja nenhuma exceção detetada na execução dos comandos SQL, é feito um *commit* aos dados.
 
 ### Acesso a dados
 
@@ -226,6 +225,8 @@ Dentro do mesmo Method, os handlers são semelhantes, sendo assim, basta explica
 * EXIT - É retornado null para que a App se encarregue de terminar a aplicação.
 * GET - São realizadas queries à base de dados, utilizando o path para sabermos quais são as tabelas, e, em alguns casos, um parâmetro, para obter resultados específicos. O resultado da query é refletido num ResultSet, que irá ser iterado, colocando a informação nele armazenada num CommandResult, para apresentar ao utilizador no final da execução. Todas as queries presentes nestes comandos seguem uma estrutura simples, em alguns casos sendo necessário um _WHERE_, como por exemplo quando se quer obter um _room_ através do seu _rid_.
 * POST - Em cada um destes comandos, o utilizador fornece sempre a informação que quer colocar na base de dados sob a forma de parâmetros. Assim sendo, todos os comandos consistem em _inserts_. É pertinente realçar que quando se instância o PreparedStatement, se fornece um parâmetro adicional, _Statement.RETURN\_GENERATED\_KEYS_, para que no ResultSet estejam presentes as chaves primárias que foram geradas através da auto-incrementação.
+* PUT - Nestes comandos, o utilizador fornece sempre a informação necessária para a identificação correta dos dados a alterar, incluindo quais os dados a alterar sob a forma de parâmetros. Assim sendo, todos os comandos consistem em _update_.
+* DELETE - O utilizador fornece a informação necessária sobre qual o tuplo a eliminar da base de dados, sendo o comando SQL necessário o _delete_.
 
 Por via do nosso modelo de base de dados, não existem nenhuns _statements_ em _SQL_ que consideramos não-triviais, assim sendo, não achamos pertinente realçar nenhum deles.
 
@@ -233,14 +234,11 @@ Por via do nosso modelo de base de dados, não existem nenhuns _statements_ em _
 
 De modo a averiguar o correto funcionamento do programa é necessário efetuar o processamento de erros e comunicá-los ao utilizador do programa.
 
-Sendo assim, há verificações feitas pelo código que certificam-se de afetar o programa. Estes erros podem ser leves, mostrando apenas uma mensagem de erro, ou em casos mais graves, lançando uma exceção que consequentemente para a aplicação.
+Os erros que possam eventualmente occorer durante a execução do programa são comunicados através do uso de exceções. Em particular, no caso da aplicação desenvolvida, a classe App poderá receber exceções dos tipos CommandException, SQLException, e IllegalArgumentException.
 
-Relativamente a erros ligeiros, na leitura dos comandos da aplicação é feita a simples verificação do número de argumentos passados no comando. Visto que cada comando é definido pela sequência {method} {path} {parameters}, em que {parameters} nem sempre é obrigatório conclui-se que todos os comandos têm de ter entre dois a três argumentos. Logo, caso esta restrição não seja cumprida é apresentada na consola uma mensagem de erro ao utilizador.
+Primeiramente, é verificado se o comando passado à aplicação encontra-se descrito de maneira correta. Esta verificação é feita por partes, começando pela verificação da existência de um método, passando à verificação dos headers e parametros, e finalmente à verificação do *path*. Cabe às classes representantes de cada um destes tipos efetuar a verificação dos mesmos.
 
-Passando às possíveis exceções, as mesmas estão dispersas entre as várias classes do projeto. Quando o programa passa a primeira verificação referida anteriormente, vai instanciar vários objetos do tipo CommandRequest, Path, Parameters, CommandHandler e CommandResult em função dos argumentos dados. Visto que os argumentos recebidos podem vir com um formato errado, todas as classes referidas efetuam verificações que se certificam que o dado objeto foi inicializado corretamente. Caso isto não acontença será lançada uma exceção adequada ao tipo de erro.
-
-Por fim, quanto ao acesso à base de dados, dentro dos CommandHandlers, caso haja qualquer exceção SQL apanhada no decorrer do código, é feito um rollback dos dados que podem ter sido inseridos, e altera-se o CommandResult em função do erro sucedido. Ou seja, altera-se o booleano _success_ de CommandResult e à string _title_ adiciona-se a mensagem de erro. Visto que os erros de formatação são descobertos nas verificações referidas anteriormente, os erros que podem surgir nesta fase estão relacionados com a falha do cumprimento das regras estabelecidas na criação da base de dados.
-Desta maneira, após o comando ser processado e ser retornado um CommandResult para a aplicação, verifica-se o valor do booleano _success_ e é apresentada a mensagem de erro caso necessário.
+Quando se executa um comando, a App irá apanhar eventuais exceções lançadas pelos 
 
 ## Avaliação crítica
 

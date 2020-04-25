@@ -81,7 +81,6 @@ public class App {
             return true;
         }
 
-
         Headers headers = null;
         Parameters params = null;
         Path path;
