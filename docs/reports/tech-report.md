@@ -236,9 +236,9 @@ De modo a averiguar o correto funcionamento do programa é necessário efetuar o
 
 Os erros que possam eventualmente occorer durante a execução do programa são comunicados através do uso de exceções. Em particular, no caso da aplicação desenvolvida, a classe App poderá receber exceções dos tipos CommandException, SQLException, e IllegalArgumentException.
 
-Primeiramente, é verificado se o comando passado à aplicação encontra-se descrito de maneira correta. Esta verificação é feita por partes, começando pela verificação da existência de um método, passando à verificação dos headers e parametros, e finalmente à verificação do *path*. Cabe às classes representantes de cada um destes tipos efetuar a verificação dos mesmos.
+Primeiramente, é verificado se o comando passado à aplicação encontra-se descrito de maneira correta. Esta verificação é feita por partes, começando pela verificação da existência de um método, passando à verificação dos headers e parâmetros, e finalmente à verificação do *path*. Cabe às classes representantes de cada um destes tipos efetuar a verificação dos mesmos. No caso desta falhar, estas devem lançar uma exceção contendo uma mensagem de erro informativa.
 
-Quando se executa um comando, a App irá apanhar eventuais exceções lançadas pelos 
+Quando se executa um comando, a App irá apanhar eventuais exceções lançadas pelo mesmo, apresentando a mensagem da mesma ao utilizador. Cabe aos handlers preencherem esta mensagem na exceção lançada.
 
 ## Avaliação crítica
 
