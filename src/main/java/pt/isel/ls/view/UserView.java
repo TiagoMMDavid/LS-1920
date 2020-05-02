@@ -53,7 +53,7 @@ public class UserView extends View {
     private Element buildHtmlTable() {
         Element tableRow = tr();
         User user = (User) entity;
-        tableRow.addChild(th("UID"));
+        tableRow.addChild(th("User ID"));
 
         if (!user.isPost()) {
             tableRow.addChild(th("Name"));

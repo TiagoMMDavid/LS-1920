@@ -25,12 +25,16 @@ public class GetRoomByIdCommand implements CommandHandler {
             ps.setInt(1, roomId);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
+                Integer capacity = rs.getInt("capacity");
+                if (rs.wasNull()) {
+                    capacity = null;
+                }
                 result.addResult(new Room(
                         rs.getInt("rid"),
                         rs.getString("name"),
                         rs.getString("description"),
                         rs.getString("location"),
-                        rs.getInt("capacity"),
+                        capacity,
                         LabelsHelper.getLabelsFromRid(con, roomId)
                 ));
             }

@@ -13,6 +13,8 @@ import static pt.isel.ls.utils.html.HtmlDsl.td;
 import static pt.isel.ls.utils.html.HtmlDsl.th;
 import static pt.isel.ls.utils.html.HtmlDsl.tr;
 import static pt.isel.ls.utils.html.HtmlDsl.title;
+import static pt.isel.ls.utils.html.HtmlDsl.li;
+import static pt.isel.ls.utils.html.HtmlDsl.ul;
 
 import java.util.Date;
 
@@ -29,8 +31,8 @@ public class BookingView extends View {
             appendBid(booking, builder);
             if (!booking.isPost()) {
                 appendRid(booking, builder);
+                appendUid(booking, builder);
                 if (booking.isDetailed()) {
-                    appendUid(booking, builder);
                     appendBeginInst(booking, builder);
                     appendEndInst(booking, builder);
                 }
@@ -42,52 +44,49 @@ public class BookingView extends View {
 
     @Override
     public String displayHtml() {
+        Booking booking = (Booking) entity;
+        String header = booking.isDetailed() ? "Detailed information for Booking:" : "List of Bookings:";
         Element html =
                 html(
                         head(
                                 title("Bookings")
                         ),
                         body(
-                                h1("List of Bookings:"),
-                                buildHtmlTable()
+                                h1(header),
+                                buildHtmlBookingInfo(booking)
                         )
                 );
         return html.toString();
     }
 
-    private Element buildHtmlTable() {
-        Element tableRow = tr();
-        Booking booking = (Booking) entity;
-        tableRow.addChild(th("BID"));
-
-        if (!booking.isPost()) {
-            tableRow.addChild(th("RID"));
+    private Element buildHtmlBookingInfo(Booking booking) {
+        Element bookingInfo;
+        if (booking.isDetailed() || booking.isPost()) {
+            bookingInfo = ul();
+            bookingInfo.addChild(li("Booking ID: " + booking.getBid()));
             if (booking.isDetailed()) {
-                tableRow.addChild(th("UID"));
-                tableRow.addChild(th("Begin Instant"));
-                tableRow.addChild(th("End Instant"));
+                bookingInfo.addChild(li("Room ID: " + booking.getRid()));
+                bookingInfo.addChild(li("User ID: " + booking.getUid()));
+                bookingInfo.addChild(li("Begin Instant: " + booking.getBeginInst()));
+                bookingInfo.addChild(li("End Instant: " + booking.getEndInst()));
+            }
+        } else {
+            bookingInfo = table();
+            bookingInfo.addChild(th("Booking ID"));
+            bookingInfo.addChild(th("Room ID"));
+            bookingInfo.addChild(th("User ID"));
+            for (Entity entity : entities) {
+                addHtmlTableRow(bookingInfo, (Booking) entity);
             }
         }
-
-        Element table = table();
-        table.addChild(tableRow);
-        for (Entity entity : entities) {
-            addHtmlTableRow(table, (Booking) entity);
-        }
-        return table;
+        return bookingInfo;
     }
 
     private void addHtmlTableRow(Element table, Booking booking) {
         Element tableRowData = tr();
         tableRowData.addChild(td(booking.getBid()));
-        if (!booking.isPost()) {
-            tableRowData.addChild(td(booking.getRid() < 0 ? "N/A" : booking.getRid()));
-            if (booking.isDetailed()) {
-                tableRowData.addChild(td(booking.getUid() < 0 ? "N/A" : booking.getUid()));
-                tableRowData.addChild(td(booking.getBeginInst() == null ? "N/A" : booking.getBeginInst().toString()));
-                tableRowData.addChild(td(booking.getEndInst() == null ? "N/A" : booking.getEndInst().toString()));
-            }
-        }
+        tableRowData.addChild(td(booking.getRid() < 0 ? "N/A" : booking.getRid()));
+        tableRowData.addChild(td(booking.getUid() < 0 ? "N/A" : booking.getUid()));
         table.addChild(tableRowData);
     }
 

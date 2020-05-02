@@ -15,6 +15,9 @@ import static pt.isel.ls.utils.html.HtmlDsl.td;
 import static pt.isel.ls.utils.html.HtmlDsl.th;
 import static pt.isel.ls.utils.html.HtmlDsl.tr;
 import static pt.isel.ls.utils.html.HtmlDsl.title;
+import static pt.isel.ls.utils.html.HtmlDsl.ul;
+import static pt.isel.ls.utils.html.HtmlDsl.li;
+
 
 public class RoomView extends View {
 
@@ -32,10 +35,10 @@ public class RoomView extends View {
 
             if (!room.isPost()) {
                 appendName(room, builder);
+                appendLocation(room, builder);
+                appendCapacity(room, builder);
                 if (room.isDetailed()) {
                     appendDescription(room, builder);
-                    appendLocation(room, builder);
-                    appendCapacity(room, builder);
                     appendLabels(room, builder);
                 }
             }
@@ -48,59 +51,58 @@ public class RoomView extends View {
 
     @Override
     public String displayHtml() {
+        Room room = (Room) entity;
+        String header = room.isDetailed() ? "Detailed information for Room:" : "List of Rooms:";
         Element html =
                 html(
                         head(
                                 title("Rooms")
                         ),
                         body(
-                                h1("List of Rooms:"),
-                                buildHtmlTable()
+                                h1(header),
+                                buildHtmlRoomInfo(room)
                         )
                 );
         return html.toString();
     }
 
-    private Element buildHtmlTable() {
-        Element tableRow = tr();
-        Element table = table();
-        table.addChild(tableRow);
-        Room room = (Room) entity;
-        tableRow.addChild(th("RID"));
-
-        if (!room.isPost()) {
-            tableRow.addChild(th("Name"));
+    private Element buildHtmlRoomInfo(Room room) {
+        Element roomInfo;
+        if (room.isDetailed() || room.isPost()) {
+            roomInfo = ul();
+            roomInfo.addChild(li("Room ID: " + room.getRid()));
             if (room.isDetailed()) {
-                tableRow.addChild(th("Description"));
-                tableRow.addChild(th("Location"));
-                tableRow.addChild(th("Capacity"));
-                tableRow.addChild(th("Label(s)"));
+                roomInfo.addChild(li("Name: " + room.getName()));
+                roomInfo.addChild(li("Location: " + room.getLocation()));
+                roomInfo.addChild(li("Capacity: "
+                        + (room.getCapacity() == null ? "N/A" : room.getCapacity())));
+                roomInfo.addChild(li("Description: "
+                        + (room.getDescription() == null ? "N/A" : room.getDescription())));
+                roomInfo.addChild(li(appendLabelsWithComma(new StringBuilder("Labels: "), room.getLabels())));
+            }
+
+        } else {
+            Element tableRow = tr();
+            roomInfo = table();
+            roomInfo.addChild(tableRow);
+            tableRow.addChild(th("Room ID"));
+            tableRow.addChild(th("Name"));
+            tableRow.addChild(th("Location"));
+            tableRow.addChild(th("Capacity"));
+            for (Entity entity : entities) {
+                addHtmlTableRow(roomInfo, (Room) entity);
             }
         }
 
-        for (Entity entity : entities) {
-            addHtmlTableRow(table, (Room) entity);
-        }
-
-        return table;
+        return roomInfo;
     }
 
     private void addHtmlTableRow(Element table, Room room) {
         Element tableRowData = tr();
         tableRowData.addChild(td(room.getRid()));
-
-        if (!room.isPost()) {
-            tableRowData.addChild(td(room.getName()));
-            if (room.isDetailed()) {
-                tableRowData.addChild(td(room.getDescription() == null ? "N/A" : room.getDescription()));
-                tableRowData.addChild(td(room.getLocation() == null ? "N/A" : room.getLocation()));
-                tableRowData.addChild(td(room.getCapacity() < 0 ? "N/A" : room.getCapacity()));
-
-                StringBuilder builder = new StringBuilder();
-                int numOfLabels = appendLabelsWithComma(builder, room.getLabels());
-                tableRowData.addChild(td(numOfLabels == 0 ? "N/A" : builder.toString()));
-            }
-        }
+        tableRowData.addChild(td(room.getName()));
+        tableRowData.addChild(td(room.getLocation()));
+        tableRowData.addChild(td(room.getCapacity() == null ? "N/A" : room.getCapacity()));
         table.addChild(tableRowData);
     }
 
@@ -128,9 +130,9 @@ public class RoomView extends View {
     }
 
     public void appendCapacity(Room room, StringBuilder builder) {
-        int capacity = room.getCapacity();
+        Integer capacity = room.getCapacity();
         builder.append("\nCapacity: ");
-        builder.append(capacity < 0 ? "N/A" : capacity);
+        builder.append(capacity == null ? "N/A" : capacity);
     }
 
     private void appendLabels(Room room, StringBuilder builder) {
@@ -138,7 +140,7 @@ public class RoomView extends View {
         appendLabelsWithComma(builder, room.getLabels());
     }
 
-    private int appendLabelsWithComma(StringBuilder builder, Iterable<String> iter) {
+    private String appendLabelsWithComma(StringBuilder builder, Iterable<String> iter) {
         Iterator<String> labels = iter.iterator();
         int size = 0;
         while (labels.hasNext()) {
@@ -148,7 +150,10 @@ public class RoomView extends View {
                 builder.append(", ");
             }
         }
-        return size;
+        if (size == 0) {
+            builder.append("N/A");
+        }
+        return builder.toString();
     }
 
 

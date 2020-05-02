@@ -12,6 +12,8 @@ import pt.isel.ls.utils.html.elements.TableData;
 import pt.isel.ls.utils.html.elements.TableHeader;
 import pt.isel.ls.utils.html.elements.TableRow;
 import pt.isel.ls.utils.html.elements.Title;
+import pt.isel.ls.utils.html.elements.UnorderedList;
+import pt.isel.ls.utils.html.elements.List;
 
 public class HtmlDsl {
     public static Element html(Element... elements) {
@@ -70,4 +72,13 @@ public class HtmlDsl {
     public static Element td(int data) {
         return new TableData(Integer.toString(data));
     }
+
+    public static Element ul(Element... elements) {
+        return new UnorderedList(elements);
+    }
+
+    public static Element li(String text) {
+        return new List(text);
+    }
+
 }

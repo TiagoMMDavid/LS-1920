@@ -25,7 +25,7 @@ public class GetBookingsByUserIdCommand implements CommandHandler {
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 do {
-                    result.addResult(new Booking(rs.getInt("bid"), rs.getInt("rid")));
+                    result.addResult(new Booking(rs.getInt("bid"), rs.getInt("rid"), userId));
                 } while (rs.next());
             }
             rs.close();

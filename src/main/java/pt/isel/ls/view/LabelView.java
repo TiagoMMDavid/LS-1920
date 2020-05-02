@@ -50,7 +50,7 @@ public class LabelView extends View {
     private Element buildHtmlTable() {
         Element table = table();
         Element tableRow = tr();
-        tableRow.addChild(th("LID"));
+        tableRow.addChild(th("Label ID"));
         tableRow.addChild(th("Name"));
         table.addChild(tableRow);
 

@@ -42,7 +42,14 @@ public class GetRoomsCommand implements CommandHandler {
                 ResultSet rs = ps.executeQuery();
                 if (rs.next()) {
                     do {
-                        result.addResult(new Room(rs.getInt("rid"), rs.getString("name")));
+                        capacity = rs.getInt("capacity");
+                        if (rs.wasNull()) {
+                            capacity = null;
+                        }
+                        result.addResult(new Room(rs.getInt("rid"),
+                                rs.getString("name"),
+                                rs.getString("location"),
+                                capacity));
                     } while (rs.next());
                 }
                 rs.close();
@@ -53,7 +60,7 @@ public class GetRoomsCommand implements CommandHandler {
     }
 
     private String getQueryString(Integer capacity, String begin, String dur, LinkedList<Integer> rids) {
-        StringBuilder query = new StringBuilder("SELECT rid, name FROM ROOM");
+        StringBuilder query = new StringBuilder("SELECT rid, name, location, capacity FROM ROOM");
         boolean hasParameters = false;
 
         if (capacity != null) {
@@ -70,7 +77,7 @@ public class GetRoomsCommand implements CommandHandler {
         }
 
         if (begin != null && dur != null) {
-            query.append(" EXCEPT SELECT BOOKING.rid, name "
+            query.append(" EXCEPT SELECT BOOKING.rid, name, location, capacity "
                     + "FROM BOOKING JOIN ROOM ON BOOKING.rid = ROOM.rid "
                     + "WHERE (?, ?) OVERLAPS (begin_inst, end_inst)");
         }

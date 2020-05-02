@@ -16,7 +16,7 @@ public abstract class View {
     public static View getInstance(Iterable<Entity> entities) {
         Iterator<Entity> iter = entities.iterator();
         if (!iter.hasNext()) {
-            return null;
+            return new EmptyView();
         }
         // We know all entities in the result have the same type
         switch (iter.next().getEntityType()) {
@@ -41,6 +41,8 @@ public abstract class View {
         this.entities = entities;
         this.entity = entities.iterator().next();
     }
+
+    protected View() { }
 
     public void display(OutputStream out, String viewFormat) throws IOException {
         String text = "";

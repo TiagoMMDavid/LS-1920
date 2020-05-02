@@ -17,15 +17,22 @@ public class GetRoomsWithLabelCommand implements CommandHandler {
         CommandResult result = new CommandResult();
         TransactionManager trans = commandRequest.getTransactionHandler();
         trans.executeTransaction(con -> {
-            PreparedStatement ps = con.prepareStatement("SELECT rid "
-                    + "FROM ROOMLABEL WHERE lid = ?");
+            PreparedStatement ps = con.prepareStatement("SELECT ROOM.rid, name, location, capacity "
+                    + "FROM ROOMLABEL INNER JOIN ROOM ON ROOMLABEL.rid = ROOM.rid WHERE lid = ?");
 
             int labelId = commandRequest.getPath().getInt("lid");
             ps.setInt(1, labelId);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 do {
-                    result.addResult(new Room(rs.getInt("rid")));
+                    Integer capacity = rs.getInt("capacity");
+                    if (rs.wasNull()) {
+                        capacity = null;
+                    }
+                    result.addResult(new Room(rs.getInt("rid"),
+                            rs.getString("name"),
+                            rs.getString("location"),
+                            capacity));
                 } while (rs.next());
             }
 
