@@ -34,7 +34,7 @@ O modelo conceptual apresenta ainda as seguintes restrições:
     
 ### Modelação física ###
 
-O modelo físico da base de dados está presente neste [link](https://github.com/isel-leic-ls/1920-2-LI42D-G08/blob/master/sqlScripts/createTable.sql).
+O modelo físico da base de dados está presente neste [link](https://github.com/isel-leic-ls/1920-2-LI42D-G08/blob/master/src/main/sql/createTable.sql).
 
 Destacam-se os seguintes aspectos deste modelo:
 
