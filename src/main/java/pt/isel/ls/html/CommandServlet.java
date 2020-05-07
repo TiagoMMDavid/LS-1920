@@ -1,4 +1,4 @@
-package pt.isel.ls;
+package pt.isel.ls.html;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -7,7 +7,6 @@ import pt.isel.ls.model.commands.common.CommandHandler;
 import pt.isel.ls.model.commands.common.CommandRequest;
 import pt.isel.ls.model.commands.common.CommandResult;
 import pt.isel.ls.model.commands.common.Method;
-import pt.isel.ls.model.commands.common.Parameters;
 import pt.isel.ls.model.commands.sql.TransactionManager;
 import pt.isel.ls.model.paths.Path;
 import pt.isel.ls.view.View;

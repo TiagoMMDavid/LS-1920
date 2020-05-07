@@ -1,6 +1,5 @@
 package pt.isel.ls.model.commands;
 
-import org.eclipse.jetty.plus.jndi.Link;
 import pt.isel.ls.model.commands.common.CommandException;
 import pt.isel.ls.model.commands.common.CommandHandler;
 import pt.isel.ls.model.commands.common.CommandRequest;

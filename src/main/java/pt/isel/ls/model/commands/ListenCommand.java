@@ -9,7 +9,7 @@ import pt.isel.ls.model.commands.common.CommandRequest;
 import pt.isel.ls.model.commands.common.CommandResult;
 import pt.isel.ls.model.commands.common.Parameters;
 import pt.isel.ls.model.entities.Message;
-import pt.isel.ls.CommandServlet;
+import pt.isel.ls.html.CommandServlet;
 
 import java.sql.SQLException;
 
