@@ -13,12 +13,15 @@ import pt.isel.ls.model.commands.ExitCommand;
 import pt.isel.ls.model.commands.GetBookingByRoomAndBookingId;
 import pt.isel.ls.model.commands.GetBookingsByRoomId;
 import pt.isel.ls.model.commands.GetBookingsByUserIdCommand;
+import pt.isel.ls.model.commands.GetLabelByIdCommand;
 import pt.isel.ls.model.commands.GetLabelsCommand;
 import pt.isel.ls.model.commands.GetRoomByIdCommand;
 import pt.isel.ls.model.commands.GetRoomsCommand;
 import pt.isel.ls.model.commands.GetRoomsWithLabelCommand;
 import pt.isel.ls.model.commands.GetTimeCommand;
 import pt.isel.ls.model.commands.GetUserByIdCommand;
+import pt.isel.ls.model.commands.GetUsersCommand;
+import pt.isel.ls.model.commands.ListenCommand;
 import pt.isel.ls.model.commands.OptionCommand;
 import pt.isel.ls.model.commands.PostBookingsInRoomCommand;
 import pt.isel.ls.model.commands.PostLabelsCommand;
@@ -110,7 +113,7 @@ public class App {
         CommandRequest cmd = new CommandRequest(path,
                 params,
                 trans,
-                router.getCommands());
+                router);
 
         CommandHandler handler = router.findRoute(method, cmd.getPath());
         if (handler == null) {
@@ -179,9 +182,11 @@ public class App {
         router.addRoute(Method.GET, new PathTemplate("/rooms/{rid}/bookings"), new GetBookingsByRoomId());
         router.addRoute(Method.GET, new PathTemplate("/rooms/{rid}/bookings/{bid}"),
                 new GetBookingByRoomAndBookingId());
+        router.addRoute(Method.GET, new PathTemplate("/users"), new GetUsersCommand());
         router.addRoute(Method.GET, new PathTemplate("/users/{uid}"), new GetUserByIdCommand());
         router.addRoute(Method.GET, new PathTemplate("/users/{uid}/bookings"), new GetBookingsByUserIdCommand());
         router.addRoute(Method.GET, labelsTemplate, new GetLabelsCommand());
+        router.addRoute(Method.GET, new PathTemplate("/labels/{lid}"), new GetLabelByIdCommand());
         router.addRoute(Method.GET, new PathTemplate("/labels/{lid}/rooms"), new GetRoomsWithLabelCommand());
         router.addRoute(Method.GET, new PathTemplate("/time"), new GetTimeCommand());
 
@@ -203,5 +208,8 @@ public class App {
 
         // OPTION command
         router.addRoute(Method.OPTION, new PathTemplate("/"), new OptionCommand());
+
+        // LISTEN command
+        router.addRoute(Method.LISTEN, new PathTemplate("/"), new ListenCommand());
     }
 }

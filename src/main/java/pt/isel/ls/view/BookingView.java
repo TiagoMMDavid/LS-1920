@@ -47,7 +47,7 @@ public class BookingView extends View {
     @Override
     public String displayHtml() {
         Booking booking = (Booking) entity;
-        String header = booking.isDetailed() ? "Detailed information for Booking:" : "List of Bookings:";
+        String header = booking.isDetailed() ? "Detailed Information for Booking:" : "List of Bookings:";
         Element html =
                 html(
                         head(

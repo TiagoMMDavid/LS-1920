@@ -8,7 +8,8 @@ public interface Entity {
         ROOM,
         USER,
         COMMAND,
-        TIME
+        TIME,
+        TEXT
     }
 
     EntityType getEntityType();

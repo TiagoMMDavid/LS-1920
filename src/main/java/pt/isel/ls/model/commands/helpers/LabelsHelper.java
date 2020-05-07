@@ -67,6 +67,18 @@ public class LabelsHelper {
         return toReturn;
     }
 
+    public static LinkedList<Integer> getRidsWithLabel(Connection con, int lid) throws SQLException {
+        PreparedStatement ps = con.prepareStatement("SELECT rid FROM ROOMLABEL WHERE lid = ?");
+        ps.setInt(1, lid);
+        ResultSet rs = ps.executeQuery();
+
+        LinkedList<Integer> toReturn = new LinkedList<>();
+        while (rs.next()) {
+            toReturn.add(rs.getInt("rid"));
+        }
+        return toReturn;
+    }
+
     public static LinkedList<String> getLabelsFromRid(Connection con, int rid) throws SQLException {
         PreparedStatement ps = con.prepareStatement("SELECT name "
                 + "FROM LABEL join ROOMLABEL on (ROOMLABEL.lid = LABEL.lid) "

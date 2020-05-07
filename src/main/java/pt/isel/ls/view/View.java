@@ -32,6 +32,8 @@ public abstract class View {
                 return new CommandView(entities);
             case TIME:
                 return new TimeView(entities);
+            case TEXT:
+                return new MessageView(entities);
             default:
                 return null;
         }
@@ -42,9 +44,13 @@ public abstract class View {
         this.entity = entities.iterator().next();
     }
 
-    protected View() { }
+    public View() { }
 
     public void display(OutputStream out, String viewFormat) throws IOException {
+        out.write((getDisplay(viewFormat)).getBytes());
+    }
+
+    public String getDisplay(String viewFormat) {
         String text = "";
         if (viewFormat == null || viewFormat.equals("text/plain")) {
             text = displayText();
@@ -52,7 +58,7 @@ public abstract class View {
         } else if (viewFormat.equals("text/html")) {
             text = displayHtml() + '\n';
         }
-        out.write((text).getBytes());
+        return text;
     }
 
 

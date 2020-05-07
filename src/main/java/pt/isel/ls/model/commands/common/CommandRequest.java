@@ -1,5 +1,6 @@
 package pt.isel.ls.model.commands.common;
 
+import pt.isel.ls.model.Router;
 import pt.isel.ls.model.commands.sql.TransactionManager;
 import pt.isel.ls.model.paths.Path;
 import pt.isel.ls.utils.Pair;
@@ -10,13 +11,13 @@ public class CommandRequest {
     private Path path;
     private Parameters params;
     private TransactionManager trans;
-    private Iterator<Pair<String,String>> commands;
+    private Router router;
 
     public CommandRequest(Path path, Parameters params, TransactionManager trans,
-                          Iterator<Pair<String,String>> commands) {
+                          Router router) {
         this.path = path;
         this.trans = trans;
-        this.commands = commands;
+        this.router = router;
         this.params = params;
     }
 
@@ -33,6 +34,10 @@ public class CommandRequest {
     }
 
     public Iterator<Pair<String,String>> getCommands() {
-        return commands;
+        return router.getCommands();
+    }
+
+    public Router getRouter() {
+        return router;
     }
 }

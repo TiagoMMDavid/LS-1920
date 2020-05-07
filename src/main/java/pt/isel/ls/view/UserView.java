@@ -8,11 +8,13 @@ import static pt.isel.ls.utils.html.HtmlDsl.html;
 import static pt.isel.ls.utils.html.HtmlDsl.body;
 import static pt.isel.ls.utils.html.HtmlDsl.h1;
 import static pt.isel.ls.utils.html.HtmlDsl.head;
+import static pt.isel.ls.utils.html.HtmlDsl.li;
 import static pt.isel.ls.utils.html.HtmlDsl.table;
 import static pt.isel.ls.utils.html.HtmlDsl.td;
 import static pt.isel.ls.utils.html.HtmlDsl.th;
 import static pt.isel.ls.utils.html.HtmlDsl.tr;
 import static pt.isel.ls.utils.html.HtmlDsl.title;
+import static pt.isel.ls.utils.html.HtmlDsl.ul;
 
 public class UserView extends View {
 
@@ -28,7 +30,9 @@ public class UserView extends View {
             appendId(user, builder);
             if (!user.isPost()) {
                 appendName(user, builder);
-                appendEmail(user, builder);
+                if (user.isDetailed()) {
+                    appendEmail(user, builder);
+                }
             }
             builder.append("\n\n");
         }
@@ -37,44 +41,46 @@ public class UserView extends View {
 
     @Override
     public String displayHtml() {
+        User user = (User) entity;
+        String header = user.isDetailed() ? "Detailed Information for User:" : "List of Users:";
         Element html =
                 html(
                         head(
                                 title("Users")
                         ),
                         body(
-                                h1("List of Users:"),
-                                buildHtmlTable()
+                                h1(header),
+                                buildUserInfo(user)
                         )
                 );
         return html.toString();
     }
 
-    private Element buildHtmlTable() {
-        Element tableRow = tr();
-        User user = (User) entity;
-        tableRow.addChild(th("User ID"));
+    private Element buildUserInfo(User user) {
+        Element userInfo;
+        if (user.isDetailed() || user.isPost()) {
+            userInfo = ul();
+            userInfo.addChild(li("User ID: " + user.getUid()));
+            if (user.isDetailed()) {
+                userInfo.addChild(li("User Name: " + user.getName()));
+                userInfo.addChild(li("User Email: " + (user.getEmail() == null ? "N/A" : user.getEmail())));
+            }
+        } else {
+            userInfo = table();
+            userInfo.addChild(th("User ID"));
+            userInfo.addChild(th("Name"));
+            for (Entity entity : entities) {
+                addHtmlTableRow(userInfo, (User) entity);
+            }
 
-        if (!user.isPost()) {
-            tableRow.addChild(th("Name"));
-            tableRow.addChild(th("E-mail"));
         }
-
-        Element table = table();
-        table.addChild(tableRow);
-        for (Entity entity : entities) {
-            addHtmlTableRow(table, (User) entity);
-        }
-        return table;
+        return userInfo;
     }
 
     private void addHtmlTableRow(Element table, User user) {
         Element tableRowData = tr();
         tableRowData.addChild(td(user.getUid()));
-        if (!user.isPost()) {
-            tableRowData.addChild(td(user.getName() == null ? "N/A" : user.getName()));
-            tableRowData.addChild(td(user.getEmail() == null ? "N/A" : user.getEmail()));
-        }
+        tableRowData.addChild(td(user.getName() == null ? "N/A" : user.getName()));
         table.addChild(tableRowData);
     }
 

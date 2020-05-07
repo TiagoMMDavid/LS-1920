@@ -52,7 +52,7 @@ public class RoomView extends View {
     @Override
     public String displayHtml() {
         Room room = (Room) entity;
-        String header = room.isDetailed() ? "Detailed information for Room:" : "List of Rooms:";
+        String header = room.isDetailed() ? "Detailed Information for Room:" : "List of Rooms:";
         Element html =
                 html(
                         head(

@@ -4,13 +4,20 @@ public class User implements Entity {
     private int uid;
     private String name;
     private String email;
-    private boolean isPost;
+
+    private boolean isPost = false;
+    private boolean isDetailed = false;
 
     public User(int uid, String name, String email) {
         this.uid = uid;
         this.name = name;
         this.email = email;
-        this.isPost = false;
+        this.isDetailed = true;
+    }
+
+    public User(int uid, String name) {
+        this.uid = uid;
+        this.name = name;
     }
 
     public User(int uid) {
@@ -37,5 +44,9 @@ public class User implements Entity {
 
     public boolean isPost() {
         return isPost;
+    }
+
+    public boolean isDetailed() {
+        return isDetailed;
     }
 }

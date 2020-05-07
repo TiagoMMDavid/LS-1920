@@ -10,7 +10,6 @@ import pt.isel.ls.model.entities.Booking;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.text.ParseException;
 import java.util.Date;
 
