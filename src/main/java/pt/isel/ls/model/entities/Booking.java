@@ -6,6 +6,8 @@ public class Booking implements Entity {
     private boolean isPost = false;
     private boolean isDetailed = false;
 
+    private boolean hasUserInfo = true;
+
     private int bid;
     private int uid = -1;
     private int rid = -1;
@@ -17,6 +19,14 @@ public class Booking implements Entity {
         this.beginInst = beginInst;
         this.endInst = endInst;
         this.isDetailed = true;
+    }
+
+    public Booking(int bid, int rid, Date beginInst, Date endInst) {
+        this.bid = bid;
+        this.rid = rid;
+        this.beginInst = beginInst;
+        this.endInst = endInst;
+        this.hasUserInfo = false;
     }
 
     public Booking(int bid) {
@@ -61,5 +71,9 @@ public class Booking implements Entity {
 
     public boolean isDetailed() {
         return isDetailed;
+    }
+
+    public boolean hasUserInfo() {
+        return hasUserInfo;
     }
 }

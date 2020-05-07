@@ -31,8 +31,10 @@ public class BookingView extends View {
             appendBid(booking, builder);
             if (!booking.isPost()) {
                 appendRid(booking, builder);
-                appendUid(booking, builder);
-                if (booking.isDetailed()) {
+                if (booking.hasUserInfo()) {
+                    appendUid(booking, builder);
+                }
+                if (booking.isDetailed() || !booking.hasUserInfo()) {
                     appendBeginInst(booking, builder);
                     appendEndInst(booking, builder);
                 }
@@ -74,7 +76,12 @@ public class BookingView extends View {
             bookingInfo = table();
             bookingInfo.addChild(th("Booking ID"));
             bookingInfo.addChild(th("Room ID"));
-            bookingInfo.addChild(th("User ID"));
+            if (booking.hasUserInfo()) {
+                bookingInfo.addChild(th("User ID"));
+            } else {
+                bookingInfo.addChild(th("Begin Instant"));
+                bookingInfo.addChild(th("End Instant"));
+            }
             for (Entity entity : entities) {
                 addHtmlTableRow(bookingInfo, (Booking) entity);
             }
@@ -86,7 +93,12 @@ public class BookingView extends View {
         Element tableRowData = tr();
         tableRowData.addChild(td(booking.getBid()));
         tableRowData.addChild(td(booking.getRid() < 0 ? "N/A" : booking.getRid()));
-        tableRowData.addChild(td(booking.getUid() < 0 ? "N/A" : booking.getUid()));
+        if (booking.hasUserInfo()) {
+            tableRowData.addChild(td(booking.getUid() < 0 ? "N/A" : booking.getUid()));
+        } else {
+            tableRowData.addChild(td(booking.getBeginInst().toString()));
+            tableRowData.addChild(td(booking.getEndInst().toString()));
+        }
         table.addChild(tableRowData);
     }
 

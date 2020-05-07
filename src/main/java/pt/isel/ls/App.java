@@ -11,6 +11,7 @@ import pt.isel.ls.model.Router;
 import pt.isel.ls.model.commands.DeleteBookingInRoom;
 import pt.isel.ls.model.commands.ExitCommand;
 import pt.isel.ls.model.commands.GetBookingByRoomAndBookingId;
+import pt.isel.ls.model.commands.GetBookingsByRoomId;
 import pt.isel.ls.model.commands.GetBookingsByUserIdCommand;
 import pt.isel.ls.model.commands.GetLabelsCommand;
 import pt.isel.ls.model.commands.GetRoomByIdCommand;
@@ -175,6 +176,7 @@ public class App {
         //GET commands
         router.addRoute(Method.GET, roomsTemplate, new GetRoomsCommand());
         router.addRoute(Method.GET, new PathTemplate("/rooms/{rid}"), new GetRoomByIdCommand());
+        router.addRoute(Method.GET, new PathTemplate("/rooms/{rid}/bookings"), new GetBookingsByRoomId());
         router.addRoute(Method.GET, new PathTemplate("/rooms/{rid}/bookings/{bid}"),
                 new GetBookingByRoomAndBookingId());
         router.addRoute(Method.GET, new PathTemplate("/users/{uid}"), new GetUserByIdCommand());
