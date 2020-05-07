@@ -9,7 +9,7 @@ public class Message implements Entity {
 
     @Override
     public EntityType getEntityType() {
-        return EntityType.TEXT;
+        return EntityType.MESSAGE;
     }
 
     public String getMessage() {

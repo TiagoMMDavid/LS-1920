@@ -63,7 +63,7 @@ public class UserView extends View {
             userInfo.addChild(li("User ID: " + user.getUid()));
             if (user.isDetailed()) {
                 userInfo.addChild(li("User Name: " + user.getName()));
-                userInfo.addChild(li("User Email: " + (user.getEmail() == null ? "N/A" : user.getEmail())));
+                userInfo.addChild(li("User Email: " + user.getEmail()));
             }
         } else {
             userInfo = table();

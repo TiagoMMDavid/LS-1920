@@ -9,7 +9,7 @@ public interface Entity {
         USER,
         COMMAND,
         TIME,
-        TEXT
+        MESSAGE
     }
 
     EntityType getEntityType();

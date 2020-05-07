@@ -3,7 +3,7 @@ begin;
 	CREATE TABLE USERS (
 		uid					serial PRIMARY key CHECK (uid >= 0),
 		name				varchar(50) NOT NULL,
-		email		        varchar(50),
+		email		        varchar(50) NOT NULL,
 		UNIQUE(email)
 	);
 

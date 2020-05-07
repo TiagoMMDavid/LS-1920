@@ -32,7 +32,7 @@ public abstract class View {
                 return new CommandView(entities);
             case TIME:
                 return new TimeView(entities);
-            case TEXT:
+            case MESSAGE:
                 return new MessageView(entities);
             default:
                 return null;
