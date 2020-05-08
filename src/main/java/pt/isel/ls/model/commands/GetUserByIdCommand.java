@@ -19,8 +19,12 @@ public class GetUserByIdCommand implements CommandHandler {
         trans.executeTransaction(con -> {
             PreparedStatement ps = con.prepareStatement("SELECT * "
                     + "FROM USERS WHERE uid = ?");
-
-            int userId = commandRequest.getPath().getInt("uid");
+            int userId;
+            try {
+                userId = commandRequest.getPath().getInt("uid");
+            }  catch (NumberFormatException e) {
+                throw new CommandException("Invalid User ID");
+            }
             ps.setInt(1, userId);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {

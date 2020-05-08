@@ -19,7 +19,12 @@ public class GetLabelByIdCommand implements CommandHandler {
         CommandResult result = new CommandResult();
         TransactionManager trans = commandRequest.getTransactionHandler();
         trans.executeTransaction(con -> {
-            Integer lid = commandRequest.getPath().getInt("lid");
+            Integer lid;
+            try {
+                lid = commandRequest.getPath().getInt("lid");
+            }  catch (NumberFormatException e) {
+                throw new CommandException("Invalid Label ID");
+            }
             PreparedStatement ps = con.prepareStatement("SELECT lid, name "
                     + "FROM LABEL WHERE lid = ?");
             ps.setInt(1, lid);

@@ -20,8 +20,12 @@ public class GetRoomByIdCommand implements CommandHandler {
         trans.executeTransaction(con -> {
             PreparedStatement ps = con.prepareStatement("SELECT * "
                     + "FROM ROOM WHERE rid = ?");
-
-            int roomId = commandRequest.getPath().getInt("rid");
+            int roomId;
+            try {
+                roomId = commandRequest.getPath().getInt("rid");
+            } catch (NumberFormatException e) {
+                throw new CommandException("Invalid Room ID");
+            }
             ps.setInt(1, roomId);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {

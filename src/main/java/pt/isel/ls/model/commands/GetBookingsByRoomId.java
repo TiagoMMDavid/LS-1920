@@ -24,8 +24,12 @@ public class GetBookingsByRoomId implements CommandHandler {
             PreparedStatement ps = con.prepareStatement("SELECT * "
                     + "FROM BOOKING "
                     + "WHERE rid = ?");
-
-            int roomId = commandRequest.getPath().getInt("rid");
+            int roomId;
+            try {
+                roomId = commandRequest.getPath().getInt("rid");
+            } catch (NumberFormatException e) {
+                throw new CommandException("Invalid Room ID");
+            }
             ps.setInt(1, roomId);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {

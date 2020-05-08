@@ -4,6 +4,7 @@ import pt.isel.ls.model.commands.common.CommandException;
 import pt.isel.ls.model.commands.common.CommandHandler;
 import pt.isel.ls.model.commands.common.CommandRequest;
 import pt.isel.ls.model.commands.common.CommandResult;
+import pt.isel.ls.model.commands.common.Parameters;
 import pt.isel.ls.model.commands.sql.TransactionManager;
 import pt.isel.ls.model.entities.Label;
 
@@ -23,8 +24,11 @@ public class PostLabelsCommand implements CommandHandler {
                             + "(name) Values(?)",
                     Statement.RETURN_GENERATED_KEYS
             );
-
-            String label = commandRequest.getParams().getString("name");
+            Parameters params = commandRequest.getParams();
+            if (params == null) {
+                throw new CommandException("No parameters specified");
+            }
+            String label = params.getString("name");
             if (label != null) {
                 ps.setString(1, label);
                 ps.executeUpdate();

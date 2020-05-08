@@ -16,7 +16,7 @@ public class MessageView extends View {
 
     @Override
     public String displayText() {
-        return ((Message) entity).getMessage();
+        return ((Message) entity).getMessage() + '\n';
     }
 
     public String displayHtml() {

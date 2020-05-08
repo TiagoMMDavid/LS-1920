@@ -4,6 +4,7 @@ import pt.isel.ls.model.commands.common.CommandException;
 import pt.isel.ls.model.commands.common.CommandHandler;
 import pt.isel.ls.model.commands.common.CommandRequest;
 import pt.isel.ls.model.commands.common.CommandResult;
+import pt.isel.ls.model.commands.common.Parameters;
 import pt.isel.ls.model.commands.sql.TransactionManager;
 import pt.isel.ls.model.entities.Booking;
 
@@ -29,10 +30,20 @@ public class PostBookingsInRoomCommand implements CommandHandler {
                             + "(uid, rid, begin_inst, end_inst) Values(?,?,?,?)",
                     Statement.RETURN_GENERATED_KEYS
             );
-            Integer uid = commandRequest.getParams().getInt("uid");
-            Integer rid = commandRequest.getPath().getInt("rid");
-            String duration = commandRequest.getParams().getString("duration");
-            String begin = commandRequest.getParams().getString("begin");
+            Parameters params = commandRequest.getParams();
+            if (params == null) {
+                throw new CommandException("No parameters specified");
+            }
+            Integer uid;
+            Integer rid;
+            try {
+                uid = params.getInt("uid");
+                rid = commandRequest.getPath().getInt("rid");
+            } catch (NumberFormatException e) {
+                throw new CommandException("Invalid User ID or Room ID");
+            }
+            String duration = params.getString("duration");
+            String begin = params.getString("begin");
             if (uid != null && rid != null && duration != null && begin != null) {
                 ps.setInt(1, uid);
                 ps.setInt(2, rid);

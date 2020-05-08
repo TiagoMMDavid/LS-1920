@@ -21,7 +21,7 @@ public class Path extends BasePath {
         super(path);
     }
 
-    public Integer getInt(String varName) {
+    public Integer getInt(String varName) throws NumberFormatException {
         String res = variables.get(varName);
         return res == null ? null : Integer.parseInt(res);
     }

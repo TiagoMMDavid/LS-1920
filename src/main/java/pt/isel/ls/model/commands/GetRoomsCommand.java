@@ -4,6 +4,7 @@ import pt.isel.ls.model.commands.common.CommandException;
 import pt.isel.ls.model.commands.common.CommandHandler;
 import pt.isel.ls.model.commands.common.CommandRequest;
 import pt.isel.ls.model.commands.common.CommandResult;
+import pt.isel.ls.model.commands.common.Parameters;
 import pt.isel.ls.model.commands.sql.TransactionManager;
 import pt.isel.ls.model.entities.Room;
 
@@ -24,16 +25,21 @@ public class GetRoomsCommand implements CommandHandler {
         CommandResult result = new CommandResult();
         TransactionManager trans = commandRequest.getTransactionHandler();
         trans.executeTransaction(con -> {
+            Parameters params = commandRequest.getParams();
             Integer capacity = null;
             String begin = null;
             String dur = null;
             Iterable<String> labels;
             LinkedList<Integer> rids = null;
-            if (commandRequest.getParams() != null) {
-                capacity = commandRequest.getParams().getInt("capacity");
-                begin = commandRequest.getParams().getString("begin");
-                dur = commandRequest.getParams().getString("duration");
-                labels = commandRequest.getParams().getValues("label");
+            if (params != null) {
+                try {
+                    capacity = params.getInt("capacity");
+                } catch (NumberFormatException e) {
+                    throw new CommandException("Invalid capacity");
+                }
+                begin = params.getString("begin");
+                dur = params.getString("duration");
+                labels = params.getValues("label");
                 rids = getRidsWithLabels(con, labels);
             }
             if (rids == null || !rids.isEmpty()) {

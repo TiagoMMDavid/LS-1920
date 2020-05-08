@@ -3,6 +3,7 @@ package pt.isel.ls.html;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import pt.isel.ls.model.Router;
+import pt.isel.ls.model.commands.common.CommandException;
 import pt.isel.ls.model.commands.common.CommandHandler;
 import pt.isel.ls.model.commands.common.CommandRequest;
 import pt.isel.ls.model.commands.common.CommandResult;
@@ -18,6 +19,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.sql.SQLException;
 
 public class CommandServlet extends HttpServlet {
     private Router router;
@@ -36,32 +38,35 @@ public class CommandServlet extends HttpServlet {
                 req.getRequestURI(),
                 req.getHeader("Accept"));
 
+        //TODO Error code 501 not implemented
         Method method = Method.valueOf(req.getMethod());
         Path path = new Path(req.getRequestURI());
         CommandRequest request = new CommandRequest(path, null, trans, router);
 
         CommandHandler handler = router.findRoute(method, path);
 
-        CommandResult result;
+        CommandResult result = null;
         String display;
-
-        try {
-            result = handler.execute(request);
-            View view = View.getInstance(result);
-            display = view.getDisplay("text/html");
-        } catch (Exception e) {
-            System.out.println(e.getMessage() + "\n");
-            return;
+        //TODO maybe more error codes
+        if (handler != null) {
+            try {
+                result = handler.execute(request);
+                resp.setStatus(200);
+            } catch (SQLException | CommandException e) {
+                resp.setStatus(500);
+                System.out.println(e.getMessage() + "\n");
+            }
+        } else {
+            resp.setStatus(404);
         }
-
-
-
+        View view = View.getInstance(result);
+        display = view.getDisplay("text/html");
         Charset utf8 = StandardCharsets.UTF_8;
         resp.setContentType(String.format("text/html; charset=%s", utf8.name()));
         String respBody = display;
 
         byte[] respBodyBytes = respBody.getBytes(utf8);
-        resp.setStatus(200);
+
         resp.setContentLength(respBodyBytes.length);
         OutputStream os = resp.getOutputStream();
         os.write(respBodyBytes);

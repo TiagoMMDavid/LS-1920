@@ -20,8 +20,12 @@ public class ListenCommand implements CommandHandler {
         if (params == null) {
             throw new CommandException("No parameters specified");
         }
-
-        Integer port = params.getInt("port");
+        Integer port;
+        try {
+            port = params.getInt("port");
+        } catch (NumberFormatException e) {
+            throw new CommandException("Invalid port number");
+        }
         if (port == null) {
             throw new CommandException("No port specified");
         }
@@ -34,7 +38,6 @@ public class ListenCommand implements CommandHandler {
         server.setHandler(handler);
         try {
             server.start();
-            server.join();
         } catch (Exception e) {
             throw new CommandException("Failed to start server");
         }

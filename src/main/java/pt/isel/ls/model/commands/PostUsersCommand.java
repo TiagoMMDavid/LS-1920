@@ -4,6 +4,7 @@ import pt.isel.ls.model.commands.common.CommandException;
 import pt.isel.ls.model.commands.common.CommandHandler;
 import pt.isel.ls.model.commands.common.CommandRequest;
 import pt.isel.ls.model.commands.common.CommandResult;
+import pt.isel.ls.model.commands.common.Parameters;
 import pt.isel.ls.model.commands.sql.TransactionManager;
 import pt.isel.ls.model.entities.User;
 
@@ -22,9 +23,12 @@ public class PostUsersCommand implements CommandHandler {
                             + "(name, email) Values(?,?)",
                     Statement.RETURN_GENERATED_KEYS
             );
-
-            String name = commandRequest.getParams().getString("name");
-            String email = commandRequest.getParams().getString("email");
+            Parameters params = commandRequest.getParams();
+            if (params == null) {
+                throw new CommandException("No parameters specified");
+            }
+            String name = params.getString("name");
+            String email = params.getString("email");
             if (name != null && email != null) {
                 ps.setString(1, name);
                 ps.setString(2, email);

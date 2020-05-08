@@ -4,7 +4,9 @@ import pt.isel.ls.model.commands.common.CommandException;
 import pt.isel.ls.model.commands.common.CommandHandler;
 import pt.isel.ls.model.commands.common.CommandRequest;
 import pt.isel.ls.model.commands.common.CommandResult;
+import pt.isel.ls.model.commands.common.Parameters;
 import pt.isel.ls.model.commands.sql.TransactionManager;
+import pt.isel.ls.model.paths.Path;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -26,11 +28,23 @@ public class PutBookingInRoom implements CommandHandler {
                             + "SET uid = ?, begin_inst = ?, end_inst = ? "
                             + "WHERE rid = ? AND bid = ?"
             );
-            Integer uid = commandRequest.getParams().getInt("uid");
-            Integer rid = commandRequest.getPath().getInt("rid");
-            Integer bid = commandRequest.getPath().getInt("bid");
-            String duration = commandRequest.getParams().getString("duration");
-            String begin = commandRequest.getParams().getString("begin");
+            Parameters params = commandRequest.getParams();
+            Path path = commandRequest.getPath();
+            if (params == null) {
+                throw new CommandException("No parameters specified");
+            }
+            Integer uid;
+            Integer rid;
+            Integer bid;
+            try {
+                uid = params.getInt("uid");
+                rid = path.getInt("rid");
+                bid = path.getInt("bid");
+            } catch (NumberFormatException e) {
+                throw new CommandException("Invalid Room, Booking or User ID");
+            }
+            String duration = params.getString("duration");
+            String begin = params.getString("begin");
             if (uid != null && rid != null && bid != null && duration != null && begin != null) {
                 ps.setInt(1, uid);
                 ps.setInt(4, rid);

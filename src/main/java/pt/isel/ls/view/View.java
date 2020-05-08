@@ -14,6 +14,9 @@ public abstract class View {
     protected Entity entity;
 
     public static View getInstance(Iterable<Entity> entities) {
+        if (entities == null) {
+            return new NoRouteView();
+        }
         Iterator<Entity> iter = entities.iterator();
         if (!iter.hasNext()) {
             return new EmptyView();

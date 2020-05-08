@@ -50,7 +50,7 @@ public class Parameters {
         return curr == null ? null : curr.getFirst();
     }
 
-    public Integer getInt(String varName) {
+    public Integer getInt(String varName) throws NumberFormatException {
         String res = getString(varName);
         return res == null ? null : Integer.parseInt(res);
     }

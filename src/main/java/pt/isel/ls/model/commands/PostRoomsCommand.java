@@ -4,6 +4,7 @@ import pt.isel.ls.model.commands.common.CommandException;
 import pt.isel.ls.model.commands.common.CommandHandler;
 import pt.isel.ls.model.commands.common.CommandRequest;
 import pt.isel.ls.model.commands.common.CommandResult;
+import pt.isel.ls.model.commands.common.Parameters;
 import pt.isel.ls.model.commands.sql.TransactionManager;
 import pt.isel.ls.model.entities.Room;
 
@@ -28,10 +29,19 @@ public class PostRoomsCommand implements CommandHandler {
                             + "(name, description, location, capacity) Values(?,?,?,?)",
                             Statement.RETURN_GENERATED_KEYS
             );
-            String name = commandRequest.getParams().getString("name");
-            String description = commandRequest.getParams().getString("description");
-            String location = commandRequest.getParams().getString("location");
-            Integer capacity = commandRequest.getParams().getInt("capacity");
+            Parameters params = commandRequest.getParams();
+            if (params == null) {
+                throw new CommandException("No parameters specified");
+            }
+            String name = params.getString("name");
+            String description = params.getString("description");
+            String location = params.getString("location");
+            Integer capacity;
+            try {
+                capacity = params.getInt("capacity");
+            } catch (NumberFormatException e) {
+                throw new CommandException("Invalid capacity");
+            }
 
             if (name != null && location != null) {
                 ps.setString(1, name);

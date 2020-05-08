@@ -19,8 +19,12 @@ public class GetRoomsWithLabelCommand implements CommandHandler {
         trans.executeTransaction(con -> {
             PreparedStatement ps = con.prepareStatement("SELECT ROOM.rid, name, location, capacity "
                     + "FROM ROOMLABEL INNER JOIN ROOM ON ROOMLABEL.rid = ROOM.rid WHERE lid = ?");
-
-            int labelId = commandRequest.getPath().getInt("lid");
+            int labelId;
+            try {
+                labelId = commandRequest.getPath().getInt("lid");
+            }  catch (NumberFormatException e) {
+                throw new CommandException("Invalid Label ID");
+            }
             ps.setInt(1, labelId);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
