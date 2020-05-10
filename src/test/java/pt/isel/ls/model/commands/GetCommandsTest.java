@@ -6,22 +6,28 @@ import org.junit.Test;
 import pt.isel.ls.model.Router;
 import pt.isel.ls.model.commands.common.CommandRequest;
 import pt.isel.ls.model.commands.common.Method;
-import pt.isel.ls.model.commands.common.CommandResult;
 import pt.isel.ls.model.commands.common.CommandHandler;
 import pt.isel.ls.model.commands.common.Parameters;
+import pt.isel.ls.model.commands.results.GetBookingByRoomAndBookingIdResult;
+import pt.isel.ls.model.commands.results.GetBookingsByUserIdResult;
+import pt.isel.ls.model.commands.results.GetLabelsResult;
+import pt.isel.ls.model.commands.results.GetRoomByIdResult;
+import pt.isel.ls.model.commands.results.GetRoomsResult;
+import pt.isel.ls.model.commands.results.GetRoomsWithLabelResult;
+import pt.isel.ls.model.commands.results.GetTimeResult;
+import pt.isel.ls.model.commands.results.GetUserByIdResult;
 import pt.isel.ls.model.commands.sql.TransactionManager;
 import pt.isel.ls.model.entities.Booking;
 import pt.isel.ls.model.entities.Label;
 import pt.isel.ls.model.entities.User;
 import pt.isel.ls.model.entities.Room;
-import pt.isel.ls.model.entities.Entity;
-import pt.isel.ls.model.entities.Time;
 import pt.isel.ls.model.paths.Path;
 import pt.isel.ls.model.paths.PathTemplate;
 import pt.isel.ls.utils.DateUtils;
 
 import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.sql.PreparedStatement;
 import java.text.SimpleDateFormat;
@@ -75,18 +81,18 @@ public class GetCommandsTest {
     }
 
     @Test
-    public void getBookingsByRoomAndBookingIdTest() throws Exception {
+    public void getBookingByRoomAndBookingIdTest() throws Exception {
         Router router = new Router();
         router.addRoute(Method.GET, new PathTemplate("/rooms/{rid}/bookings/{bid}"),
-                new GetBookingByRoomAndBookingId());
+                new GetBookingByRoomAndBookingIdCommand());
         CommandRequest cmd = new CommandRequest(new Path("/rooms/0/bookings/4"), null, trans, null);
 
         CommandHandler handler = router.findRoute(Method.GET, cmd.getPath());
-        CommandResult result = handler.execute(cmd);
-        Iterator<Entity> itr = result.iterator();
+        GetBookingByRoomAndBookingIdResult result = (GetBookingByRoomAndBookingIdResult) handler.execute(cmd);
 
         assertNotNull(result);
-        Booking booking = (Booking) itr.next();
+        assertTrue(result.hasResults());
+        Booking booking = result.getBooking();
         assertEquals(4, booking.getBid());
         assertEquals(0, booking.getUid());
         assertEquals(0, booking.getRid());
@@ -101,14 +107,15 @@ public class GetCommandsTest {
         CommandRequest cmd = new CommandRequest(new Path("/users/0/bookings"), null, trans, null);
 
         CommandHandler handler = router.findRoute(Method.GET, cmd.getPath());
-        CommandResult result = handler.execute(cmd);
-        Iterator<Entity> itr = result.iterator();
+        GetBookingsByUserIdResult result = (GetBookingsByUserIdResult) handler.execute(cmd);
+        Iterator<Booking> itr = result.getBookings().iterator();
 
         assertNotNull(result);
-        assertEquals(0, ((Booking) itr.next()).getBid());
-        assertEquals(1, ((Booking) itr.next()).getBid());
-        assertEquals(3, ((Booking) itr.next()).getBid());
-        assertEquals(4, ((Booking) itr.next()).getBid());
+        assertTrue(result.hasResults());
+        assertEquals(0, itr.next().getBid());
+        assertEquals(1, itr.next().getBid());
+        assertEquals(3, itr.next().getBid());
+        assertEquals(4, itr.next().getBid());
     }
 
     @Test
@@ -118,28 +125,29 @@ public class GetCommandsTest {
         CommandRequest cmd = new CommandRequest(new Path("/labels"), null, trans, null);
 
         CommandHandler handler = router.findRoute(Method.GET, cmd.getPath());
-        CommandResult result = handler.execute(cmd);
-        Iterator<Entity> itr = result.iterator();
+        GetLabelsResult result = (GetLabelsResult) handler.execute(cmd);
+        Iterator<Label> itr = result.getLabels().iterator();
 
         assertNotNull(result);
-        assertEquals(0, ((Label) itr.next()).getLid());
-        assertEquals(1, ((Label) itr.next()).getLid());
-        assertEquals(2, ((Label) itr.next()).getLid());
+        assertTrue(result.hasResults());
+        assertEquals(0, itr.next().getLid());
+        assertEquals(1, itr.next().getLid());
+        assertEquals(2, itr.next().getLid());
 
     }
 
     @Test
-    public void getRoomsByIdTest() throws Exception {
+    public void getRoomByIdTest() throws Exception {
         Router router = new Router();
         router.addRoute(Method.GET, new PathTemplate("/rooms/{rid}"), new GetRoomByIdCommand());
         CommandRequest cmd = new CommandRequest(new Path("/rooms/0"), null, trans, null);
 
         CommandHandler handler = router.findRoute(Method.GET, cmd.getPath());
-        CommandResult result = handler.execute(cmd);
-        Iterator<Entity> itr = result.iterator();
+        GetRoomByIdResult result = (GetRoomByIdResult) handler.execute(cmd);
 
         assertNotNull(result);
-        Room room = (Room) itr.next();
+        assertTrue(result.hasResults());
+        Room room = result.getRoom();
         assertEquals(0, room.getRid());
         assertEquals("Meeting Room", room.getName());
     }
@@ -151,14 +159,15 @@ public class GetCommandsTest {
         CommandRequest cmd = new CommandRequest(new Path("/rooms"), null, trans, null);
 
         CommandHandler handler = router.findRoute(Method.GET, cmd.getPath());
-        CommandResult result = handler.execute(cmd);
-        Iterator<Entity> itr = result.iterator();
+        GetRoomsResult result = (GetRoomsResult) handler.execute(cmd);
+        Iterator<Room> itr = result.getRooms().iterator();
 
         assertNotNull(result);
-        Room room1 = (Room) itr.next();
+        assertTrue(result.hasResults());
+        Room room1 = itr.next();
         assertEquals(0, room1.getRid());
         assertEquals("Meeting Room", room1.getName());
-        Room room2 = (Room) itr.next();
+        Room room2 = itr.next();
         assertEquals(1, room2.getRid());
         assertEquals("Snack Room", room2.getName());
     }
@@ -171,11 +180,12 @@ public class GetCommandsTest {
                 new Parameters("label=Has+Board&label=Has+Projector"), trans, null);
 
         CommandHandler handler = router.findRoute(Method.GET, cmd.getPath());
-        CommandResult result = handler.execute(cmd);
-        Iterator<Entity> itr = result.iterator();
+        GetRoomsResult result = (GetRoomsResult) handler.execute(cmd);
+        Iterator<Room> itr = result.getRooms().iterator();
 
         assertNotNull(result);
-        Room room1 = (Room) itr.next();
+        assertTrue(result.hasResults());
+        Room room1 = itr.next();
         assertEquals(0, room1.getRid());
         assertEquals("Meeting Room", room1.getName());
     }
@@ -188,11 +198,12 @@ public class GetCommandsTest {
                 new Parameters("capacity=10"), trans, null);
 
         CommandHandler handler = router.findRoute(Method.GET, cmd.getPath());
-        CommandResult result = handler.execute(cmd);
-        Iterator<Entity> itr = result.iterator();
+        GetRoomsResult result = (GetRoomsResult) handler.execute(cmd);
+        Iterator<Room> itr = result.getRooms().iterator();
 
         assertNotNull(result);
-        Room room1 = (Room) itr.next();
+        assertTrue(result.hasResults());
+        Room room1 = itr.next();
         assertEquals(0, room1.getRid());
         assertEquals("Meeting Room", room1.getName());
     }
@@ -205,13 +216,14 @@ public class GetCommandsTest {
                 new Parameters("begin=2016-06-22+19:20&duration=00:30"), trans, null);
 
         CommandHandler handler = router.findRoute(Method.GET, cmd.getPath());
-        CommandResult result = handler.execute(cmd);
-        Iterator<Entity> itr = result.iterator();
+        GetRoomsResult result = (GetRoomsResult) handler.execute(cmd);
+        Iterator<Room> itr = result.getRooms().iterator();
 
         assertNotNull(result);
-        Room room = (Room) itr.next();
-        assertEquals(0, room.getRid());
-        assertEquals("Meeting Room", room.getName());
+        assertTrue(result.hasResults());
+        Room room1 = itr.next();
+        assertEquals(0, room1.getRid());
+        assertEquals("Meeting Room", room1.getName());
     }
 
     @Test
@@ -221,25 +233,26 @@ public class GetCommandsTest {
         CommandRequest cmd = new CommandRequest(new Path("/labels/1/rooms"), null, trans, null);
 
         CommandHandler handler = router.findRoute(Method.GET, cmd.getPath());
-        CommandResult result = handler.execute(cmd);
-        Iterator<Entity> itr = result.iterator();
+        GetRoomsWithLabelResult result = (GetRoomsWithLabelResult) handler.execute(cmd);
+        Iterator<Room> itr = result.getRooms().iterator();
 
         assertNotNull(result);
-        assertEquals(1, ((Room) itr.next()).getRid());
+        assertTrue(result.hasResults());
+        assertEquals(1, itr.next().getRid());
     }
 
     @Test
-    public void getUsersByIdTest() throws Exception {
+    public void getUserByIdTest() throws Exception {
         Router router = new Router();
         router.addRoute(Method.GET, new PathTemplate("/users/{uid}"), new GetUserByIdCommand());
         CommandRequest cmd = new CommandRequest(new Path("/users/0"), null, trans, null);
 
         CommandHandler handler = router.findRoute(Method.GET, cmd.getPath());
-        CommandResult result = handler.execute(cmd);
-        Iterator<Entity> itr = result.iterator();
+        GetUserByIdResult result = (GetUserByIdResult) handler.execute(cmd);
 
         assertNotNull(result);
-        User user = (User) itr.next();
+        assertTrue(result.hasResults());
+        User user = result.getUser();
         assertEquals(0, user.getUid());
         assertEquals("John Frank", user.getName());
     }
@@ -249,12 +262,15 @@ public class GetCommandsTest {
         Router router = new Router();
         router.addRoute(Method.GET, new PathTemplate("/time"), new GetTimeCommand());
         CommandRequest cmd = new CommandRequest(new Path("/time"), null, trans, null);
-        CommandHandler handler = router.findRoute(Method.GET, cmd.getPath());
 
-        CommandResult res = handler.execute(cmd);
+        CommandHandler handler = router.findRoute(Method.GET, cmd.getPath());
+        GetTimeResult result = (GetTimeResult) handler.execute(cmd);
+
+        assertNotNull(result);
+        assertTrue(result.hasResults());
         Date expected = new Date();
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Time actual = (Time) res.iterator().next();
+        Date actual = result.getTime();
 
         assertEquals(formatter.format(expected.getTime()), formatter.format(actual.getTime()));
     }

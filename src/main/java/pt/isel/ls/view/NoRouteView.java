@@ -7,6 +7,11 @@ import static pt.isel.ls.utils.html.HtmlDsl.h1;
 import static pt.isel.ls.utils.html.HtmlDsl.title;
 
 public class NoRouteView extends View {
+
+    protected NoRouteView() {
+        super();
+    }
+
     @Override
     public String displayText() {
         return "Resource not found\n";

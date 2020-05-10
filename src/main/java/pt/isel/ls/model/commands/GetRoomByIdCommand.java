@@ -4,7 +4,8 @@ import pt.isel.ls.model.commands.common.CommandException;
 import pt.isel.ls.model.commands.common.CommandHandler;
 import pt.isel.ls.model.commands.common.CommandRequest;
 import pt.isel.ls.model.commands.common.CommandResult;
-import pt.isel.ls.model.commands.helpers.LabelsHelper;
+import pt.isel.ls.model.commands.helpers.DatabaseDataHelper;
+import pt.isel.ls.model.commands.results.GetRoomByIdResult;
 import pt.isel.ls.model.commands.sql.TransactionManager;
 import pt.isel.ls.model.entities.Room;
 
@@ -15,7 +16,7 @@ import java.sql.SQLException;
 public class GetRoomByIdCommand implements CommandHandler {
     @Override
     public CommandResult execute(CommandRequest commandRequest) throws CommandException, SQLException {
-        CommandResult result = new CommandResult();
+        GetRoomByIdResult result = new GetRoomByIdResult();
         TransactionManager trans = commandRequest.getTransactionHandler();
         trans.executeTransaction(con -> {
             PreparedStatement ps = con.prepareStatement("SELECT * "
@@ -33,14 +34,14 @@ public class GetRoomByIdCommand implements CommandHandler {
                 if (rs.wasNull()) {
                     capacity = null;
                 }
-                result.addResult(new Room(
+                result.setRoom(new Room(
                         rs.getInt("rid"),
                         rs.getString("name"),
                         rs.getString("description"),
                         rs.getString("location"),
-                        capacity,
-                        LabelsHelper.getLabelsFromRid(con, roomId)
+                        capacity
                 ));
+                result.setLabels(DatabaseDataHelper.getLabelsFromRid(con, roomId));
             }
 
             rs.close();

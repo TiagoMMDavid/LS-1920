@@ -5,6 +5,7 @@ import pt.isel.ls.model.commands.common.CommandHandler;
 import pt.isel.ls.model.commands.common.CommandRequest;
 import pt.isel.ls.model.commands.common.CommandResult;
 import pt.isel.ls.model.commands.common.Parameters;
+import pt.isel.ls.model.commands.results.GetRoomsResult;
 import pt.isel.ls.model.commands.sql.TransactionManager;
 import pt.isel.ls.model.entities.Room;
 
@@ -15,14 +16,14 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.LinkedList;
 
-import static pt.isel.ls.model.commands.helpers.LabelsHelper.getRidsWithLabels;
+import static pt.isel.ls.model.commands.helpers.DatabaseDataHelper.getRidsWithLabels;
 import static pt.isel.ls.utils.DateUtils.parseTime;
 import static pt.isel.ls.utils.DateUtils.parseTimeWithTimezone;
 
 public class GetRoomsCommand implements CommandHandler {
     @Override
     public CommandResult execute(CommandRequest commandRequest) throws CommandException, SQLException {
-        CommandResult result = new CommandResult();
+        GetRoomsResult result = new GetRoomsResult();
         TransactionManager trans = commandRequest.getTransactionHandler();
         trans.executeTransaction(con -> {
             Parameters params = commandRequest.getParams();
@@ -52,7 +53,7 @@ public class GetRoomsCommand implements CommandHandler {
                         if (rs.wasNull()) {
                             capacity = null;
                         }
-                        result.addResult(new Room(rs.getInt("rid"),
+                        result.addRoom(new Room(rs.getInt("rid"),
                                 rs.getString("name"),
                                 rs.getString("location"),
                                 capacity));
@@ -114,7 +115,7 @@ public class GetRoomsCommand implements CommandHandler {
             }
             Date endDate = new Date(beginDate.getTime() + durationDate.getTime());
             ps.setTimestamp(currIdx++, new java.sql.Timestamp(beginDate.getTime()));
-            ps.setTimestamp(currIdx++, new java.sql.Timestamp(endDate.getTime()));
+            ps.setTimestamp(currIdx, new java.sql.Timestamp(endDate.getTime()));
         }
     }
 

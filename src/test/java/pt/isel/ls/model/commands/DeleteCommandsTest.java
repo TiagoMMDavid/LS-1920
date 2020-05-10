@@ -54,7 +54,7 @@ public class DeleteCommandsTest {
     public void deleteBookingInRoomTest() throws Exception {
         Router router = new Router();
         router.addRoute(Method.DELETE, new PathTemplate("/rooms/{rid}/bookings/{bid}"),
-                new DeleteBookingInRoom());
+                new DeleteBookingInRoomCommand());
         CommandRequest cmd = new CommandRequest(new Path("/rooms/0/bookings/0"), null, trans, null);
 
         CommandHandler handler = router.findRoute(Method.DELETE, cmd.getPath());

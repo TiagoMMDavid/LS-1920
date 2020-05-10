@@ -4,6 +4,7 @@ import pt.isel.ls.model.commands.common.CommandException;
 import pt.isel.ls.model.commands.common.CommandHandler;
 import pt.isel.ls.model.commands.common.CommandRequest;
 import pt.isel.ls.model.commands.common.CommandResult;
+import pt.isel.ls.model.commands.results.GetBookingsByUserIdResult;
 import pt.isel.ls.model.commands.sql.TransactionManager;
 import pt.isel.ls.model.entities.Booking;
 
@@ -14,7 +15,7 @@ import java.sql.SQLException;
 public class GetBookingsByUserIdCommand implements CommandHandler {
     @Override
     public CommandResult execute(CommandRequest commandRequest) throws CommandException, SQLException {
-        CommandResult result = new CommandResult();
+        GetBookingsByUserIdResult result = new GetBookingsByUserIdResult();
         TransactionManager trans = commandRequest.getTransactionHandler();
         trans.executeTransaction(con -> {
             PreparedStatement ps = con.prepareStatement("SELECT bid, rid "
@@ -29,7 +30,7 @@ public class GetBookingsByUserIdCommand implements CommandHandler {
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 do {
-                    result.addResult(new Booking(rs.getInt("bid"), rs.getInt("rid"), userId));
+                    result.addBooking(new Booking(rs.getInt("bid"), rs.getInt("rid"), userId));
                 } while (rs.next());
             }
             rs.close();

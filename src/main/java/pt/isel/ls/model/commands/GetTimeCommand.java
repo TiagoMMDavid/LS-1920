@@ -4,7 +4,7 @@ import pt.isel.ls.model.commands.common.CommandException;
 import pt.isel.ls.model.commands.common.CommandHandler;
 import pt.isel.ls.model.commands.common.CommandRequest;
 import pt.isel.ls.model.commands.common.CommandResult;
-import pt.isel.ls.model.entities.Time;
+import pt.isel.ls.model.commands.results.GetTimeResult;
 
 import java.sql.SQLException;
 import java.util.Date;
@@ -12,8 +12,8 @@ import java.util.Date;
 public class GetTimeCommand implements CommandHandler {
     @Override
     public CommandResult execute(CommandRequest commandRequest) throws CommandException, SQLException {
-        CommandResult res = new CommandResult();
-        res.addResult(new Time(new Date()));
+        GetTimeResult res = new GetTimeResult();
+        res.setTime(new Date());
         return res;
     }
 

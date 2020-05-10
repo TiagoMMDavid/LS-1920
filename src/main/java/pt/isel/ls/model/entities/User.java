@@ -5,14 +5,10 @@ public class User implements Entity {
     private String name;
     private String email;
 
-    private boolean isPost = false;
-    private boolean isDetailed = false;
-
     public User(int uid, String name, String email) {
         this.uid = uid;
         this.name = name;
         this.email = email;
-        this.isDetailed = true;
     }
 
     public User(int uid, String name) {
@@ -22,7 +18,6 @@ public class User implements Entity {
 
     public User(int uid) {
         this.uid = uid;
-        this.isPost = true;
     }
 
     public int getUid() {
@@ -40,13 +35,5 @@ public class User implements Entity {
     @Override
     public EntityType getEntityType() {
         return EntityType.USER;
-    }
-
-    public boolean isPost() {
-        return isPost;
-    }
-
-    public boolean isDetailed() {
-        return isDetailed;
     }
 }

@@ -8,12 +8,13 @@ import pt.isel.ls.model.commands.common.CommandHandler;
 import pt.isel.ls.model.commands.common.CommandRequest;
 import pt.isel.ls.model.commands.common.CommandResult;
 import pt.isel.ls.model.commands.common.Parameters;
-import pt.isel.ls.model.entities.Message;
-import pt.isel.ls.html.CommandServlet;
+import pt.isel.ls.model.commands.results.ListenResult;
+import pt.isel.ls.http.CommandServlet;
 
 import java.sql.SQLException;
 
 public class ListenCommand implements CommandHandler {
+
     @Override
     public CommandResult execute(CommandRequest commandRequest) throws CommandException, SQLException {
         Parameters params = commandRequest.getParams();
@@ -42,8 +43,15 @@ public class ListenCommand implements CommandHandler {
             throw new CommandException("Failed to start server");
         }
 
-        CommandResult result = new CommandResult();
-        result.addResult(new Message("Server started on port " + port));
+        ListenResult result = new ListenResult();
+        result.setPort(port);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Starts the HTTP server. "
+                + "This command receives a port parameter containing the TCP port "
+                + "where the server should listen for requests.";
     }
 }

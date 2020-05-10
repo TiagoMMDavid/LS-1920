@@ -1,24 +1,30 @@
 package pt.isel.ls.model.commands.common;
 
-import pt.isel.ls.model.entities.Entity;
+public interface CommandResult {
 
-import java.util.Iterator;
-import java.util.LinkedList;
+    boolean hasResults();
 
-public class CommandResult implements Iterable<Entity> {
-
-    private LinkedList<Entity> results = new LinkedList<>();
-
-    public void addResult(Entity result) {
-        results.add(result);
+    enum ResultType {
+        DeleteBookingInRoom,
+        GetBookingByRoomAndBookingId,
+        GetBookingsByRoomId,
+        GetBookingsByUserId,
+        GetLabelById,
+        GetLabels,
+        GetRoomById,
+        GetRooms,
+        GetRoomsWithLabel,
+        GetTime,
+        GetUserById,
+        GetUsers,
+        Listen,
+        Option,
+        PostBookingInRoom,
+        PostLabel,
+        PostRoom,
+        PostUser,
+        PutBookingInRoom
     }
 
-    public void clearResults() {
-        results.clear();
-    }
-
-    @Override
-    public Iterator<Entity> iterator() {
-        return results.iterator();
-    }
+    ResultType getResultType();
 }

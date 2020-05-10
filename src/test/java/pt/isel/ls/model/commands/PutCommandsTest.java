@@ -54,7 +54,7 @@ public class PutCommandsTest {
     public void putBookingInRoomTest() throws Exception {
         Router router = new Router();
         router.addRoute(Method.PUT, new PathTemplate("/rooms/{rid}/bookings/{bid}"),
-                new PutBookingInRoom());
+                new PutBookingInRoomCommand());
         CommandRequest cmd = new CommandRequest(new Path("/rooms/0/bookings/0"),
                 new Parameters("begin=2020-12-20+10:20&duration=00:10&uid=0"), trans, null);
         CommandHandler handler = router.findRoute(Method.PUT, cmd.getPath());

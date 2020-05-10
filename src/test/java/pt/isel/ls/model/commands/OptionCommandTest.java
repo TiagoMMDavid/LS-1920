@@ -5,13 +5,14 @@ import org.junit.Test;
 import pt.isel.ls.model.Router;
 import pt.isel.ls.model.commands.common.CommandHandler;
 import pt.isel.ls.model.commands.common.CommandRequest;
-import pt.isel.ls.model.commands.common.CommandResult;
 import pt.isel.ls.model.commands.common.Method;
+import pt.isel.ls.model.commands.results.OptionResult;
 import pt.isel.ls.model.paths.Path;
 import pt.isel.ls.model.paths.PathTemplate;
 import pt.isel.ls.view.View;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class OptionCommandTest {
     private static Router router = new Router();
@@ -26,17 +27,17 @@ public class OptionCommandTest {
         router.addRoute(Method.GET, roomsTemplate, new GetRoomsCommand());
         router.addRoute(Method.GET, new PathTemplate("/rooms/{rid}"), new GetRoomByIdCommand());
         router.addRoute(Method.GET, new PathTemplate("/rooms/{rid}/bookings/{bid}"),
-                new GetBookingByRoomAndBookingId());
+                new GetBookingByRoomAndBookingIdCommand());
         router.addRoute(Method.GET, new PathTemplate("/users/{uid}"), new GetUserByIdCommand());
         router.addRoute(Method.GET, new PathTemplate("/users/{uid}/bookings"), new GetBookingsByUserIdCommand());
         router.addRoute(Method.GET, labelsTemplate, new GetLabelsCommand());
         router.addRoute(Method.GET, new PathTemplate("/labels/{lid}/rooms"), new GetRoomsWithLabelCommand());
 
         //POST commands
-        router.addRoute(Method.POST, roomsTemplate, new PostRoomsCommand());
-        router.addRoute(Method.POST, new PathTemplate("/rooms/{rid}/bookings"), new PostBookingsInRoomCommand());
-        router.addRoute(Method.POST, new PathTemplate("/users"), new PostUsersCommand());
-        router.addRoute(Method.POST, labelsTemplate, new PostLabelsCommand());
+        router.addRoute(Method.POST, roomsTemplate, new PostRoomCommand());
+        router.addRoute(Method.POST, new PathTemplate("/rooms/{rid}/bookings"), new PostBookingInRoomCommand());
+        router.addRoute(Method.POST, new PathTemplate("/users"), new PostUserCommand());
+        router.addRoute(Method.POST, labelsTemplate, new PostLabelCommand());
 
         //EXIT command
         router.addRoute(Method.EXIT, new PathTemplate("/"), new ExitCommand());
@@ -51,8 +52,9 @@ public class OptionCommandTest {
         CommandRequest cmd = new CommandRequest(new Path("/"), null,null, router);
         CommandHandler handler = router.findRoute(Method.OPTION, cmd.getPath());
 
-        CommandResult res = handler.execute(cmd);
+        OptionResult res = (OptionResult) handler.execute(cmd);
         assertNotNull(res);
+        assertTrue(res.hasResults());
         View view = View.getInstance(res);
         view.display(System.out, null);
     }

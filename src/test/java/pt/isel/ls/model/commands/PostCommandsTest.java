@@ -7,22 +7,20 @@ import pt.isel.ls.model.Router;
 import pt.isel.ls.model.commands.common.CommandRequest;
 import pt.isel.ls.model.commands.common.Method;
 import pt.isel.ls.model.commands.common.Parameters;
-import pt.isel.ls.model.commands.common.CommandResult;
 import pt.isel.ls.model.commands.common.CommandHandler;
+import pt.isel.ls.model.commands.results.PostBookingInRoomResult;
+import pt.isel.ls.model.commands.results.PostLabelResult;
+import pt.isel.ls.model.commands.results.PostRoomResult;
+import pt.isel.ls.model.commands.results.PostUserResult;
 import pt.isel.ls.model.commands.sql.TransactionManager;
-import pt.isel.ls.model.entities.Booking;
-import pt.isel.ls.model.entities.Label;
-import pt.isel.ls.model.entities.User;
-import pt.isel.ls.model.entities.Room;
-import pt.isel.ls.model.entities.Entity;
 import pt.isel.ls.model.paths.Path;
 import pt.isel.ls.model.paths.PathTemplate;
 
 import java.sql.PreparedStatement;
-import java.util.Iterator;
 
 import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class PostCommandsTest {
     private static TransactionManager trans = new TransactionManager(System.getenv("postgresTestUrl"));
@@ -59,70 +57,66 @@ public class PostCommandsTest {
     }
 
     @Test
-    public void postBookingsInRoomCommandTest() throws Exception {
+    public void postBookingInRoomCommandTest() throws Exception {
         Router router = new Router();
-        router.addRoute(Method.POST, new PathTemplate("/rooms/{rid}/bookings"), new PostBookingsInRoomCommand());
+        router.addRoute(Method.POST, new PathTemplate("/rooms/{rid}/bookings"), new PostBookingInRoomCommand());
         CommandRequest cmd = new CommandRequest(new Path("/rooms/0/bookings"),
                 new Parameters("begin=2020-12-20+10:20&duration=00:10&uid=0"),
                 trans, null);
 
         CommandHandler handler = router.findRoute(Method.POST, cmd.getPath());
-        CommandResult result = handler.execute(cmd);
+        PostBookingInRoomResult result = (PostBookingInRoomResult) handler.execute(cmd);
 
         assertNotNull(result);
-        Iterator<Entity> itr = result.iterator();
-        Booking booking = (Booking) itr.next();
-        assertEquals(1, booking.getBid());
+        assertTrue(result.hasResults());
+        assertEquals(1, result.getBooking().getBid());
     }
 
     @Test
-    public void postLabelsCommandTest() throws Exception {
+    public void postLabelCommandTest() throws Exception {
         Router router = new Router();
-        router.addRoute(Method.POST, new PathTemplate("/labels"), new PostLabelsCommand());
+        router.addRoute(Method.POST, new PathTemplate("/labels"), new PostLabelCommand());
         CommandRequest cmd = new CommandRequest(new Path("/labels"),
                 new Parameters("name=projector"),
                 trans, null);
 
         CommandHandler handler = router.findRoute(Method.POST, cmd.getPath());
-        CommandResult result = handler.execute(cmd);
+        PostLabelResult result = (PostLabelResult) handler.execute(cmd);
 
         assertNotNull(result);
-        Iterator<Entity> itr = result.iterator();
-        Label label = (Label) itr.next();
-        assertEquals(2, label.getLid());
+        assertTrue(result.hasResults());
+        assertEquals(2, result.getLabel().getLid());
     }
 
     @Test
-    public void postRoomsCommandTest() throws Exception {
+    public void postRoomCommandTest() throws Exception {
         Router router = new Router();
-        router.addRoute(Method.POST, new PathTemplate("/rooms"), new PostRoomsCommand());
+        router.addRoute(Method.POST, new PathTemplate("/rooms"), new PostRoomCommand());
         CommandRequest cmd = new CommandRequest(new Path("/rooms"),
                 new Parameters("name=LS3&location=Building+F+floor+-1&label=monitors&label=windows"),
                 trans, null);
 
         CommandHandler handler = router.findRoute(Method.POST, cmd.getPath());
-        CommandResult result = handler.execute(cmd);
+        PostRoomResult result = (PostRoomResult) handler.execute(cmd);
 
         assertNotNull(result);
-        Iterator<Entity> itr = result.iterator();
-        Room room = (Room) itr.next();
-        assertEquals(1, room.getRid());
+        assertTrue(result.hasResults());
+        assertEquals(1, result.getRoom().getRid());
     }
 
     @Test
-    public void postUsersCommandTest() throws Exception {
+    public void postUserCommandTest() throws Exception {
         Router router = new Router();
-        router.addRoute(Method.POST, new PathTemplate("/users"), new PostUsersCommand());
+        router.addRoute(Method.POST, new PathTemplate("/users"), new PostUserCommand());
         CommandRequest cmd = new CommandRequest(new Path("/users"),
                 new Parameters("name=David&email=davidp@email.org"),
                 trans, null);
 
         CommandHandler handler = router.findRoute(Method.POST, cmd.getPath());
-        CommandResult result = handler.execute(cmd);
+        PostUserResult result = (PostUserResult) handler.execute(cmd);
 
         assertNotNull(result);
-        Iterator<Entity> itr = result.iterator();
-        User user = (User) itr.next();
-        assertEquals(1, user.getUid());
+        assertTrue(result.hasResults());
+        assertEquals(1, result.getUser().getUid());
     }
 }

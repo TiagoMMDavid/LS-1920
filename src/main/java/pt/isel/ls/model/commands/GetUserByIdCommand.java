@@ -3,7 +3,9 @@ package pt.isel.ls.model.commands;
 import pt.isel.ls.model.commands.common.CommandException;
 import pt.isel.ls.model.commands.common.CommandHandler;
 import pt.isel.ls.model.commands.common.CommandRequest;
+import pt.isel.ls.model.commands.helpers.DatabaseDataHelper;
 import pt.isel.ls.model.commands.common.CommandResult;
+import pt.isel.ls.model.commands.results.GetUserByIdResult;
 import pt.isel.ls.model.commands.sql.TransactionManager;
 import pt.isel.ls.model.entities.User;
 
@@ -14,7 +16,7 @@ import java.sql.SQLException;
 public class GetUserByIdCommand implements CommandHandler {
     @Override
     public CommandResult execute(CommandRequest commandRequest) throws CommandException, SQLException {
-        CommandResult result = new CommandResult();
+        GetUserByIdResult result = new GetUserByIdResult();
         TransactionManager trans = commandRequest.getTransactionHandler();
         trans.executeTransaction(con -> {
             PreparedStatement ps = con.prepareStatement("SELECT * "
@@ -28,11 +30,12 @@ public class GetUserByIdCommand implements CommandHandler {
             ps.setInt(1, userId);
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                result.addResult(new User(
+                result.setUser(new User(
                         rs.getInt("uid"),
                         rs.getString("name"),
                         rs.getString("email")
                 ));
+                result.setBookings(DatabaseDataHelper.getBookingsFromUid(con, userId));
             }
             rs.close();
             ps.close();
