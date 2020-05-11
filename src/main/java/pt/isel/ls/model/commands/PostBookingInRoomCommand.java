@@ -9,7 +9,6 @@ import pt.isel.ls.model.commands.results.PostBookingInRoomResult;
 import pt.isel.ls.model.commands.sql.TransactionManager;
 import pt.isel.ls.model.entities.Booking;
 
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
 import java.sql.ResultSet;
@@ -18,6 +17,7 @@ import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.Date;
 
+import static pt.isel.ls.model.commands.helpers.DatabaseDataHelper.dateOverlaps;
 import static pt.isel.ls.utils.DateUtils.parseTimeWithTimezone;
 import static pt.isel.ls.utils.DateUtils.parseTime;
 
@@ -61,7 +61,7 @@ public class PostBookingInRoomCommand implements CommandHandler {
                 }
                 Date endDate = new Date(beginDate.getTime() + durationDate.getTime());
 
-                if (!hasOverlaps(beginDate, endDate, rid, con)) {
+                if (!dateOverlaps(beginDate, endDate, rid, con)) {
                     ps.setTimestamp(3, new java.sql.Timestamp(beginDate.getTime()));
                     ps.setTimestamp(4, new java.sql.Timestamp(endDate.getTime()));
 
@@ -82,20 +82,8 @@ public class PostBookingInRoomCommand implements CommandHandler {
         return result;
     }
 
-    private boolean hasOverlaps(Date begin, Date end, int rid, Connection con) throws SQLException {
-        PreparedStatement ps = con.prepareStatement("select rid, begin_inst, end_inst"
-                + " from booking"
-                + " where (?, ?) overlaps (begin_inst, end_inst)"
-                + " and ? = rid");
-        ps.setTimestamp(1, new java.sql.Timestamp(begin.getTime()));
-        ps.setTimestamp(2, new java.sql.Timestamp(end.getTime()));
-        ps.setInt(3, rid);
-        ResultSet rs = ps.executeQuery();
-        return rs.next();
-    }
-
     @Override
-    public String toString() {
+    public String getDescription() {
         return "creates a new booking, given the following additional parameters\n"
                 + "- begin - the begin instant for the booking period.\n"
                 + "- duration - the booking duration.\n"

@@ -31,6 +31,7 @@ public class GetBookingsByRoomIdCommand implements CommandHandler {
             } catch (NumberFormatException e) {
                 throw new CommandException("Invalid Room ID");
             }
+            result.setRoom(roomId);
             ps.setInt(1, roomId);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
@@ -44,7 +45,6 @@ public class GetBookingsByRoomIdCommand implements CommandHandler {
                 }
                 result.addBooking(new Booking(
                         rs.getInt("bid"),
-                        rs.getInt("rid"),
                         beginInst, endInst
                 ));
             }
@@ -56,7 +56,7 @@ public class GetBookingsByRoomIdCommand implements CommandHandler {
     }
 
     @Override
-    public String toString() {
+    public String getDescription() {
         return "returns all bookings from a specific Room ID";
     }
 }

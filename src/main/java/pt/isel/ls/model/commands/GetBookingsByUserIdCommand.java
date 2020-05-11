@@ -11,6 +11,10 @@ import pt.isel.ls.model.entities.Booking;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.util.Date;
+
+import static pt.isel.ls.utils.DateUtils.parseTimeWithTimezone;
 
 public class GetBookingsByUserIdCommand implements CommandHandler {
     @Override
@@ -18,7 +22,7 @@ public class GetBookingsByUserIdCommand implements CommandHandler {
         GetBookingsByUserIdResult result = new GetBookingsByUserIdResult();
         TransactionManager trans = commandRequest.getTransactionHandler();
         trans.executeTransaction(con -> {
-            PreparedStatement ps = con.prepareStatement("SELECT bid, rid "
+            PreparedStatement ps = con.prepareStatement("SELECT * "
                     + "FROM BOOKING WHERE uid = ?");
             int userId;
             try {
@@ -26,12 +30,19 @@ public class GetBookingsByUserIdCommand implements CommandHandler {
             }  catch (NumberFormatException e) {
                 throw new CommandException("Invalid User ID");
             }
+            result.setUid(userId);
             ps.setInt(1, userId);
             ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                do {
-                    result.addBooking(new Booking(rs.getInt("bid"), rs.getInt("rid"), userId));
-                } while (rs.next());
+            while (rs.next()) {
+                Date beginInst;
+                Date endInst;
+                try {
+                    beginInst = parseTimeWithTimezone(rs.getString("begin_inst"), "yyyy-MM-dd HH:mm:ss");
+                    endInst = parseTimeWithTimezone(rs.getString("end_inst"),"yyyy-MM-dd HH:mm:ss");
+                } catch (ParseException e) {
+                    throw new CommandException("Failed to parse dates");
+                }
+                result.addBooking(new Booking(rs.getInt("bid"), rs.getInt("rid"), beginInst, endInst));
             }
             rs.close();
             ps.close();
@@ -40,7 +51,7 @@ public class GetBookingsByUserIdCommand implements CommandHandler {
     }
 
     @Override
-    public String toString() {
+    public String getDescription() {
         return "returns the list of all bookings owned by the uid user";
     }
 }

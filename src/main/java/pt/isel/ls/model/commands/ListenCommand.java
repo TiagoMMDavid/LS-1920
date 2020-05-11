@@ -49,7 +49,7 @@ public class ListenCommand implements CommandHandler {
     }
 
     @Override
-    public String toString() {
+    public String getDescription() {
         return "Starts the HTTP server. "
                 + "This command receives a port parameter containing the TCP port "
                 + "where the server should listen for requests.";

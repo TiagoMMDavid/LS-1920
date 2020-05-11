@@ -50,7 +50,7 @@ public class PostLabelCommand implements CommandHandler {
     }
 
     @Override
-    public String toString() {
+    public String getDescription() {
         return "creates a new label, given the following parameters\n"
                 + "- name - the label's name";
     }

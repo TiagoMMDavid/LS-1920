@@ -33,7 +33,7 @@ public class GetLabelsCommand implements CommandHandler {
     }
 
     @Override
-    public String toString() {
+    public String getDescription() {
         return "returns a list with all the labels";
     }
 }

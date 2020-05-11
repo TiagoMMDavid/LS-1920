@@ -18,7 +18,7 @@ public class GetTimeCommand implements CommandHandler {
     }
 
     @Override
-    public String toString() {
+    public String getDescription() {
         return "presents the current time";
     }
 }

@@ -23,7 +23,7 @@ public class OptionCommand implements CommandHandler {
     }
 
     @Override
-    public String toString() {
+    public String getDescription() {
         return "presents a list of available commands and their description";
     }
 }

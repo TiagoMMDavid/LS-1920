@@ -9,6 +9,7 @@ public class GetBookingsByUserIdResult implements CommandResult {
 
     private boolean hasResult = false;
     private LinkedList<Booking> bookings;
+    private int uid;
 
     public void addBooking(Booking booking) {
         if (bookings == null) {
@@ -18,8 +19,17 @@ public class GetBookingsByUserIdResult implements CommandResult {
         bookings.add(booking);
     }
 
+
+    public void setUid(int uid) {
+        this.uid = uid;
+    }
+
     public Iterable<Booking> getBookings() {
         return bookings;
+    }
+
+    public int getUid() {
+        return uid;
     }
 
     @Override
@@ -31,4 +41,5 @@ public class GetBookingsByUserIdResult implements CommandResult {
     public CommandResult.ResultType getResultType() {
         return CommandResult.ResultType.GetBookingsByUserId;
     }
+
 }

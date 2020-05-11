@@ -6,7 +6,7 @@ import pt.isel.ls.view.View;
 public class GetTimeView extends View {
 
     public GetTimeView(CommandResult commandResult) {
-        super(commandResult);
+
     }
 
     @Override

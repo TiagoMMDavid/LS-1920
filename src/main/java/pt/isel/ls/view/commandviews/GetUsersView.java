@@ -6,7 +6,7 @@ import pt.isel.ls.view.View;
 public class GetUsersView extends View {
 
     public GetUsersView(CommandResult commandResult) {
-        super(commandResult);
+
     }
 
     @Override

@@ -35,7 +35,7 @@ public class GetUsersCommand implements CommandHandler {
     }
 
     @Override
-    public String toString() {
+    public String getDescription() {
         return "returns all users in database";
     }
 }

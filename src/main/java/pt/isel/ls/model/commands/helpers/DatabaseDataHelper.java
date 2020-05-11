@@ -1,5 +1,6 @@
 package pt.isel.ls.model.commands.helpers;
 
+import pt.isel.ls.model.commands.common.CommandException;
 import pt.isel.ls.model.entities.Booking;
 import pt.isel.ls.model.entities.Label;
 import pt.isel.ls.model.entities.Room;
@@ -8,9 +9,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
+
+import static pt.isel.ls.utils.DateUtils.parseTimeWithTimezone;
 
 public class DatabaseDataHelper {
 
@@ -101,7 +105,7 @@ public class DatabaseDataHelper {
         return labels;
     }
 
-    public static Iterable<Booking> getBookingsFromUid(Connection con, int uid) throws SQLException {
+    public static Iterable<Booking> getBookingsFromUid(Connection con, int uid) throws SQLException, CommandException {
         PreparedStatement ps = con.prepareStatement("SELECT * "
                 + "FROM BOOKING "
                 + "WHERE uid = ?");
@@ -111,10 +115,19 @@ public class DatabaseDataHelper {
 
         LinkedList<Booking> bookings = new LinkedList<>();
         while (rs.next()) {
+            Date beginInst;
+            Date endInst;
+            try {
+                beginInst = parseTimeWithTimezone(rs.getString("begin_inst"), "yyyy-MM-dd HH:mm:ss");
+                endInst = parseTimeWithTimezone(rs.getString("end_inst"),"yyyy-MM-dd HH:mm:ss");
+            } catch (ParseException e) {
+                throw new CommandException("Failed to parse dates");
+            }
+
             bookings.add(new Booking(
                     rs.getInt("bid"),
                     rs.getInt("rid"),
-                    uid));
+                    beginInst, endInst));
         }
 
         return bookings;
@@ -129,6 +142,18 @@ public class DatabaseDataHelper {
         ps.setTimestamp(2, new java.sql.Timestamp(end.getTime()));
         ps.setInt(3, rid);
         ps.setInt(4, bid);
+        ResultSet rs = ps.executeQuery();
+        return rs.next();
+    }
+
+    public static boolean dateOverlaps(Date begin, Date end, int rid, Connection con) throws SQLException {
+        PreparedStatement ps = con.prepareStatement("select rid, begin_inst, end_inst"
+                + " from booking"
+                + " where (?, ?) overlaps (begin_inst, end_inst)"
+                + " and ? = rid");
+        ps.setTimestamp(1, new java.sql.Timestamp(begin.getTime()));
+        ps.setTimestamp(2, new java.sql.Timestamp(end.getTime()));
+        ps.setInt(3, rid);
         ResultSet rs = ps.executeQuery();
         return rs.next();
     }

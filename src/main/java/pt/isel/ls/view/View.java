@@ -25,9 +25,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 public abstract class View {
-
-    protected CommandResult commandResult;
-
     public static View getInstance(CommandResult commandResult) {
         if (commandResult == null) {
             // Result can only be null when the Servlet receives a GET request for a non existent command.
@@ -83,13 +80,6 @@ public abstract class View {
         }
     }
 
-    protected View(CommandResult commandResult) {
-        this.commandResult = commandResult;
-    }
-
-    protected View() {
-    }
-
     public void display(OutputStream out, String viewFormat) throws IOException {
         out.write((getDisplay(viewFormat)).getBytes());
     }
@@ -98,11 +88,10 @@ public abstract class View {
         String text = "";
         if (viewFormat == null || viewFormat.equals("text/plain")) {
             text = displayText();
-
         } else if (viewFormat.equals("text/html")) {
-            text = displayHtml() + '\n';
+            text = displayHtml();
         }
-        return text;
+        return text + '\n';
     }
 
 

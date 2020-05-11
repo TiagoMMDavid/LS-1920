@@ -6,7 +6,6 @@ import pt.isel.ls.view.View;
 public class PutBookingInRoomView extends View {
 
     public PutBookingInRoomView(CommandResult commandResult) {
-        super(commandResult);
     }
 
     @Override

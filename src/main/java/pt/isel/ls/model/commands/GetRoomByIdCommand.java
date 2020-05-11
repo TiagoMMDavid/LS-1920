@@ -51,7 +51,7 @@ public class GetRoomByIdCommand implements CommandHandler {
     }
 
     @Override
-    public String toString() {
+    public String getDescription() {
         return "returns the detailed information for the room identified by rid";
     }
 }

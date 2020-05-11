@@ -6,7 +6,7 @@ import pt.isel.ls.view.View;
 public class ListenView extends View {
 
     public ListenView(CommandResult commandResult) {
-        super(commandResult);
+
     }
 
     @Override

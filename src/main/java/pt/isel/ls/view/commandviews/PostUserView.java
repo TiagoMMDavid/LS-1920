@@ -6,7 +6,6 @@ import pt.isel.ls.view.View;
 public class PostUserView extends View {
 
     public PostUserView(CommandResult commandResult) {
-        super(commandResult);
     }
 
     @Override

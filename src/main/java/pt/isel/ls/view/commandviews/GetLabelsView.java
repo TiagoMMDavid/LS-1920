@@ -6,7 +6,7 @@ import pt.isel.ls.view.View;
 public class GetLabelsView extends View {
 
     public GetLabelsView(CommandResult commandResult) {
-        super(commandResult);
+
     }
 
     @Override

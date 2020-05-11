@@ -40,7 +40,7 @@ public class GetLabelByIdCommand implements CommandHandler {
     }
 
     @Override
-    public String toString() {
+    public String getDescription() {
         return "returns the detailed information for the label";
     }
 }

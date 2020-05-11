@@ -9,6 +9,7 @@ public class GetBookingsByRoomIdResult implements CommandResult {
 
     private boolean hasResult = false;
     private LinkedList<Booking> bookings;
+    private int rid;
 
     public void addBooking(Booking booking) {
         if (bookings == null) {
@@ -16,6 +17,10 @@ public class GetBookingsByRoomIdResult implements CommandResult {
             hasResult = true;
         }
         bookings.add(booking);
+    }
+
+    public void setRoom(int rid) {
+        this.rid = rid;
     }
 
     public Iterable<Booking> getBookings() {
@@ -30,5 +35,9 @@ public class GetBookingsByRoomIdResult implements CommandResult {
     @Override
     public CommandResult.ResultType getResultType() {
         return ResultType.GetBookingsByRoomId;
+    }
+
+    public int getRid() {
+        return rid;
     }
 }

@@ -42,7 +42,7 @@ public class DeleteBookingInRoomCommand implements CommandHandler {
     }
 
     @Override
-    public String toString() {
+    public String getDescription() {
         return "removes the identified booking";
     }
 }

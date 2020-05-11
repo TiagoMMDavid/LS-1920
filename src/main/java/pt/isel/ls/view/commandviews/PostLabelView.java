@@ -6,7 +6,6 @@ import pt.isel.ls.view.View;
 public class PostLabelView extends View {
 
     public PostLabelView(CommandResult commandResult) {
-        super(commandResult);
     }
 
     @Override

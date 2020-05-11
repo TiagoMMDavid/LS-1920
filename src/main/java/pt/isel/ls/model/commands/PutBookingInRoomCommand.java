@@ -82,7 +82,7 @@ public class PutBookingInRoomCommand implements CommandHandler {
     }
 
     @Override
-    public String toString() {
+    public String getDescription() {
         return "Changes the identified booking, given the following additional parameters\n"
                 + "- begin - the begin instant for the booking period.\n"
                 + "- duration - the booking duration.\n"

@@ -115,7 +115,7 @@ public class NTree implements Iterable<Pair<String,String>> {
                     throw new NoSuchElementException();
                 }
                 Pair<String,String> aux = new Pair<>(curr.first.toString() + " " + curr.second.template.toString(),
-                        curr.second.cmdHandler.toString());
+                        curr.second.cmdHandler.getDescription());
                 curr = null;
                 return aux;
             }

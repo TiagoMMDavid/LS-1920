@@ -48,7 +48,7 @@ public class GetRoomsWithLabelCommand implements CommandHandler {
     }
 
     @Override
-    public String toString() {
+    public String getDescription() {
         return "returns a list with all the rooms having label lid";
     }
 }

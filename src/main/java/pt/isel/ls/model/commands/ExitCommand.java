@@ -11,7 +11,7 @@ public class ExitCommand implements CommandHandler {
     }
 
     @Override
-    public String toString() {
+    public String getDescription() {
         return "terminates the application";
     }
 }

@@ -64,7 +64,11 @@ public class App {
             String[] commands = in.nextLine().split(" ");
 
             if (!isCommandValid(commands)) {
-                System.out.println("Wrong format.");
+                System.out.println("Wrong format. Please either use:"
+                        + "\n{method} {path}"
+                        + "\n{method} {path} {headers}"
+                        + "\n{method} {path} {parameters}"
+                        + "\n{method} {path} {headers} {parameters}");
             } else {
                 running = executeCommand(commands);
             }

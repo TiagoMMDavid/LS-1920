@@ -15,15 +15,16 @@ import static pt.isel.ls.utils.html.HtmlDsl.title;
 import static pt.isel.ls.utils.html.HtmlDsl.p;
 
 public class OptionView extends View {
+    OptionResult result;
 
-    public OptionView(CommandResult result) {
-        super(result);
+    public OptionView(CommandResult commandResult) {
+        this.result = (OptionResult) commandResult;
     }
 
     @Override
     public String displayText() {
         StringBuilder builder = new StringBuilder();
-        for (Command cmd : ((OptionResult) commandResult).getCommands()) {
+        for (Command cmd : result.getCommands()) {
             builder.append(cmd.getName());
             builder.append(" - ");
             builder.append(cmd.getDescription());
@@ -48,7 +49,7 @@ public class OptionView extends View {
         Element body = body(
                 h1("List of Commands:")
         );
-        for (Command cmd : ((OptionResult) commandResult).getCommands()) {
+        for (Command cmd : result.getCommands()) {
             body.addChild(h2(cmd.getName()));
             body.addChild(p(cmd.getDescription().replace("\n", "<br>")));
         }

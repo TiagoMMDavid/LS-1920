@@ -6,7 +6,7 @@ import pt.isel.ls.view.View;
 public class GetRoomByIdView extends View {
 
     public GetRoomByIdView(CommandResult commandResult) {
-        super(commandResult);
+
     }
 
     @Override
