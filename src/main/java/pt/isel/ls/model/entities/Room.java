@@ -8,8 +8,9 @@ public class Room implements Entity {
     private String location;
     private Integer capacity;
 
-    public Room(int rid) {
+    public Room(int rid, String name) {
         this.rid = rid;
+        this.name = name;
     }
 
     public Room(int rid, String name, String location, Integer capacity) {

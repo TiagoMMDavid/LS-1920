@@ -35,13 +35,12 @@ public class GetBookingsByUserIdView extends View {
         builder.append("Bookings from User with ID [")
                 .append(result.getUid())
                 .append("]:")
-                .append('\n');
+                .append("\n\n");
         while (iter.hasNext()) {
             Booking booking = iter.next();
             appendBid(booking, builder);
             builder.append('\n');
             appendBeginInst(booking, builder);
-            builder.append('\n');
             appendEndInst(booking, builder);
             builder.append('\n');
             if (iter.hasNext()) {
@@ -59,7 +58,7 @@ public class GetBookingsByUserIdView extends View {
                                 title("Bookings from User with ID [" + result.getUid() + "]")
                         ),
                         body(
-                                h1("List of Bookings from User with ID [" + result.getUid() + "]"),
+                                h1("Information of all Bookings from User with ID [" + result.getUid() + "]"),
                                 buildHtmlBookingInfo(result.getBookings())
                         )
                 ).toString();

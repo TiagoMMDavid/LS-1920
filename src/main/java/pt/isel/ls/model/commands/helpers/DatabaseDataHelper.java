@@ -78,13 +78,15 @@ public class DatabaseDataHelper {
     }
 
     public static Iterable<Room> getRoomsWithLabel(Connection con, int lid) throws SQLException {
-        PreparedStatement ps = con.prepareStatement("SELECT rid FROM ROOMLABEL WHERE lid = ?");
+        PreparedStatement ps = con.prepareStatement("SELECT ROOMLABEL.rid, ROOM.name "
+                + "FROM ROOMLABEL JOIN ROOM ON (ROOMLABEL.rid = ROOM.rid) "
+                + "WHERE lid = ?");
         ps.setInt(1, lid);
         ResultSet rs = ps.executeQuery();
 
         LinkedList<Room> toReturn = new LinkedList<>();
         while (rs.next()) {
-            toReturn.add(new Room(rs.getInt("rid")));
+            toReturn.add(new Room(rs.getInt("rid"), rs.getString("name")));
         }
         return toReturn;
     }
@@ -156,5 +158,27 @@ public class DatabaseDataHelper {
         ps.setInt(3, rid);
         ResultSet rs = ps.executeQuery();
         return rs.next();
+    }
+
+    public static String getLabelName(int labelId, Connection con) throws SQLException {
+        PreparedStatement ps = con.prepareStatement("SELECT name FROM label WHERE lid = ?");
+        ps.setInt(1, labelId);
+        ResultSet rs = ps.executeQuery();
+        String labelName = null;
+        if (rs.next()) {
+            labelName = rs.getString("name");
+        }
+        return labelName;
+    }
+
+    public static String getRoomName(int roomId, Connection con) throws SQLException {
+        PreparedStatement ps = con.prepareStatement("SELECT name FROM room WHERE rid = ?");
+        ps.setInt(1, roomId);
+        ResultSet rs = ps.executeQuery();
+        String roomName = null;
+        if (rs.next()) {
+            roomName = rs.getString("name");
+        }
+        return roomName;
     }
 }
