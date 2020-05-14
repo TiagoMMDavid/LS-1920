@@ -19,7 +19,7 @@ import static pt.isel.ls.view.commandviews.helpers.LabelHelper.appendRooms;
 import static pt.isel.ls.view.commandviews.helpers.LabelHelper.appendRoomsWithCommas;
 
 public class GetLabelByIdView extends View {
-    private final GetLabelByIdResult result;
+    private GetLabelByIdResult result;
 
     public GetLabelByIdView(CommandResult commandResult) {
         this.result = (GetLabelByIdResult) commandResult;

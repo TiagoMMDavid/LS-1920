@@ -22,7 +22,7 @@ import static pt.isel.ls.view.commandviews.helpers.BookingHelpers.appendBid;
 import static pt.isel.ls.view.commandviews.helpers.BookingHelpers.appendEndInst;
 
 public class GetBookingsByRoomIdView extends View {
-    GetBookingsByRoomIdResult result;
+    private GetBookingsByRoomIdResult result;
 
     public GetBookingsByRoomIdView(CommandResult commandResult) {
         this.result = (GetBookingsByRoomIdResult) commandResult;
