@@ -1,6 +1,8 @@
 package pt.isel.ls.utils.html;
 
+import pt.isel.ls.utils.html.elements.Anchor;
 import pt.isel.ls.utils.html.elements.Body;
+import pt.isel.ls.utils.html.elements.Break;
 import pt.isel.ls.utils.html.elements.Element;
 import pt.isel.ls.utils.html.elements.H1;
 import pt.isel.ls.utils.html.elements.H2;
@@ -79,6 +81,14 @@ public class HtmlDsl {
 
     public static Element li(String text) {
         return new List(text);
+    }
+
+    public static Element br() {
+        return new Break();
+    }
+
+    public static Element a(String href, String text) {
+        return new Anchor(href, text);
     }
 
 }

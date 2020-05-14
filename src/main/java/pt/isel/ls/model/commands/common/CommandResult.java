@@ -9,6 +9,7 @@ public interface CommandResult {
         GetBookingByRoomAndBookingId,
         GetBookingsByRoomId,
         GetBookingsByUserId,
+        GetHome,
         GetLabelById,
         GetLabels,
         GetRoomById,

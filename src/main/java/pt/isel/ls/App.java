@@ -13,6 +13,7 @@ import pt.isel.ls.model.commands.ExitCommand;
 import pt.isel.ls.model.commands.GetBookingByRoomAndBookingIdCommand;
 import pt.isel.ls.model.commands.GetBookingsByRoomIdCommand;
 import pt.isel.ls.model.commands.GetBookingsByUserIdCommand;
+import pt.isel.ls.model.commands.GetHomeCommand;
 import pt.isel.ls.model.commands.GetLabelByIdCommand;
 import pt.isel.ls.model.commands.GetLabelsCommand;
 import pt.isel.ls.model.commands.GetRoomByIdCommand;
@@ -197,6 +198,7 @@ public class App {
         router.addRoute(Method.GET, new PathTemplate("/labels/{lid}"), new GetLabelByIdCommand());
         router.addRoute(Method.GET, new PathTemplate("/labels/{lid}/rooms"), new GetRoomsWithLabelCommand());
         router.addRoute(Method.GET, new PathTemplate("/time"), new GetTimeCommand());
+        router.addRoute(Method.GET, new PathTemplate("/"), new GetHomeCommand());
 
         //POST commands
         router.addRoute(Method.POST, roomsTemplate, new PostRoomCommand());

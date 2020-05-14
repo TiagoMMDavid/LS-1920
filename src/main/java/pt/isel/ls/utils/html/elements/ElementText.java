@@ -2,7 +2,7 @@ package pt.isel.ls.utils.html.elements;
 
 import pt.isel.ls.utils.Pair;
 
-public class ElementText extends Element {
+public abstract class ElementText extends Element {
     private String text;
 
     protected ElementText(Pair<String, String> delimiters, String text) {

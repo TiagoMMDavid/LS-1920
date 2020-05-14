@@ -5,6 +5,7 @@ import pt.isel.ls.view.commandviews.DeleteBookingInRoomView;
 import pt.isel.ls.view.commandviews.GetBookingByRoomAndBookingIdView;
 import pt.isel.ls.view.commandviews.GetBookingsByRoomIdView;
 import pt.isel.ls.view.commandviews.GetBookingsByUserIdView;
+import pt.isel.ls.view.commandviews.GetHomeView;
 import pt.isel.ls.view.commandviews.GetLabelByIdView;
 import pt.isel.ls.view.commandviews.GetLabelsView;
 import pt.isel.ls.view.commandviews.GetRoomByIdView;
@@ -45,6 +46,8 @@ public abstract class View {
                 return new GetBookingsByRoomIdView(commandResult);
             case GetBookingsByUserId:
                 return new GetBookingsByUserIdView(commandResult);
+            case GetHome:
+                return new GetHomeView();
             case GetLabelById:
                 return new GetLabelByIdView(commandResult);
             case GetLabels:
