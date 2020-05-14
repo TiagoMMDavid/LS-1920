@@ -1,4 +1,5 @@
 .idea
+*.html
 .gradle
 build
 out

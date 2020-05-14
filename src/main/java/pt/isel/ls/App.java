@@ -64,11 +64,7 @@ public class App {
             String[] commands = in.nextLine().split(" ");
 
             if (!isCommandValid(commands)) {
-                System.out.println("Wrong format. Please either use:"
-                        + "\n{method} {path}"
-                        + "\n{method} {path} {headers}"
-                        + "\n{method} {path} {parameters}"
-                        + "\n{method} {path} {headers} {parameters}");
+                System.out.println("Wrong format. " + VALID_COMMAND_FORMAT);
             } else {
                 running = executeCommand(commands);
             }
@@ -79,6 +75,13 @@ public class App {
         return commands.length > 1 && commands.length <= 4;
     }
 
+    private static final String VALID_COMMAND_FORMAT =
+              "Please either use:"
+            + "\n{method} {path}"
+            + "\n{method} {path} {headers}"
+            + "\n{method} {path} {parameters}"
+            + "\n{method} {path} {headers} {parameters}";
+
     //Returned value determines if the app should continue running or not
     private static boolean executeCommand(String[] commands) {
         Method method;
@@ -86,6 +89,7 @@ public class App {
             method = Method.valueOf(commands[0].toUpperCase());
         } catch (IllegalArgumentException e) {
             System.out.println("Method \"" + commands[0] + "\" does not exist");
+            System.out.println(VALID_COMMAND_FORMAT);
             return true;
         }
 
@@ -110,7 +114,7 @@ public class App {
             }
             path = new Path(commands[1]);
         } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
+            System.out.println(e.getMessage() + VALID_COMMAND_FORMAT);
             return true;
         }
 

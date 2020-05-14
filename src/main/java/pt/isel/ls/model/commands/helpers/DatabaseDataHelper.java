@@ -78,13 +78,16 @@ public class DatabaseDataHelper {
     }
 
     public static Iterable<Room> getRoomsWithLabel(Connection con, int lid) throws SQLException {
-        PreparedStatement ps = con.prepareStatement("SELECT rid FROM ROOMLABEL WHERE lid = ?");
+        PreparedStatement ps = con.prepareStatement("SELECT ROOM.rid, ROOM.name "
+                + "FROM ROOM join ROOMLABEL on (ROOMLABEL.rid = ROOM.rid) "
+                + "WHERE lid = ?");
+
         ps.setInt(1, lid);
         ResultSet rs = ps.executeQuery();
 
         LinkedList<Room> toReturn = new LinkedList<>();
         while (rs.next()) {
-            toReturn.add(new Room(rs.getInt("rid")));
+            toReturn.add(new Room(rs.getInt("rid"), rs.getString("name")));
         }
         return toReturn;
     }

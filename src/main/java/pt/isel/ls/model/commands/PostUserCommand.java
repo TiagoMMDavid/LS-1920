@@ -38,7 +38,7 @@ public class PostUserCommand implements CommandHandler {
                 //Get uid
                 ResultSet rs = ps.getGeneratedKeys();
                 rs.next();
-                result.setUser(new User(rs.getInt("uid")));
+                result.setUser(new User(rs.getInt("uid"), name));
             } else {
                 throw new CommandException("No arguments found / Invalid arguments");
             }

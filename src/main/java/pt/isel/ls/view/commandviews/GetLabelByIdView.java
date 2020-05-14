@@ -3,6 +3,7 @@ package pt.isel.ls.view.commandviews;
 import pt.isel.ls.model.commands.common.CommandResult;
 import pt.isel.ls.model.commands.results.GetLabelByIdResult;
 import pt.isel.ls.model.entities.Label;
+import pt.isel.ls.model.entities.Room;
 import pt.isel.ls.utils.html.elements.Element;
 import pt.isel.ls.view.View;
 
@@ -11,12 +12,15 @@ import static pt.isel.ls.utils.html.HtmlDsl.h1;
 import static pt.isel.ls.utils.html.HtmlDsl.head;
 import static pt.isel.ls.utils.html.HtmlDsl.html;
 import static pt.isel.ls.utils.html.HtmlDsl.li;
+import static pt.isel.ls.utils.html.HtmlDsl.table;
+import static pt.isel.ls.utils.html.HtmlDsl.td;
+import static pt.isel.ls.utils.html.HtmlDsl.th;
 import static pt.isel.ls.utils.html.HtmlDsl.title;
+import static pt.isel.ls.utils.html.HtmlDsl.tr;
 import static pt.isel.ls.utils.html.HtmlDsl.ul;
 import static pt.isel.ls.view.commandviews.helpers.LabelHelper.appendId;
 import static pt.isel.ls.view.commandviews.helpers.LabelHelper.appendName;
 import static pt.isel.ls.view.commandviews.helpers.LabelHelper.appendRooms;
-import static pt.isel.ls.view.commandviews.helpers.LabelHelper.appendRoomsWithCommas;
 
 public class GetLabelByIdView extends View {
     private GetLabelByIdResult result;
@@ -40,24 +44,48 @@ public class GetLabelByIdView extends View {
     @Override
     public String displayHtml() {
         Label label = result.getLabel();
+        Iterable<Room> rooms = result.getRooms();
+
         return
                 html(
                         head(
                                 title("Label [" + label.getLid() + "]")
                         ),
-                        body(
-                                h1("Detailed Information for Label:"),
-                                buildLabelInfo(label)
-                        )
+                        buildBody(label, rooms)
                 ).toString();
+    }
+
+    private Element buildBody(Label label, Iterable<Room> rooms) {
+        Element body =
+                body(
+                        h1("Detailed Information for Label [" + label.getLid() + "]"),
+                        buildLabelInfo(label)
+                );
+
+        if (rooms != null && rooms.iterator().hasNext()) {
+            body.addChild(buildRoomsWithLabelTable(rooms));
+        }
+
+        return body;
     }
 
     private Element buildLabelInfo(Label label) {
         Element labelInfo = ul();
         labelInfo.addChild(li("Label ID: " + label.getLid()));
         labelInfo.addChild(li("Label Name: " + label.getName()));
-        labelInfo.addChild(li("Rooms with Label: " + appendRoomsWithCommas(result, new StringBuilder()).toString()));
-        // TODO: CREATE TABLE WITH ROOM INFO
         return labelInfo;
+    }
+
+    private Element buildRoomsWithLabelTable(Iterable<Room> rooms) {
+        Element table = table();
+        table.addChild(th("Room ID"));
+        table.addChild(th("Room name"));
+        for (Room room: rooms) {
+            Element tableRowData = tr();
+            tableRowData.addChild(td(room.getRid()));
+            tableRowData.addChild(td(room.getName()));
+            table.addChild(tableRowData);
+        }
+        return table;
     }
 }
