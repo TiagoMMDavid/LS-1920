@@ -19,13 +19,14 @@ public class GetUsersCommand implements CommandHandler {
         GetUsersResult result = new GetUsersResult();
         TransactionManager trans = commandRequest.getTransactionHandler();
         trans.executeTransaction(con -> {
-            PreparedStatement ps = con.prepareStatement("SELECT uid, name "
+            PreparedStatement ps = con.prepareStatement("SELECT * "
                     + "FROM USERS");
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 result.addUser(new User(
                         rs.getInt("uid"),
-                        rs.getString("name")
+                        rs.getString("name"),
+                        rs.getString("email")
                 ));
             }
             rs.close();
