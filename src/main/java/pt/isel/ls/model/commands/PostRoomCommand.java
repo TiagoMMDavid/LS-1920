@@ -62,7 +62,7 @@ public class PostRoomCommand implements CommandHandler {
                 ResultSet rs = ps.getGeneratedKeys();
                 rs.next();
                 int rid = rs.getInt("rid");
-                result.setRoom(new Room(rid));
+                result.setRoom(new Room(rid, name));
 
                 Iterable<String> labels = commandRequest.getParams().getValues("label");
                 if (labels != null) {
