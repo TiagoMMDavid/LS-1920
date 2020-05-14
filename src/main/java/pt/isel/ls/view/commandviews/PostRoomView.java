@@ -12,7 +12,7 @@ import static pt.isel.ls.utils.html.HtmlDsl.html;
 import static pt.isel.ls.utils.html.HtmlDsl.title;
 
 public class PostRoomView extends View {
-    Room room;
+    private Room room;
 
     public PostRoomView(CommandResult commandResult) {
         this.room = ((PostRoomResult) commandResult).getRoom();

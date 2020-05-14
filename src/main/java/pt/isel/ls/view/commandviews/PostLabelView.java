@@ -12,7 +12,7 @@ import static pt.isel.ls.utils.html.HtmlDsl.html;
 import static pt.isel.ls.utils.html.HtmlDsl.title;
 
 public class PostLabelView extends View {
-    Label label;
+    private Label label;
 
     public PostLabelView(CommandResult commandResult) {
         this.label = ((PostLabelResult) commandResult).getLabel();

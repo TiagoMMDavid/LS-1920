@@ -15,7 +15,7 @@ import static pt.isel.ls.utils.html.HtmlDsl.title;
 import static pt.isel.ls.utils.html.HtmlDsl.p;
 
 public class OptionView extends View {
-    OptionResult result;
+    private OptionResult result;
 
     public OptionView(CommandResult commandResult) {
         this.result = (OptionResult) commandResult;

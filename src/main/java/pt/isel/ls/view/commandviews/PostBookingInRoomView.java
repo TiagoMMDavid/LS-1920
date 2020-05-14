@@ -12,7 +12,7 @@ import static pt.isel.ls.utils.html.HtmlDsl.html;
 import static pt.isel.ls.utils.html.HtmlDsl.title;
 
 public class PostBookingInRoomView extends View {
-    Booking booking;
+    private Booking booking;
 
     public PostBookingInRoomView(CommandResult commandResult) {
         this.booking = ((PostBookingInRoomResult) commandResult).getBooking();

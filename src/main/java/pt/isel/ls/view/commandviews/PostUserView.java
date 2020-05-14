@@ -12,7 +12,7 @@ import static pt.isel.ls.utils.html.HtmlDsl.html;
 import static pt.isel.ls.utils.html.HtmlDsl.title;
 
 public class PostUserView extends View {
-    User user;
+    private User user;
 
     public PostUserView(CommandResult commandResult) {
         this.user = ((PostUserResult) commandResult).getUser();
