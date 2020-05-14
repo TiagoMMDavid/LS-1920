@@ -33,7 +33,7 @@ public class GetBookingsByRoomIdView extends View {
         StringBuilder builder = new StringBuilder();
         Iterator<Booking> iter = result.getBookings().iterator();
         builder.append("Bookings from Room with ID [")
-                .append(result.getRid())
+                .append(result.getRoom().getRid())
                 .append("]:")
                 .append('\n');
         while (iter.hasNext()) {
@@ -56,10 +56,10 @@ public class GetBookingsByRoomIdView extends View {
         return
                 html(
                         head(
-                                title("Bookings from Room with ID [" + result.getRid() + "]")
+                                title("Bookings from Room with ID [" + result.getRoom().getRid() + "]")
                         ),
                         body(
-                                h1("List of Bookings from Room with ID [" + result.getRid() + "]"),
+                                h1("Information of all Bookings from Room \"" + result.getRoom().getName() + "\""),
                                 buildHtmlBookingInfo(result.getBookings())
                         )
                 ).toString();

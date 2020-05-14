@@ -4,8 +4,10 @@ import pt.isel.ls.model.commands.common.CommandException;
 import pt.isel.ls.model.commands.common.CommandHandler;
 import pt.isel.ls.model.commands.common.CommandRequest;
 import pt.isel.ls.model.commands.common.CommandResult;
+import pt.isel.ls.model.commands.helpers.DatabaseDataHelper;
 import pt.isel.ls.model.commands.results.GetRoomsWithLabelResult;
 import pt.isel.ls.model.commands.sql.TransactionManager;
+import pt.isel.ls.model.entities.Label;
 import pt.isel.ls.model.entities.Room;
 
 import java.sql.PreparedStatement;
@@ -38,6 +40,7 @@ public class GetRoomsWithLabelCommand implements CommandHandler {
                             rs.getString("name"),
                             rs.getString("location"),
                             capacity));
+                    result.setLabel(new Label(labelId, DatabaseDataHelper.getLabelName(labelId, con)));
                 } while (rs.next());
             }
 

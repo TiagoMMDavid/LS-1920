@@ -2,6 +2,7 @@ package pt.isel.ls.model.commands.results;
 
 import pt.isel.ls.model.commands.common.CommandResult;
 import pt.isel.ls.model.entities.Booking;
+import pt.isel.ls.model.entities.Room;
 
 import java.util.LinkedList;
 
@@ -9,7 +10,7 @@ public class GetBookingsByRoomIdResult implements CommandResult {
 
     private boolean hasResult = false;
     private LinkedList<Booking> bookings;
-    private int rid;
+    private Room room;
 
     public void addBooking(Booking booking) {
         if (bookings == null) {
@@ -19,8 +20,8 @@ public class GetBookingsByRoomIdResult implements CommandResult {
         bookings.add(booking);
     }
 
-    public void setRoom(int rid) {
-        this.rid = rid;
+    public void setRoom(Room room) {
+        this.room = room;
     }
 
     public Iterable<Booking> getBookings() {
@@ -37,7 +38,7 @@ public class GetBookingsByRoomIdResult implements CommandResult {
         return ResultType.GetBookingsByRoomId;
     }
 
-    public int getRid() {
-        return rid;
+    public Room getRoom() {
+        return room;
     }
 }

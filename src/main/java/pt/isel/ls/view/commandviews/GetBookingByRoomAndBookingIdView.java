@@ -38,6 +38,7 @@ public class GetBookingByRoomAndBookingIdView extends View {
         appendBeginInst(booking, builder);
         builder.append('\n');
         appendEndInst(booking, builder);
+        builder.append('\n');
         return builder.toString();
     }
 
@@ -49,7 +50,7 @@ public class GetBookingByRoomAndBookingIdView extends View {
                                 title("Booking [" + booking.getBid() + "]")
                         ),
                         body(
-                                h1("Detailed Information for Booking:"),
+                                h1("Detailed Information of Booking with ID [" + booking.getBid() + "]"),
                                 buildHtmlBookingInfo(booking)
                         )
                 ).toString();
