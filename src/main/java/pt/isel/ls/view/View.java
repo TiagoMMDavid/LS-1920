@@ -9,6 +9,7 @@ import pt.isel.ls.view.commandviews.GetHomeView;
 import pt.isel.ls.view.commandviews.GetLabelByIdView;
 import pt.isel.ls.view.commandviews.GetLabelsView;
 import pt.isel.ls.view.commandviews.GetRoomByIdView;
+import pt.isel.ls.view.commandviews.GetRoomsSearchView;
 import pt.isel.ls.view.commandviews.GetRoomsView;
 import pt.isel.ls.view.commandviews.GetRoomsWithLabelView;
 import pt.isel.ls.view.commandviews.GetTimeView;
@@ -26,6 +27,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 
 public abstract class View {
+
     public static View getInstance(CommandResult commandResult) {
         if (commandResult == null) {
             // Result can only be null when the Servlet receives a GET request for a non existent command.
@@ -58,6 +60,8 @@ public abstract class View {
                 return new GetRoomsView(commandResult);
             case GetRoomsWithLabel:
                 return new GetRoomsWithLabelView(commandResult);
+            case GetRoomsSearch:
+                return new GetRoomsSearchView(commandResult);
             case GetTime:
                 return new GetTimeView(commandResult);
             case GetUserById:

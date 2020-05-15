@@ -71,7 +71,7 @@ public class GetRoomsCommand implements CommandHandler {
         boolean hasParameters = false;
 
         if (capacity != null) {
-            query.append(" WHERE CAPACITY = ?");
+            query.append(" WHERE CAPACITY >= ?");
             hasParameters = true;
         }
         if (rids != null && rids.size() > 0) {

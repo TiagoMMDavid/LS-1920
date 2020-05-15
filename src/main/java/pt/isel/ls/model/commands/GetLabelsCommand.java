@@ -18,13 +18,11 @@ public class GetLabelsCommand implements CommandHandler {
         GetLabelsResult result = new GetLabelsResult();
         TransactionManager trans = commandRequest.getTransactionHandler();
         trans.executeTransaction(con -> {
-            PreparedStatement ps = con.prepareStatement("SELECT lid, name "
+            PreparedStatement ps = con.prepareStatement("SELECT * "
                     + "FROM LABEL");
             ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                do {
-                    result.addLabel(new Label(rs.getInt("lid"), rs.getString("name")));
-                } while (rs.next());
+            while (rs.next()) {
+                result.addLabel(new Label(rs.getInt("lid"), rs.getString("name")));
             }
             rs.close();
             ps.close();

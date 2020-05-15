@@ -14,7 +14,7 @@ public class GetHomeView extends View {
 
     @Override
     public String displayText() {
-        return "Home";
+        return "No textual representation available, please use the accept:text/html header";
     }
 
     @Override

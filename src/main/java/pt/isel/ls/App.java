@@ -18,6 +18,7 @@ import pt.isel.ls.model.commands.GetLabelByIdCommand;
 import pt.isel.ls.model.commands.GetLabelsCommand;
 import pt.isel.ls.model.commands.GetRoomByIdCommand;
 import pt.isel.ls.model.commands.GetRoomsCommand;
+import pt.isel.ls.model.commands.GetRoomsSearchCommand;
 import pt.isel.ls.model.commands.GetRoomsWithLabelCommand;
 import pt.isel.ls.model.commands.GetTimeCommand;
 import pt.isel.ls.model.commands.GetUserByIdCommand;
@@ -182,11 +183,12 @@ public class App {
 
     private static void addCommands() {
         //Path Templates (shared between different commands)
-        PathTemplate roomsTemplate = new PathTemplate("/rooms");
-        PathTemplate labelsTemplate = new PathTemplate("/labels");
+        final PathTemplate roomsTemplate = new PathTemplate("/rooms");
+        final PathTemplate labelsTemplate = new PathTemplate("/labels");
 
         //GET commands
         router.addRoute(Method.GET, roomsTemplate, new GetRoomsCommand());
+        router.addRoute(Method.GET, new PathTemplate("/rooms/search"), new GetRoomsSearchCommand());
         router.addRoute(Method.GET, new PathTemplate("/rooms/{rid}"), new GetRoomByIdCommand());
         router.addRoute(Method.GET, new PathTemplate("/rooms/{rid}/bookings"), new GetBookingsByRoomIdCommand());
         router.addRoute(Method.GET, new PathTemplate("/rooms/{rid}/bookings/{bid}"),

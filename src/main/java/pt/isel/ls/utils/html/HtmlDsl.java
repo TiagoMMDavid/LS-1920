@@ -3,11 +3,15 @@ package pt.isel.ls.utils.html;
 import pt.isel.ls.utils.html.elements.Anchor;
 import pt.isel.ls.utils.html.elements.Body;
 import pt.isel.ls.utils.html.elements.Break;
+import pt.isel.ls.utils.html.elements.Division;
 import pt.isel.ls.utils.html.elements.Element;
+import pt.isel.ls.utils.html.elements.Form;
 import pt.isel.ls.utils.html.elements.H1;
 import pt.isel.ls.utils.html.elements.H2;
 import pt.isel.ls.utils.html.elements.Head;
 import pt.isel.ls.utils.html.elements.Html;
+import pt.isel.ls.utils.html.elements.Input;
+import pt.isel.ls.utils.html.elements.Label;
 import pt.isel.ls.utils.html.elements.ListElement;
 import pt.isel.ls.utils.html.elements.Paragraph;
 import pt.isel.ls.utils.html.elements.Table;
@@ -94,6 +98,26 @@ public class HtmlDsl {
 
     public static Element a(String href, String text) {
         return new Anchor(href, text);
+    }
+
+    public static Element label(String forId, String text) {
+        return new Label(forId, text);
+    }
+
+    public static Element div(Element... elements) {
+        return new Division(elements);
+    }
+
+    public static Element form(String method, String path, Element... elements) {
+        return new Form(method, path, elements);
+    }
+
+    public static Element input(Input.InputType type, String name, String value) {
+        return new Input(type, name, value);
+    }
+
+    public static Element input(Input.InputType type, String name, String value, String id) {
+        return new Input(type, name, value, id);
     }
 
 }
