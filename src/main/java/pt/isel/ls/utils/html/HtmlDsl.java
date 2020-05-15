@@ -11,6 +11,7 @@ import pt.isel.ls.utils.html.elements.Html;
 import pt.isel.ls.utils.html.elements.Paragraph;
 import pt.isel.ls.utils.html.elements.Table;
 import pt.isel.ls.utils.html.elements.TableData;
+import pt.isel.ls.utils.html.elements.TableDataElement;
 import pt.isel.ls.utils.html.elements.TableHeader;
 import pt.isel.ls.utils.html.elements.TableRow;
 import pt.isel.ls.utils.html.elements.Title;
@@ -73,6 +74,10 @@ public class HtmlDsl {
 
     public static Element td(int data) {
         return new TableData(Integer.toString(data));
+    }
+
+    public static Element td(Element... elements) {
+        return new TableDataElement(elements);
     }
 
     public static Element ul(Element... elements) {

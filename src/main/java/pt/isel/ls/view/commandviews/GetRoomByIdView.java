@@ -7,11 +7,13 @@ import pt.isel.ls.model.entities.Room;
 import pt.isel.ls.utils.html.elements.Element;
 import pt.isel.ls.view.View;
 
+import static pt.isel.ls.utils.html.HtmlDsl.a;
 import static pt.isel.ls.utils.html.HtmlDsl.body;
 import static pt.isel.ls.utils.html.HtmlDsl.h1;
 import static pt.isel.ls.utils.html.HtmlDsl.head;
 import static pt.isel.ls.utils.html.HtmlDsl.html;
 import static pt.isel.ls.utils.html.HtmlDsl.li;
+import static pt.isel.ls.utils.html.HtmlDsl.p;
 import static pt.isel.ls.utils.html.HtmlDsl.table;
 import static pt.isel.ls.utils.html.HtmlDsl.td;
 import static pt.isel.ls.utils.html.HtmlDsl.th;
@@ -68,12 +70,17 @@ public class GetRoomByIdView extends View {
     private Element buildBody(Room room, Iterable<Label> labels) {
         Element body =
                 body(
+                        a("/", "Home"),
+                        a("/rooms", "Rooms"),
                         h1("Detailed Information of Room \"" + room.getName() + "\""),
                         buildHtmlRoomInfo()
                 );
 
         if (labels != null && labels.iterator().hasNext()) {
             body.addChild(buildHtmlLabelTable());
+        }
+        else {
+            body.addChild(p("No labels associated with this room"));
         }
 
         return body;
@@ -89,6 +96,8 @@ public class GetRoomByIdView extends View {
                 + (room.getCapacity() == null ? "N/A" : room.getCapacity())));
         roomInfo.addChild(li("Description: "
                 + (room.getDescription() == null ? "N/A" : room.getDescription())));
+        // TODO: CHECK IF ROOM HAS BOOKINGS OR NOT, AND SET EITHER A LINK OR A MESSAGE
+        roomInfo.addChild(li(a("/rooms/" + room.getRid() + "/bookings", "View bookings")));
         return roomInfo;
     }
 
@@ -106,7 +115,7 @@ public class GetRoomByIdView extends View {
 
     private void addHtmlTableRow(Element table, Label label) {
         Element tableRowData = tr();
-        tableRowData.addChild(td(label.getLid()));
+        tableRowData.addChild(td(a("/labels/" + label.getLid(), "" + label.getLid())));
         tableRowData.addChild(td(label.getName()));
         table.addChild(tableRowData);
     }

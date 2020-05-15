@@ -8,6 +8,7 @@ import pt.isel.ls.view.View;
 
 import java.util.Iterator;
 
+import static pt.isel.ls.utils.html.HtmlDsl.a;
 import static pt.isel.ls.utils.html.HtmlDsl.body;
 import static pt.isel.ls.utils.html.HtmlDsl.h1;
 import static pt.isel.ls.utils.html.HtmlDsl.head;
@@ -59,6 +60,7 @@ public class GetRoomsView extends View {
                                 title("Rooms")
                         ),
                         body(
+                                a("/", "Home"),
                                 h1("List of all Rooms"),
                                 buildLabelInfo()
                         )
@@ -82,7 +84,7 @@ public class GetRoomsView extends View {
 
     private void addHtmlTableRow(Element table, Room room) {
         Element tableRowData = tr();
-        tableRowData.addChild(td(room.getRid()));
+        tableRowData.addChild(td(a("/rooms/" + room.getRid(), "" + room.getRid())));
         tableRowData.addChild(td(room.getName()));
         tableRowData.addChild(td(room.getLocation()));
         tableRowData.addChild(td(room.getCapacity() == null ? "N/A" : room.getCapacity()));

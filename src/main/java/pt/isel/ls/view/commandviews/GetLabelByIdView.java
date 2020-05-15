@@ -7,11 +7,13 @@ import pt.isel.ls.model.entities.Room;
 import pt.isel.ls.utils.html.elements.Element;
 import pt.isel.ls.view.View;
 
+import static pt.isel.ls.utils.html.HtmlDsl.a;
 import static pt.isel.ls.utils.html.HtmlDsl.body;
 import static pt.isel.ls.utils.html.HtmlDsl.h1;
 import static pt.isel.ls.utils.html.HtmlDsl.head;
 import static pt.isel.ls.utils.html.HtmlDsl.html;
 import static pt.isel.ls.utils.html.HtmlDsl.li;
+import static pt.isel.ls.utils.html.HtmlDsl.p;
 import static pt.isel.ls.utils.html.HtmlDsl.table;
 import static pt.isel.ls.utils.html.HtmlDsl.td;
 import static pt.isel.ls.utils.html.HtmlDsl.th;
@@ -58,12 +60,17 @@ public class GetLabelByIdView extends View {
     private Element buildBody(Label label, Iterable<Room> rooms) {
         Element body =
                 body(
+                        a("/", "Home"),
+                        a("/labels", "Labels"),
                         h1("Detailed Information for Label [" + label.getLid() + "]"),
                         buildLabelInfo(label)
                 );
 
         if (rooms != null && rooms.iterator().hasNext()) {
             body.addChild(buildRoomsWithLabelTable(rooms));
+        }
+        else {
+            body.addChild(p("No rooms associated with this label"));
         }
 
         return body;
@@ -82,7 +89,7 @@ public class GetLabelByIdView extends View {
         table.addChild(th("Room name"));
         for (Room room: rooms) {
             Element tableRowData = tr();
-            tableRowData.addChild(td(room.getRid()));
+            tableRowData.addChild(td(a("/rooms/" + room.getRid(), "" + room.getRid())));
             tableRowData.addChild(td(room.getName()));
             table.addChild(tableRowData);
         }

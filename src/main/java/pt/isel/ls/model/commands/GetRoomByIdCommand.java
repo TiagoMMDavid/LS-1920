@@ -42,6 +42,7 @@ public class GetRoomByIdCommand implements CommandHandler {
                         capacity
                 ));
                 result.setLabels(DatabaseDataHelper.getLabelsFromRid(con, roomId));
+                // TODO: CHECK IF ROOM HAS BOOKINGS OR NOT
             }
 
             rs.close();
