@@ -8,6 +8,7 @@ import pt.isel.ls.view.View;
 
 import java.util.Iterator;
 
+import static pt.isel.ls.utils.html.HtmlDsl.a;
 import static pt.isel.ls.utils.html.HtmlDsl.body;
 import static pt.isel.ls.utils.html.HtmlDsl.h1;
 import static pt.isel.ls.utils.html.HtmlDsl.head;
@@ -53,6 +54,7 @@ public class GetLabelsView extends View {
                                 title("Labels")
                         ),
                         body(
+                                a("/", "Home"),
                                 h1("Information of all Labels"),
                                 buildLabelInfo()
                         )
@@ -74,7 +76,7 @@ public class GetLabelsView extends View {
 
     private void addHtmlTableRow(Element table, Label label) {
         Element tableRowData = tr();
-        tableRowData.addChild(td(label.getLid()));
+        tableRowData.addChild(td(a("/labels/" + label.getLid(), "" + label.getLid())));
         tableRowData.addChild(td(label.getName()));
         table.addChild(tableRowData);
     }

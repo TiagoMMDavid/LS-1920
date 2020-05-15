@@ -8,9 +8,11 @@ import pt.isel.ls.utils.html.elements.H1;
 import pt.isel.ls.utils.html.elements.H2;
 import pt.isel.ls.utils.html.elements.Head;
 import pt.isel.ls.utils.html.elements.Html;
+import pt.isel.ls.utils.html.elements.ListElement;
 import pt.isel.ls.utils.html.elements.Paragraph;
 import pt.isel.ls.utils.html.elements.Table;
 import pt.isel.ls.utils.html.elements.TableData;
+import pt.isel.ls.utils.html.elements.TableDataElement;
 import pt.isel.ls.utils.html.elements.TableHeader;
 import pt.isel.ls.utils.html.elements.TableRow;
 import pt.isel.ls.utils.html.elements.Title;
@@ -75,12 +77,20 @@ public class HtmlDsl {
         return new TableData(Integer.toString(data));
     }
 
+    public static Element td(Element... elements) {
+        return new TableDataElement(elements);
+    }
+
     public static Element ul(Element... elements) {
         return new UnorderedList(elements);
     }
 
     public static Element li(String text) {
         return new List(text);
+    }
+
+    public static Element li(Element... elements) {
+        return new ListElement(elements);
     }
 
     public static Element br() {

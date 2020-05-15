@@ -6,6 +6,7 @@ import pt.isel.ls.model.entities.Booking;
 import pt.isel.ls.utils.html.elements.Element;
 import pt.isel.ls.view.View;
 
+import static pt.isel.ls.utils.html.HtmlDsl.a;
 import static pt.isel.ls.utils.html.HtmlDsl.body;
 import static pt.isel.ls.utils.html.HtmlDsl.h1;
 import static pt.isel.ls.utils.html.HtmlDsl.head;
@@ -50,6 +51,7 @@ public class GetBookingByRoomAndBookingIdView extends View {
                                 title("Booking [" + booking.getBid() + "]")
                         ),
                         body(
+                                a("/", "Home"),
                                 h1("Detailed Information of Booking with ID [" + booking.getBid() + "]"),
                                 buildHtmlBookingInfo(booking)
                         )
@@ -59,8 +61,18 @@ public class GetBookingByRoomAndBookingIdView extends View {
     private Element buildHtmlBookingInfo(Booking booking) {
         Element bookingInfo = ul();
         bookingInfo.addChild(li("Booking ID: " + booking.getBid()));
-        bookingInfo.addChild(li("Room ID: " + booking.getRid()));
-        bookingInfo.addChild(li("User ID: " + booking.getUid()));
+        bookingInfo.addChild(
+                li(
+                    a("/rooms/" + booking.getRid(), "Room ID: " + booking.getRid())
+                )
+        );
+
+        bookingInfo.addChild(
+                li(
+                        a("/users/" + booking.getUid(), "User ID: " + booking.getUid())
+                )
+        );
+
         bookingInfo.addChild(li("Begin Date: " + booking.getBeginInst()));
         bookingInfo.addChild(li("End Date: " + booking.getEndInst()));
         return bookingInfo;
