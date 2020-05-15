@@ -8,6 +8,7 @@ import pt.isel.ls.utils.html.elements.H1;
 import pt.isel.ls.utils.html.elements.H2;
 import pt.isel.ls.utils.html.elements.Head;
 import pt.isel.ls.utils.html.elements.Html;
+import pt.isel.ls.utils.html.elements.ListElement;
 import pt.isel.ls.utils.html.elements.Paragraph;
 import pt.isel.ls.utils.html.elements.Table;
 import pt.isel.ls.utils.html.elements.TableData;
@@ -86,6 +87,10 @@ public class HtmlDsl {
 
     public static Element li(String text) {
         return new List(text);
+    }
+
+    public static Element li(Element... elements) {
+        return new ListElement(elements);
     }
 
     public static Element br() {

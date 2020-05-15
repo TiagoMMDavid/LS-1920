@@ -68,8 +68,7 @@ public class GetLabelByIdView extends View {
 
         if (rooms != null && rooms.iterator().hasNext()) {
             body.addChild(buildRoomsWithLabelTable(rooms));
-        }
-        else {
+        } else {
             body.addChild(p("No rooms associated with this label"));
         }
 
