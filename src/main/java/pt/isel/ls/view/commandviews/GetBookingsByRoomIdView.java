@@ -3,11 +3,13 @@ package pt.isel.ls.view.commandviews;
 import pt.isel.ls.model.commands.common.CommandResult;
 import pt.isel.ls.model.commands.results.GetBookingsByRoomIdResult;
 import pt.isel.ls.model.entities.Booking;
+import pt.isel.ls.model.entities.Room;
 import pt.isel.ls.utils.html.elements.Element;
 import pt.isel.ls.view.View;
 
 import java.util.Iterator;
 
+import static pt.isel.ls.utils.html.HtmlDsl.a;
 import static pt.isel.ls.utils.html.HtmlDsl.body;
 import static pt.isel.ls.utils.html.HtmlDsl.h1;
 import static pt.isel.ls.utils.html.HtmlDsl.head;
@@ -53,32 +55,38 @@ public class GetBookingsByRoomIdView extends View {
 
     @Override
     public String displayHtml() {
+        Room room = result.getRoom();
         return
                 html(
                         head(
-                                title("Bookings from Room with ID [" + result.getRoom().getRid() + "]")
+                                title("Bookings from Room with ID [" + room.getRid() + "]")
                         ),
                         body(
+                                a("/", "Home"), a("/rooms/" + room.getRid(), "Room [" + room.getRid() + "]"),
                                 h1("Information of all Bookings from Room \"" + result.getRoom().getName() + "\""),
-                                buildHtmlBookingInfo(result.getBookings())
+                                buildHtmlBookingInfo(result.getBookings(), room)
                         )
                 ).toString();
     }
 
-    private Element buildHtmlBookingInfo(Iterable<Booking> bookings) {
+    private Element buildHtmlBookingInfo(Iterable<Booking> bookings, Room room) {
         Element bookingInfo = table();
         bookingInfo.addChild(th("Booking ID"));
         bookingInfo.addChild(th("Begin Date"));
         bookingInfo.addChild(th("End Date"));
         for (Booking booking : bookings) {
-            addHtmlTableRow(bookingInfo, booking);
+            addHtmlTableRow(bookingInfo, booking, room);
         }
         return bookingInfo;
     }
 
-    private void addHtmlTableRow(Element table, Booking booking) {
+    private void addHtmlTableRow(Element table, Booking booking, Room room) {
         Element tableRowData = tr();
-        tableRowData.addChild(td(booking.getBid()));
+        tableRowData.addChild(
+                td(
+                        a("/rooms/" + room.getRid() + "/bookings/" + booking.getBid(), "" + booking.getBid())
+                )
+        );
         tableRowData.addChild(td(booking.getBeginInst().toString()));
         tableRowData.addChild(td(booking.getEndInst().toString()));
         table.addChild(tableRowData);
