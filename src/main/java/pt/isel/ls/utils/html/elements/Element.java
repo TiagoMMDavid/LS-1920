@@ -39,10 +39,6 @@ public abstract class Element {
         builder.append(delimiters.first);
         addContent(builder, tabAmount);
 
-        //Append new line to separate delimiters and add necessary tabs for correct HTML indentation
-        builder.append("\n");
-        appendTabs(builder, tabAmount);
-
         builder.append(delimiters.second);
         return builder.toString();
     }
@@ -53,6 +49,12 @@ public abstract class Element {
             builder.append("\n");
             builder.append(child.getString(tabAmount));
         }
+        //Append new line to separate delimiters and add necessary tabs for correct HTML indentation
+        builder.append("\n");
+
+        //We decrease tab Amount by one since we want to only add tabs until we get the same tab amount
+        //before calling this method, because we want to close the previously opened element
+        appendTabs(builder, tabAmount - 1);
     }
 
     protected void appendTabs(StringBuilder builder, int tabAmount) {

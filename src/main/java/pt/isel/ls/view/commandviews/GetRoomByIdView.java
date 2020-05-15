@@ -70,8 +70,7 @@ public class GetRoomByIdView extends View {
     private Element buildBody(Room room, Iterable<Label> labels) {
         Element body =
                 body(
-                        a("/", "Home"),
-                        a("/rooms", "Rooms"),
+                        a("/", "Home"), a("/rooms", "Rooms"),
                         h1("Detailed Information of Room \"" + room.getName() + "\""),
                         buildHtmlRoomInfo()
                 );
@@ -95,8 +94,12 @@ public class GetRoomByIdView extends View {
                 + (room.getCapacity() == null ? "N/A" : room.getCapacity())));
         roomInfo.addChild(li("Description: "
                 + (room.getDescription() == null ? "N/A" : room.getDescription())));
-        // TODO: CHECK IF ROOM HAS BOOKINGS OR NOT, AND SET EITHER A LINK OR A MESSAGE
-        roomInfo.addChild(li(a("/rooms/" + room.getRid() + "/bookings", "View bookings")));
+
+        Element bookingsListEntry = result.hasBookings()
+                ? li(a("/rooms/" + room.getRid() + "/bookings", "View bookings"))
+                : li("No bookings available");
+
+        roomInfo.addChild(bookingsListEntry);
         return roomInfo;
     }
 

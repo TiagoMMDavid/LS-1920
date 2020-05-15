@@ -17,8 +17,6 @@ public abstract class ElementText extends Element {
 
     @Override
     protected void addContent(StringBuilder builder, int tabAmount) {
-        builder.append("\n");
-        appendTabs(builder, ++tabAmount);
         builder.append(text);
     }
 }

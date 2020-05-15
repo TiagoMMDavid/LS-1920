@@ -8,6 +8,7 @@ import pt.isel.ls.view.View;
 
 import java.util.Iterator;
 
+import static pt.isel.ls.utils.html.HtmlDsl.a;
 import static pt.isel.ls.utils.html.HtmlDsl.body;
 import static pt.isel.ls.utils.html.HtmlDsl.h1;
 import static pt.isel.ls.utils.html.HtmlDsl.head;
@@ -52,13 +53,15 @@ public class GetBookingsByUserIdView extends View {
 
     @Override
     public String displayHtml() {
+        int uid = result.getUid();
         return
                 html(
                         head(
-                                title("Bookings from User with ID [" + result.getUid() + "]")
+                                title("Bookings from User with ID [" + uid + "]")
                         ),
                         body(
-                                h1("Information of all Bookings from User with ID [" + result.getUid() + "]"),
+                                a("/", "Home"), a("/users/" + uid, "User [" + uid + "]"),
+                                h1("Information of all Bookings from User with ID [" + uid + "]"),
                                 buildHtmlBookingInfo(result.getBookings())
                         )
                 ).toString();
@@ -77,7 +80,11 @@ public class GetBookingsByUserIdView extends View {
 
     private void addHtmlTableRow(Element table, Booking booking) {
         Element tableRowData = tr();
-        tableRowData.addChild(td(booking.getBid()));
+        tableRowData.addChild(
+                td(
+                        a("/rooms/" + booking.getRid() + "/bookings/" + booking.getBid(), "" + booking.getBid())
+                )
+        );
         tableRowData.addChild(td(booking.getBeginInst().toString()));
         tableRowData.addChild(td(booking.getEndInst().toString()));
         table.addChild(tableRowData);

@@ -9,7 +9,7 @@ public class GetRoomByIdResult implements CommandResult {
     private boolean hasResult = false;
     private Room room;
     private Iterable<Label> labels;
-    // TODO: ADD A BOOLEAN TO CHECK IF IT HAS BOOKINGS
+    private boolean hasBookings;
 
     public void setRoom(Room room) {
         this.room = room;
@@ -20,12 +20,20 @@ public class GetRoomByIdResult implements CommandResult {
         this.labels = labels;
     }
 
+    public void setHasBookings(boolean hasBookings) {
+        this.hasBookings = hasBookings;
+    }
+
     public Room getRoom() {
         return room;
     }
 
     public Iterable<Label> getLabels() {
         return labels;
+    }
+
+    public boolean hasBookings() {
+        return hasBookings;
     }
 
     @Override

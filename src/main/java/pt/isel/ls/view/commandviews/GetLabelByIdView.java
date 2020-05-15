@@ -60,8 +60,7 @@ public class GetLabelByIdView extends View {
     private Element buildBody(Label label, Iterable<Room> rooms) {
         Element body =
                 body(
-                        a("/", "Home"),
-                        a("/labels", "Labels"),
+                        a("/", "Home"), a("/labels", "Labels"),
                         h1("Detailed Information for Label [" + label.getLid() + "]"),
                         buildLabelInfo(label)
                 );

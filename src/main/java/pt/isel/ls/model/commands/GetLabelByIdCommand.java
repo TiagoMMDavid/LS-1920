@@ -31,7 +31,7 @@ public class GetLabelByIdCommand implements CommandHandler {
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 result.setLabel(new Label(lid, rs.getString("name")));
-                result.setRooms(DatabaseDataHelper.getRoomsWithLabel(con, lid));
+                result.setRooms(DatabaseDataHelper.getRoomsWithLabel(lid, con));
             }
             rs.close();
             ps.close();

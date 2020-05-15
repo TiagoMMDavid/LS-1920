@@ -87,7 +87,7 @@ public class GetRoomsView extends View {
         tableRowData.addChild(td(a("/rooms/" + room.getRid(), "" + room.getRid())));
         tableRowData.addChild(td(room.getName()));
         tableRowData.addChild(td(room.getLocation()));
-        tableRowData.addChild(td(room.getCapacity() == null ? "N/A" : room.getCapacity()));
+        tableRowData.addChild(td(room.getCapacity() == null ? "N/A" : room.getCapacity().toString()));
         table.addChild(tableRowData);
     }
 }

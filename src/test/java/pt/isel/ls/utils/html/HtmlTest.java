@@ -24,17 +24,11 @@ public class HtmlTest {
                 "<!DOCTYPE html>\n"
                 + "<html>\n"
                 +   "\t<head>\n"
-                +       "\t\t<title>\n"
-                +           "\t\t\tThe title\n"
-                +       "\t\t</title>\n"
+                +       "\t\t<title>The title</title>\n"
                 +   "\t</head>\n"
                 +   "\t<body>\n"
-                +       "\t\t<h1>\n"
-                +           "\t\t\tThis is a section\n"
-                +       "\t\t</h1>\n"
-                +       "\t\t<p>\n"
-                +           "\t\t\tThis is a paragraph\n"
-                +       "\t\t</p>\n"
+                +       "\t\t<h1>This is a section</h1>\n"
+                +       "\t\t<p>This is a paragraph</p>\n"
                 +   "\t</body>\n"
                 + "</html>";
 
@@ -49,52 +43,35 @@ public class HtmlTest {
                         )
                 );
 
-
         assertEquals(expected, actual.toString());
     }
 
     @Test
     public void createHtmlTableTest() {
         final String expected =
-                "<!DOCTYPE html>\n"
-                + "<html>\n"
-                + "\t<head>\n"
-                + "\t\t<title>\n"
-                + "\t\t\tThe title\n"
-                + "\t\t</title>\n"
-                + "\t</head>\n"
-                + "\t<body>\n"
-                + "\t\t<h1>\n"
-                + "\t\t\tTable:\n"
-                + "\t\t</h1>\n"
-                + "\t\t<table border=1>\n"
-                + "\t\t\t<tr>\n"
-                + "\t\t\t\t<th>\n"
-                + "\t\t\t\t\tID\n"
-                + "\t\t\t\t</th>\n"
-                + "\t\t\t\t<th>\n"
-                + "\t\t\t\t\tName\n"
-                + "\t\t\t\t</th>\n"
-                + "\t\t\t</tr>\n"
-                + "\t\t\t<tr>\n"
-                + "\t\t\t\t<td>\n"
-                + "\t\t\t\t\t1\n"
-                + "\t\t\t\t</td>\n"
-                + "\t\t\t\t<td>\n"
-                + "\t\t\t\t\tMeeting Room\n"
-                + "\t\t\t\t</td>\n"
-                + "\t\t\t</tr>\n"
-                + "\t\t\t<tr>\n"
-                + "\t\t\t\t<td>\n"
-                + "\t\t\t\t\t2\n"
-                + "\t\t\t\t</td>\n"
-                + "\t\t\t\t<td>\n"
-                + "\t\t\t\t\tLunch Room\n"
-                + "\t\t\t\t</td>\n"
-                + "\t\t\t</tr>\n"
-                + "\t\t</table>\n"
-                + "\t</body>\n"
-                + "</html>";
+               "<!DOCTYPE html>\n"
+               + "<html>\n"
+               + "\t<head>\n"
+               + "\t\t<title>The title</title>\n"
+               + "\t</head>\n"
+               + "\t<body>\n"
+               + "\t\t<h1>Table:</h1>\n"
+               + "\t\t<table border=1>\n"
+               + "\t\t\t<tr>\n"
+               + "\t\t\t\t<th>ID</th>\n"
+               + "\t\t\t\t<th>Name</th>\n"
+               + "\t\t\t</tr>\n"
+               + "\t\t\t<tr>\n"
+               + "\t\t\t\t<td>1</td>\n"
+               + "\t\t\t\t<td>Meeting Room</td>\n"
+               + "\t\t\t</tr>\n"
+               + "\t\t\t<tr>\n"
+               + "\t\t\t\t<td>2</td>\n"
+               + "\t\t\t\t<td>Lunch Room</td>\n"
+               + "\t\t\t</tr>\n"
+               + "\t\t</table>\n"
+               + "\t</body>\n"
+               + "</html>";
 
         Element actual =
                 html(
@@ -127,59 +104,33 @@ public class HtmlTest {
     public void concatenateHtmlTest() {
         final String expected =
                 "<!DOCTYPE html>\n"
-                        + "<html>\n"
-                        + "\t<head>\n"
-                        + "\t\t<title>\n"
-                        + "\t\t\tThe title\n"
-                        + "\t\t</title>\n"
-                        + "\t</head>\n"
-                        + "\t<body>\n"
-                        + "\t\t<table border=1>\n"
-                        + "\t\t\t<tr>\n"
-                        + "\t\t\t\t<th>\n"
-                        + "\t\t\t\t\tID\n"
-                        + "\t\t\t\t</th>\n"
-                        + "\t\t\t\t<th>\n"
-                        + "\t\t\t\t\tName\n"
-                        + "\t\t\t\t</th>\n"
-                        + "\t\t\t\t<th>\n"
-                        + "\t\t\t\t\tDescription\n"
-                        + "\t\t\t\t</th>\n"
-                        + "\t\t\t\t<th>\n"
-                        + "\t\t\t\t\tCapacity\n"
-                        + "\t\t\t\t</th>\n"
-                        + "\t\t\t</tr>\n"
-                        + "\t\t\t<tr>\n"
-                        + "\t\t\t\t<td>\n"
-                        + "\t\t\t\t\t1\n"
-                        + "\t\t\t\t</td>\n"
-                        + "\t\t\t\t<td>\n"
-                        + "\t\t\t\t\tMeeting Room\n"
-                        + "\t\t\t\t</td>\n"
-                        + "\t\t\t\t<td>\n"
-                        + "\t\t\t\t\tMeeting Room on CCISEL\n"
-                        + "\t\t\t\t</td>\n"
-                        + "\t\t\t\t<td>\n"
-                        + "\t\t\t\t\t16\n"
-                        + "\t\t\t\t</td>\n"
-                        + "\t\t\t</tr>\n"
-                        + "\t\t\t<tr>\n"
-                        + "\t\t\t\t<td>\n"
-                        + "\t\t\t\t\t1\n"
-                        + "\t\t\t\t</td>\n"
-                        + "\t\t\t\t<td>\n"
-                        + "\t\t\t\t\tMeeting Room\n"
-                        + "\t\t\t\t</td>\n"
-                        + "\t\t\t\t<td>\n"
-                        + "\t\t\t\t\tMeeting Room on CCISEL\n"
-                        + "\t\t\t\t</td>\n"
-                        + "\t\t\t\t<td>\n"
-                        + "\t\t\t\t\t16\n"
-                        + "\t\t\t\t</td>\n"
-                        + "\t\t\t</tr>\n"
-                        + "\t\t</table>\n"
-                        + "\t</body>\n"
-                        + "</html>";
+                + "<html>\n"
+                + "\t<head>\n"
+                + "\t\t<title>The title</title>\n"
+                + "\t</head>\n"
+                + "\t<body>\n"
+                + "\t\t<table border=1>\n"
+                + "\t\t\t<tr>\n"
+                + "\t\t\t\t<th>ID</th>\n"
+                + "\t\t\t\t<th>Name</th>\n"
+                + "\t\t\t\t<th>Description</th>\n"
+                + "\t\t\t\t<th>Capacity</th>\n"
+                + "\t\t\t</tr>\n"
+                + "\t\t\t<tr>\n"
+                + "\t\t\t\t<td>1</td>\n"
+                + "\t\t\t\t<td>Meeting Room</td>\n"
+                + "\t\t\t\t<td>Meeting Room on CCISEL</td>\n"
+                + "\t\t\t\t<td>16</td>\n"
+                + "\t\t\t</tr>\n"
+                + "\t\t\t<tr>\n"
+                + "\t\t\t\t<td>1</td>\n"
+                + "\t\t\t\t<td>Meeting Room</td>\n"
+                + "\t\t\t\t<td>Meeting Room on CCISEL</td>\n"
+                + "\t\t\t\t<td>16</td>\n"
+                + "\t\t\t</tr>\n"
+                + "\t\t</table>\n"
+                + "\t</body>\n"
+                + "</html>";
 
         Element tableRow = tr();
         tableRow.addChild(th("ID"));
@@ -197,6 +148,7 @@ public class HtmlTest {
             tableRowData.addChild(td("16"));
             table.addChild(tableRowData);
         }
+
         Element actual =
                 html(
                         head(
@@ -206,6 +158,7 @@ public class HtmlTest {
                                 table
                         )
                 );
+
         assertEquals(expected, actual.toString());
     }
 }

@@ -41,7 +41,7 @@ public class GetRoomsCommand implements CommandHandler {
                 begin = params.getString("begin");
                 dur = params.getString("duration");
                 labels = params.getValues("label");
-                rids = getRidsWithLabels(con, labels);
+                rids = getRidsWithLabels(labels, con);
             }
             if (rids == null || !rids.isEmpty()) {
                 PreparedStatement ps = con.prepareStatement(getQueryString(capacity, begin, dur, rids));

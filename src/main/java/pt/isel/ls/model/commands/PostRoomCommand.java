@@ -66,7 +66,7 @@ public class PostRoomCommand implements CommandHandler {
 
                 Iterable<String> labels = commandRequest.getParams().getValues("label");
                 if (labels != null) {
-                    LinkedList<Integer> lids = getLids(con, labels);
+                    LinkedList<Integer> lids = getLids(labels, con);
                     fillRoomLabelTable(con, rid, lids);
                 }
             } else {

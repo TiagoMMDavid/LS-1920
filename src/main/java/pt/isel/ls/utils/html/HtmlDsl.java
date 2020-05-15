@@ -68,11 +68,6 @@ public class HtmlDsl {
         return new TableData(data);
     }
 
-    // Used to allow for ternary operations with different types
-    public static Element td(Object data) {
-        return new TableData(data.toString());
-    }
-
     public static Element td(int data) {
         return new TableData(Integer.toString(data));
     }

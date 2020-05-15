@@ -35,7 +35,7 @@ public class GetUserByIdCommand implements CommandHandler {
                         rs.getString("name"),
                         rs.getString("email")
                 ));
-                result.setBookings(DatabaseDataHelper.getBookingsFromUid(con, userId));
+                result.setBookings(DatabaseDataHelper.getBookingsFromUid(userId, con));
             }
             rs.close();
             ps.close();

@@ -57,8 +57,7 @@ public class GetUserByIdView extends View {
                                 title("User [" + user.getUid() + "]")
                         ),
                         body(
-                                a("/", "Home "),
-                                a("/users", "Users"),
+                                a("/", "Home"), a("/users", "Users"),
                                 h1("Detailed information of User \"" + user.getName() + "\""),
                                 buildUserInfo(user),
                                 buildBookingInfo(bookings)
@@ -91,8 +90,8 @@ public class GetUserByIdView extends View {
         tableRowData.addChild(td(a("/rooms/" + booking.getRid()
                 + "/bookings/" + booking.getBid(),
                 String.valueOf(booking.getBid()))));
-        tableRowData.addChild(td(booking.getBeginInst()));
-        tableRowData.addChild(td(booking.getEndInst()));
+        tableRowData.addChild(td(booking.getBeginInst().toString()));
+        tableRowData.addChild(td(booking.getEndInst().toString()));
         return tableRowData;
     }
 

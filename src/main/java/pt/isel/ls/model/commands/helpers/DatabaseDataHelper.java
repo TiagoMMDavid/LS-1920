@@ -18,7 +18,7 @@ import static pt.isel.ls.utils.DateUtils.parseTimeWithTimezone;
 
 public class DatabaseDataHelper {
 
-    public static LinkedList<Integer> getLids(Connection con, Iterable<String> labels) throws SQLException {
+    public static LinkedList<Integer> getLids(Iterable<String> labels, Connection con) throws SQLException {
         if (labels == null) {
             return null;
         }
@@ -46,12 +46,13 @@ public class DatabaseDataHelper {
         while (rs.next()) {
             toReturn.add(rs.getInt("lid"));
         }
+        rs.close();
 
         return toReturn;
     }
 
-    public static LinkedList<Integer> getRidsWithLabels(Connection con, Iterable<String> labels) throws SQLException {
-        LinkedList<Integer> lids = getLids(con, labels);
+    public static LinkedList<Integer> getRidsWithLabels(Iterable<String> labels, Connection con) throws SQLException {
+        LinkedList<Integer> lids = getLids(labels, con);
         if (lids == null || lids.size() == 0) {
             return null;
         }
@@ -73,11 +74,12 @@ public class DatabaseDataHelper {
         while (rs.next()) {
             toReturn.add(rs.getInt("rid"));
         }
+        rs.close();
 
         return toReturn;
     }
 
-    public static Iterable<Room> getRoomsWithLabel(Connection con, int lid) throws SQLException {
+    public static Iterable<Room> getRoomsWithLabel(int lid, Connection con) throws SQLException {
         PreparedStatement ps = con.prepareStatement("SELECT ROOM.rid, ROOM.name "
                 + "FROM ROOM join ROOMLABEL on (ROOMLABEL.rid = ROOM.rid) "
                 + "WHERE lid = ?");
@@ -89,10 +91,12 @@ public class DatabaseDataHelper {
         while (rs.next()) {
             toReturn.add(new Room(rs.getInt("rid"), rs.getString("name")));
         }
+        rs.close();
+
         return toReturn;
     }
 
-    public static Iterable<Label> getLabelsFromRid(Connection con, int rid) throws SQLException {
+    public static Iterable<Label> getLabelsFromRid(int rid, Connection con) throws SQLException {
         PreparedStatement ps = con.prepareStatement("SELECT name, LABEL.lid "
                 + "FROM LABEL join ROOMLABEL on (ROOMLABEL.lid = LABEL.lid) "
                 + "WHERE ROOMLABEL.rid = ?");
@@ -104,11 +108,12 @@ public class DatabaseDataHelper {
         while (rs.next()) {
             labels.add(new Label(rs.getInt("lid"), rs.getString("name")));
         }
+        rs.close();
 
         return labels;
     }
 
-    public static Iterable<Booking> getBookingsFromUid(Connection con, int uid) throws SQLException, CommandException {
+    public static Iterable<Booking> getBookingsFromUid(int uid, Connection con) throws SQLException, CommandException {
         PreparedStatement ps = con.prepareStatement("SELECT * "
                 + "FROM BOOKING "
                 + "WHERE uid = ?");
@@ -132,6 +137,7 @@ public class DatabaseDataHelper {
                     rs.getInt("rid"),
                     beginInst, endInst));
         }
+        rs.close();
 
         return bookings;
     }
@@ -146,7 +152,11 @@ public class DatabaseDataHelper {
         ps.setInt(3, rid);
         ps.setInt(4, bid);
         ResultSet rs = ps.executeQuery();
-        return rs.next();
+
+        boolean toReturn = rs.next();
+        rs.close();
+
+        return toReturn;
     }
 
     public static boolean dateOverlaps(Date begin, Date end, int rid, Connection con) throws SQLException {
@@ -157,8 +167,13 @@ public class DatabaseDataHelper {
         ps.setTimestamp(1, new java.sql.Timestamp(begin.getTime()));
         ps.setTimestamp(2, new java.sql.Timestamp(end.getTime()));
         ps.setInt(3, rid);
+
         ResultSet rs = ps.executeQuery();
-        return rs.next();
+
+        boolean toReturn = rs.next();
+        rs.close();
+
+        return toReturn;
     }
 
     public static String getLabelName(int labelId, Connection con) throws SQLException {
@@ -169,6 +184,8 @@ public class DatabaseDataHelper {
         if (rs.next()) {
             labelName = rs.getString("name");
         }
+        rs.close();
+
         return labelName;
     }
 
@@ -180,6 +197,19 @@ public class DatabaseDataHelper {
         if (rs.next()) {
             roomName = rs.getString("name");
         }
+        rs.close();
+
         return roomName;
+    }
+
+    public static boolean hasBookings(int roomId, Connection con) throws SQLException {
+        PreparedStatement ps = con.prepareStatement("SELECT bid FROM BOOKING WHERE rid = ?");
+        ps.setInt(1, roomId);
+        ResultSet rs = ps.executeQuery();
+
+        boolean toReturn = rs.next();
+        rs.close();
+
+        return toReturn;
     }
 }

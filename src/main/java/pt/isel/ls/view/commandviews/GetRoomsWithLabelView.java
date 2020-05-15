@@ -64,8 +64,8 @@ public class GetRoomsWithLabelView extends View {
                                 title("Rooms with Label [" + result.getLabel().getLid() + "]")
                         ),
                         body(
-                                h1("List of Rooms with Label \"" + result.getLabel().getName() + "\""),
                                 a("/", "Home"),
+                                h1("List of Rooms with Label \"" + result.getLabel().getName() + "\""),
                                 buildLabelInfo()
                         )
                 );
@@ -88,10 +88,10 @@ public class GetRoomsWithLabelView extends View {
 
     private void addHtmlTableRow(Element table, Room room) {
         Element tableRowData = tr();
-        tableRowData.addChild(td(room.getRid()));
+        tableRowData.addChild(td(a("/rooms/" + room.getRid(), "" + room.getRid())));
         tableRowData.addChild(td(room.getName()));
         tableRowData.addChild(td(room.getLocation()));
-        tableRowData.addChild(td(room.getCapacity() == null ? "N/A" : room.getCapacity()));
+        tableRowData.addChild(td(room.getCapacity() == null ? "N/A" : room.getCapacity().toString()));
         table.addChild(tableRowData);
     }
 }
