@@ -60,13 +60,23 @@ public class GetRoomByIdView extends View {
                         head(
                                 title("Room [" + room.getRid() + "]")
                         ),
-                        body(
-                                h1("Detailed Information of Room \"" + room.getName() + "\""),
-                                buildHtmlRoomInfo(),
-                                buildHtmlLabelTable()
-                        )
+                        buildBody(room, result.getLabels())
                 );
         return html.toString();
+    }
+
+    private Element buildBody(Room room, Iterable<Label> labels) {
+        Element body =
+                body(
+                        h1("Detailed Information of Room \"" + room.getName() + "\""),
+                        buildHtmlRoomInfo()
+                );
+
+        if (labels != null && labels.iterator().hasNext()) {
+            body.addChild(buildHtmlLabelTable());
+        }
+
+        return body;
     }
 
     public Element buildHtmlRoomInfo() {
