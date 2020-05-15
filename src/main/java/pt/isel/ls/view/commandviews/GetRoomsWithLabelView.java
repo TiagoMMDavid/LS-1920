@@ -8,6 +8,7 @@ import pt.isel.ls.view.View;
 
 import java.util.Iterator;
 
+import static pt.isel.ls.utils.html.HtmlDsl.a;
 import static pt.isel.ls.utils.html.HtmlDsl.body;
 import static pt.isel.ls.utils.html.HtmlDsl.h1;
 import static pt.isel.ls.utils.html.HtmlDsl.head;
@@ -64,6 +65,7 @@ public class GetRoomsWithLabelView extends View {
                         ),
                         body(
                                 h1("List of Rooms with Label \"" + result.getLabel().getName() + "\""),
+                                a("/", "Home"),
                                 buildLabelInfo()
                         )
                 );

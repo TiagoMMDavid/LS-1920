@@ -8,6 +8,7 @@ import pt.isel.ls.view.View;
 
 import java.util.Iterator;
 
+import static pt.isel.ls.utils.html.HtmlDsl.a;
 import static pt.isel.ls.utils.html.HtmlDsl.body;
 import static pt.isel.ls.utils.html.HtmlDsl.h1;
 import static pt.isel.ls.utils.html.HtmlDsl.head;
@@ -58,7 +59,7 @@ public class GetUsersView extends View {
                                 title("Information of all Users")
                         ),
                         body(
-                                //TODO hyperlink
+                                a("/", "Home"),
                                 h1("Information of all Users"),
                                 buildUsersTable(users)
                         )
@@ -87,7 +88,7 @@ public class GetUsersView extends View {
 
     private Element buildUserData(User user) {
         Element tableRowData = tr();
-        tableRowData.addChild(td(user.getUid()));
+        tableRowData.addChild(td(a("/users/" + user.getUid(), String.valueOf(user.getUid()))));
         tableRowData.addChild(td(user.getName()));
         tableRowData.addChild(td(user.getEmail()));
         return tableRowData;

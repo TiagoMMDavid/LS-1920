@@ -7,6 +7,7 @@ import pt.isel.ls.view.View;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static pt.isel.ls.utils.html.HtmlDsl.a;
 import static pt.isel.ls.utils.html.HtmlDsl.body;
 import static pt.isel.ls.utils.html.HtmlDsl.h1;
 import static pt.isel.ls.utils.html.HtmlDsl.head;
@@ -35,6 +36,7 @@ public class GetTimeView extends View {
                                 title("Current Time")
                         ),
                         body(
+                                a("/", "Home"),
                                 h1("Current Time"),
                                 p(getTime(result.getTime()))
                         )

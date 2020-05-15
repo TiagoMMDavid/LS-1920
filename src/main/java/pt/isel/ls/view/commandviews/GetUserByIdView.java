@@ -7,6 +7,7 @@ import pt.isel.ls.model.entities.User;
 import pt.isel.ls.utils.html.elements.Element;
 import pt.isel.ls.view.View;
 
+import static pt.isel.ls.utils.html.HtmlDsl.a;
 import static pt.isel.ls.utils.html.HtmlDsl.body;
 import static pt.isel.ls.utils.html.HtmlDsl.h1;
 import static pt.isel.ls.utils.html.HtmlDsl.head;
@@ -56,7 +57,8 @@ public class GetUserByIdView extends View {
                                 title("User [" + user.getUid() + "]")
                         ),
                         body(
-                                //TODO hyperlink
+                                a("/", "Home "),
+                                a("/users", "Users"),
                                 h1("Detailed information of User \"" + user.getName() + "\""),
                                 buildUserInfo(user),
                                 buildBookingInfo(bookings)
@@ -67,7 +69,7 @@ public class GetUserByIdView extends View {
 
     private Element buildBookingInfo(Iterable<Booking> bookings) {
         if (!bookings.iterator().hasNext()) {
-            return p("No bookings associated with this user");
+            return p("No bookings associated with this user.");
         }
 
         Element bookingHeaders = tr();
@@ -86,7 +88,9 @@ public class GetUserByIdView extends View {
 
     private Element buildBookingRow(Booking booking) {
         Element tableRowData = tr();
-        tableRowData.addChild(td(booking.getBid()));
+        tableRowData.addChild(td(a("/rooms/" + booking.getRid()
+                + "/bookings/" + booking.getBid(),
+                String.valueOf(booking.getBid()))));
         tableRowData.addChild(td(booking.getBeginInst()));
         tableRowData.addChild(td(booking.getEndInst()));
         return tableRowData;
