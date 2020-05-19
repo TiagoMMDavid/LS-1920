@@ -1,9 +1,10 @@
 package pt.isel.ls.model.commands;
 
-import pt.isel.ls.model.commands.common.CommandException;
+import pt.isel.ls.model.commands.common.exceptions.CommandException;
 import pt.isel.ls.model.commands.common.CommandHandler;
 import pt.isel.ls.model.commands.common.CommandRequest;
 import pt.isel.ls.model.commands.common.CommandResult;
+import pt.isel.ls.model.commands.common.exceptions.InvalidIdException;
 import pt.isel.ls.model.commands.results.DeleteBookingInRoomResult;
 import pt.isel.ls.model.commands.sql.TransactionManager;
 import pt.isel.ls.model.entities.Booking;
@@ -27,7 +28,7 @@ public class DeleteBookingInRoomCommand implements CommandHandler {
                 roomId = path.getInt("rid");
                 bookingId = path.getInt("bid");
             } catch (NumberFormatException e) {
-                throw new CommandException("Invalid Room or Booking ID");
+                throw new InvalidIdException("Invalid Room or Booking ID");
             }
 
             ps.setInt(1, roomId);
@@ -35,7 +36,7 @@ public class DeleteBookingInRoomCommand implements CommandHandler {
             if (ps.executeUpdate() != 0) {
                 result.setBooking(new Booking(bookingId));
             } else {
-                throw new CommandException("Booking does not exist");
+                throw new InvalidIdException("Booking does not exist");
             }
         });
         return result;

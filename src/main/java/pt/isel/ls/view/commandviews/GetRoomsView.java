@@ -61,7 +61,7 @@ public class GetRoomsView extends View {
                         ),
                         body(
                                 a("/", "Home"),
-                                h1("List of all Rooms"),
+                                h1("List of Rooms"),
                                 buildLabelInfo()
                         )
                 );

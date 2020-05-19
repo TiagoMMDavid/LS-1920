@@ -4,6 +4,7 @@ import org.junit.Test;
 
 import java.util.Iterator;
 
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 public class ParametersTest {
@@ -28,13 +29,14 @@ public class ParametersTest {
         assertTrue(isCorrectLabel);
     }
 
-    @Test(expected = IllegalArgumentException.class)
-    public void wrongParametersTestOnEmptyParamName() {
-        Parameters params = new Parameters("&name=LS3&label=windows");
+    @Test
+    public void parametersOnEmptyValueTest() {
+        Parameters params = new Parameters("name=&label=windows");
+        assertNull(params.getString("name"));
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void wrongParametersTestOnEmptyValue() {
-        Parameters params = new Parameters("name=&label=windows");
+    public void wrongParametersOnEmptyParamNameTest() {
+        Parameters params = new Parameters("=value&name=LS3&label=windows");
     }
 }

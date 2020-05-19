@@ -1,9 +1,10 @@
 package pt.isel.ls.model.commands;
 
-import pt.isel.ls.model.commands.common.CommandException;
+import pt.isel.ls.model.commands.common.exceptions.CommandException;
 import pt.isel.ls.model.commands.common.CommandHandler;
 import pt.isel.ls.model.commands.common.CommandRequest;
 import pt.isel.ls.model.commands.common.CommandResult;
+import pt.isel.ls.model.commands.common.exceptions.InvalidIdException;
 import pt.isel.ls.model.commands.helpers.DatabaseDataHelper;
 import pt.isel.ls.model.commands.results.GetLabelByIdResult;
 import pt.isel.ls.model.commands.sql.TransactionManager;
@@ -23,7 +24,7 @@ public class GetLabelByIdCommand implements CommandHandler {
             try {
                 lid = commandRequest.getPath().getInt("lid");
             }  catch (NumberFormatException e) {
-                throw new CommandException("Invalid Label ID");
+                throw new InvalidIdException("Invalid Label ID");
             }
             PreparedStatement ps = con.prepareStatement("SELECT lid, name "
                     + "FROM LABEL WHERE lid = ?");

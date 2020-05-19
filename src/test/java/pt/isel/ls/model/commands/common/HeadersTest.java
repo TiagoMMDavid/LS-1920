@@ -10,8 +10,8 @@ public class HeadersTest {
     public void correctHeadersTest() {
         //Arrange
         Headers headers = new Headers("accept:text/plain|file-name:rooms.html");
-        String viewFormat = headers.getValue("accept");
-        String file = headers.getValue("file-name");
+        String viewFormat = headers.getFirst("accept");
+        String file = headers.getFirst("file-name");
 
         //Act
         boolean isCorrectViewFormat = viewFormat.equals("text/plain");

@@ -1,10 +1,13 @@
 package pt.isel.ls.model.commands;
 
-import pt.isel.ls.model.commands.common.CommandException;
+import pt.isel.ls.model.commands.common.exceptions.CommandException;
 import pt.isel.ls.model.commands.common.CommandHandler;
 import pt.isel.ls.model.commands.common.CommandRequest;
 import pt.isel.ls.model.commands.common.CommandResult;
 import pt.isel.ls.model.commands.common.Parameters;
+import pt.isel.ls.model.commands.common.exceptions.InvalidIdException;
+import pt.isel.ls.model.commands.common.exceptions.MissingArgumentsException;
+import pt.isel.ls.model.commands.common.exceptions.ParseArgumentException;
 import pt.isel.ls.model.commands.results.PutBookingInRoomResult;
 import pt.isel.ls.model.commands.sql.TransactionManager;
 import pt.isel.ls.model.entities.Booking;
@@ -32,7 +35,7 @@ public class PutBookingInRoomCommand implements CommandHandler {
             Parameters params = commandRequest.getParams();
             Path path = commandRequest.getPath();
             if (params == null) {
-                throw new CommandException("No parameters specified");
+                throw new MissingArgumentsException("No parameters specified");
             }
             Integer uid;
             Integer rid;
@@ -42,7 +45,7 @@ public class PutBookingInRoomCommand implements CommandHandler {
                 rid = path.getInt("rid");
                 bid = path.getInt("bid");
             } catch (NumberFormatException e) {
-                throw new CommandException("Invalid Room, Booking or User ID");
+                throw new InvalidIdException("Invalid Room, Booking or User ID");
             }
             String duration = params.getString("duration");
             String begin = params.getString("begin");
@@ -54,11 +57,11 @@ public class PutBookingInRoomCommand implements CommandHandler {
                 Date beginDate;
                 Date durationDate;
                 try {
-                    beginDate = parseTimeWithTimezone(begin, "yyyy-MM-dd HH:mm");
+                    beginDate = parseTimeWithTimezone(begin, "yyyy-MM-dd'T'HH:mm");
                     //Parsed time without timezone because the duration is independent of Timezones
                     durationDate = parseTime(duration, "HH:mm");
                 } catch (ParseException e) {
-                    throw new CommandException("Failed to parse dates");
+                    throw new ParseArgumentException("Failed to parse dates");
                 }
                 Date endDate = new Date(beginDate.getTime() + durationDate.getTime());
 
@@ -69,13 +72,13 @@ public class PutBookingInRoomCommand implements CommandHandler {
                     if (ps.executeUpdate() != 0) {
                         result.setBooking(new Booking(bid));
                     } else {
-                        throw new CommandException("Booking does not exist");
+                        throw new InvalidIdException("Booking does not exist");
                     }
                 } else {
                     throw new CommandException("Could not modify Booking, as it overlaps with an existing one");
                 }
             } else {
-                throw new CommandException("No arguments found / Invalid arguments");
+                throw new MissingArgumentsException();
             }
         });
         return result;

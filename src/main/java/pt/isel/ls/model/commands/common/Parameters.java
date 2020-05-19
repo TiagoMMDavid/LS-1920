@@ -21,8 +21,13 @@ public class Parameters {
 
             String name = param.substring(0, indexOfEqual);
             String value = param.substring(indexOfEqual + 1);
-            if (value.isEmpty() || name.isEmpty()) {
+
+            if (name.isEmpty()) {
                 throw new IllegalArgumentException("Wrong parameters format");
+            }
+            // Parameters without a value are valid, but are treated as non existent
+            if (value.isEmpty()) {
+                continue;
             }
 
             value = value.replace('+', ' ');
@@ -34,10 +39,8 @@ public class Parameters {
         LinkedList<String> list = params.get(name);
         if (list == null) {
             list = new LinkedList<>();
-            list.add(value);
-        } else {
-            list.add(value);
         }
+        list.add(value);
         params.put(name, list);
     }
 

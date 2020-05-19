@@ -1,10 +1,12 @@
 package pt.isel.ls.model.commands;
 
-import pt.isel.ls.model.commands.common.CommandException;
+import pt.isel.ls.model.commands.common.exceptions.CommandException;
 import pt.isel.ls.model.commands.common.CommandHandler;
 import pt.isel.ls.model.commands.common.CommandRequest;
 import pt.isel.ls.model.commands.common.CommandResult;
 import pt.isel.ls.model.commands.common.Parameters;
+import pt.isel.ls.model.commands.common.exceptions.MissingArgumentsException;
+import pt.isel.ls.model.commands.common.exceptions.ParseArgumentException;
 import pt.isel.ls.model.commands.results.PostRoomResult;
 import pt.isel.ls.model.commands.sql.TransactionManager;
 import pt.isel.ls.model.entities.Room;
@@ -33,7 +35,7 @@ public class PostRoomCommand implements CommandHandler {
             );
             Parameters params = commandRequest.getParams();
             if (params == null) {
-                throw new CommandException("No parameters specified");
+                throw new MissingArgumentsException("No parameters specified");
             }
             String name = params.getString("name");
             String description = params.getString("description");
@@ -42,7 +44,7 @@ public class PostRoomCommand implements CommandHandler {
             try {
                 capacity = params.getInt("capacity");
             } catch (NumberFormatException e) {
-                throw new CommandException("Invalid capacity");
+                throw new ParseArgumentException("Invalid capacity");
             }
 
             if (name != null && location != null) {
@@ -70,7 +72,7 @@ public class PostRoomCommand implements CommandHandler {
                     fillRoomLabelTable(con, rid, lids);
                 }
             } else {
-                throw new CommandException("No arguments found / Invalid arguments");
+                throw new MissingArgumentsException();
             }
             ps.close();
 

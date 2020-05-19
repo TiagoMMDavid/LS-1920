@@ -3,11 +3,13 @@ package pt.isel.ls.model.commands;
 import org.eclipse.jetty.plus.servlet.ServletHandler;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.ServletHolder;
-import pt.isel.ls.model.commands.common.CommandException;
+import pt.isel.ls.model.commands.common.exceptions.CommandException;
 import pt.isel.ls.model.commands.common.CommandHandler;
 import pt.isel.ls.model.commands.common.CommandRequest;
 import pt.isel.ls.model.commands.common.CommandResult;
 import pt.isel.ls.model.commands.common.Parameters;
+import pt.isel.ls.model.commands.common.exceptions.MissingArgumentsException;
+import pt.isel.ls.model.commands.common.exceptions.ParseArgumentException;
 import pt.isel.ls.model.commands.results.ListenResult;
 import pt.isel.ls.http.CommandServlet;
 
@@ -19,16 +21,16 @@ public class ListenCommand implements CommandHandler {
     public CommandResult execute(CommandRequest commandRequest) throws CommandException, SQLException {
         Parameters params = commandRequest.getParams();
         if (params == null) {
-            throw new CommandException("No parameters specified");
+            throw new MissingArgumentsException("No parameters specified");
         }
         Integer port;
         try {
             port = params.getInt("port");
         } catch (NumberFormatException e) {
-            throw new CommandException("Invalid port number");
+            throw new ParseArgumentException("Invalid port number");
         }
         if (port == null) {
-            throw new CommandException("No port specified");
+            throw new MissingArgumentsException("No port specified");
         }
         Server server = new Server(port);
         ServletHandler handler = new ServletHandler();

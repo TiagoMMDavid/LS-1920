@@ -1,10 +1,11 @@
 package pt.isel.ls.model.commands;
 
-import pt.isel.ls.model.commands.common.CommandException;
+import pt.isel.ls.model.commands.common.exceptions.CommandException;
 import pt.isel.ls.model.commands.common.CommandHandler;
 import pt.isel.ls.model.commands.common.CommandRequest;
 import pt.isel.ls.model.commands.common.CommandResult;
 import pt.isel.ls.model.commands.common.Parameters;
+import pt.isel.ls.model.commands.common.exceptions.MissingArgumentsException;
 import pt.isel.ls.model.commands.results.PostUserResult;
 import pt.isel.ls.model.commands.sql.TransactionManager;
 import pt.isel.ls.model.entities.User;
@@ -26,7 +27,7 @@ public class PostUserCommand implements CommandHandler {
             );
             Parameters params = commandRequest.getParams();
             if (params == null) {
-                throw new CommandException("No parameters specified");
+                throw new MissingArgumentsException("No parameters specified");
             }
             String name = params.getString("name");
             String email = params.getString("email");
@@ -40,7 +41,7 @@ public class PostUserCommand implements CommandHandler {
                 rs.next();
                 result.setUser(new User(rs.getInt("uid"), name));
             } else {
-                throw new CommandException("No arguments found / Invalid arguments");
+                throw new MissingArgumentsException();
             }
             ps.close();
 

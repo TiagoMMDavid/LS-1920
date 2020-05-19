@@ -28,13 +28,8 @@ import java.io.OutputStream;
 
 public abstract class View {
 
+    // TODO: MAKE ROUTER FOR VIEWS | RETURN NULL WHEN NO REPRESENTATION (HTTP 406)
     public static View getInstance(CommandResult commandResult) {
-        if (commandResult == null) {
-            // Result can only be null when the Servlet receives a GET request for a non existent command.
-            // This never happens in the App
-            return new NoRouteView();
-        }
-
         if (!commandResult.hasResults()) {
             return new EmptyView();
         }
@@ -82,6 +77,8 @@ public abstract class View {
                 return new PostUserView(commandResult);
             case PutBookingInRoom:
                 return new PutBookingInRoomView(commandResult);
+            case HttpResponse:
+                return new HttpResponseView(commandResult);
             default:
                 return null;
         }
@@ -100,7 +97,6 @@ public abstract class View {
         }
         return text + '\n';
     }
-
 
     public abstract String displayText();
 

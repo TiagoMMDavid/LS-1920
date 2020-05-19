@@ -156,8 +156,8 @@ public class App {
 
             // Get headers
             if (headers != null) {
-                filename = headers.getValue("file-name");
-                viewFormat = headers.getValue("accept");
+                filename = headers.getFirst("file-name");
+                viewFormat = headers.getFirst("accept");
             }
             // Get output stream
             OutputStream out = filename == null ? System.out : getFileStream(filename);

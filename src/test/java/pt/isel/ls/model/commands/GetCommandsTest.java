@@ -213,7 +213,7 @@ public class GetCommandsTest {
         Router router = new Router();
         router.addRoute(Method.GET, new PathTemplate("/rooms"), new GetRoomsCommand());
         CommandRequest cmd = new CommandRequest(new Path("/rooms"),
-                new Parameters("begin=2016-06-22+19:20&duration=00:30"), trans, null);
+                new Parameters("begin=2016-06-22T19:20&duration=00:30"), trans, null);
 
         CommandHandler handler = router.findRoute(Method.GET, cmd.getPath());
         GetRoomsResult result = (GetRoomsResult) handler.execute(cmd);

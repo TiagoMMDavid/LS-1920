@@ -1,9 +1,10 @@
 package pt.isel.ls.model.commands;
 
-import pt.isel.ls.model.commands.common.CommandException;
+import pt.isel.ls.model.commands.common.exceptions.CommandException;
 import pt.isel.ls.model.commands.common.CommandHandler;
 import pt.isel.ls.model.commands.common.CommandRequest;
 import pt.isel.ls.model.commands.common.CommandResult;
+import pt.isel.ls.model.commands.common.exceptions.InvalidIdException;
 import pt.isel.ls.model.commands.helpers.DatabaseDataHelper;
 import pt.isel.ls.model.commands.results.GetRoomByIdResult;
 import pt.isel.ls.model.commands.sql.TransactionManager;
@@ -25,7 +26,7 @@ public class GetRoomByIdCommand implements CommandHandler {
             try {
                 roomId = commandRequest.getPath().getInt("rid");
             } catch (NumberFormatException e) {
-                throw new CommandException("Invalid Room ID");
+                throw new InvalidIdException("Invalid Room ID");
             }
             ps.setInt(1, roomId);
             ResultSet rs = ps.executeQuery();
@@ -43,6 +44,8 @@ public class GetRoomByIdCommand implements CommandHandler {
                 ));
                 result.setLabels(DatabaseDataHelper.getLabelsFromRid(roomId, con));
                 result.setHasBookings(DatabaseDataHelper.hasBookings(roomId, con));
+            } else {
+                throw new InvalidIdException("Room does not exist");
             }
 
             rs.close();

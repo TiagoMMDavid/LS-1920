@@ -1,5 +1,7 @@
 package pt.isel.ls.model.commands.common;
 
+import pt.isel.ls.model.commands.common.exceptions.CommandException;
+
 import java.sql.SQLException;
 
 public interface CommandHandler {

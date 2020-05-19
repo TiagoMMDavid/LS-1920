@@ -1,9 +1,11 @@
 package pt.isel.ls.model.commands;
 
-import pt.isel.ls.model.commands.common.CommandException;
+import pt.isel.ls.model.commands.common.exceptions.CommandException;
 import pt.isel.ls.model.commands.common.CommandHandler;
 import pt.isel.ls.model.commands.common.CommandRequest;
 import pt.isel.ls.model.commands.common.CommandResult;
+import pt.isel.ls.model.commands.common.exceptions.InvalidIdException;
+import pt.isel.ls.model.commands.common.exceptions.ParseArgumentException;
 import pt.isel.ls.model.commands.results.GetBookingByRoomAndBookingIdResult;
 import pt.isel.ls.model.commands.sql.TransactionManager;
 import pt.isel.ls.model.entities.Booking;
@@ -32,7 +34,7 @@ public class GetBookingByRoomAndBookingIdCommand implements CommandHandler {
                 roomId = path.getInt("rid");
                 bookingId = path.getInt("bid");
             } catch (NumberFormatException e) {
-                throw new CommandException("Invalid Room or Booking ID");
+                throw new InvalidIdException("Invalid Room or Booking ID");
             }
             ps.setInt(1, roomId);
             ps.setInt(2, bookingId);
@@ -44,7 +46,7 @@ public class GetBookingByRoomAndBookingIdCommand implements CommandHandler {
                     beginInst = parseTimeWithTimezone(rs.getString("begin_inst"), "yyyy-MM-dd HH:mm:ss");
                     endInst = parseTimeWithTimezone(rs.getString("end_inst"),"yyyy-MM-dd HH:mm:ss");
                 } catch (ParseException e) {
-                    throw new CommandException("Failed to parse dates");
+                    throw new ParseArgumentException("Failed to parse dates");
                 }
                 result.setBooking(new Booking(
                         rs.getInt("bid"),

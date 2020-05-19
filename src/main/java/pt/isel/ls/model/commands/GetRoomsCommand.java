@@ -1,10 +1,11 @@
 package pt.isel.ls.model.commands;
 
-import pt.isel.ls.model.commands.common.CommandException;
+import pt.isel.ls.model.commands.common.exceptions.CommandException;
 import pt.isel.ls.model.commands.common.CommandHandler;
 import pt.isel.ls.model.commands.common.CommandRequest;
 import pt.isel.ls.model.commands.common.CommandResult;
 import pt.isel.ls.model.commands.common.Parameters;
+import pt.isel.ls.model.commands.common.exceptions.ParseArgumentException;
 import pt.isel.ls.model.commands.results.GetRoomsResult;
 import pt.isel.ls.model.commands.sql.TransactionManager;
 import pt.isel.ls.model.entities.Room;
@@ -36,7 +37,7 @@ public class GetRoomsCommand implements CommandHandler {
                 try {
                     capacity = params.getInt("capacity");
                 } catch (NumberFormatException e) {
-                    throw new CommandException("Invalid capacity");
+                    throw new ParseArgumentException("Invalid capacity");
                 }
                 begin = params.getString("begin");
                 dur = params.getString("duration");
@@ -47,17 +48,15 @@ public class GetRoomsCommand implements CommandHandler {
                 PreparedStatement ps = con.prepareStatement(getQueryString(capacity, begin, dur, rids));
                 fillStatementWithParameters(ps, capacity, begin, dur, rids);
                 ResultSet rs = ps.executeQuery();
-                if (rs.next()) {
-                    do {
-                        capacity = rs.getInt("capacity");
-                        if (rs.wasNull()) {
-                            capacity = null;
-                        }
-                        result.addRoom(new Room(rs.getInt("rid"),
-                                rs.getString("name"),
-                                rs.getString("location"),
-                                capacity));
-                    } while (rs.next());
+                while (rs.next()) {
+                    capacity = rs.getInt("capacity");
+                    if (rs.wasNull()) {
+                        capacity = null;
+                    }
+                    result.addRoom(new Room(rs.getInt("rid"),
+                            rs.getString("name"),
+                            rs.getString("location"),
+                            capacity));
                 }
                 rs.close();
                 ps.close();
@@ -108,10 +107,10 @@ public class GetRoomsCommand implements CommandHandler {
             Date beginDate;
             Date durationDate;
             try {
-                beginDate = parseTimeWithTimezone(begin, "yyyy-MM-dd HH:mm");
+                beginDate = parseTimeWithTimezone(begin, "yyyy-MM-dd'T'HH:mm");
                 durationDate = parseTime(dur, "HH:mm");
             } catch (ParseException e) {
-                throw new CommandException("Failed to parse dates");
+                throw new ParseArgumentException("Failed to parse dates");
             }
             Date endDate = new Date(beginDate.getTime() + durationDate.getTime());
             ps.setTimestamp(currIdx++, new java.sql.Timestamp(beginDate.getTime()));

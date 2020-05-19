@@ -25,7 +25,8 @@ public interface CommandResult {
         PostLabel,
         PostRoom,
         PostUser,
-        PutBookingInRoom
+        PutBookingInRoom,
+        HttpResponse
     }
 
     ResultType getResultType();

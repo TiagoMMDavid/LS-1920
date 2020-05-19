@@ -1,8 +1,9 @@
 package pt.isel.ls.model.commands;
 
-import pt.isel.ls.model.commands.common.CommandException;
+import pt.isel.ls.model.commands.common.exceptions.CommandException;
 import pt.isel.ls.model.commands.common.CommandHandler;
 import pt.isel.ls.model.commands.common.CommandRequest;
+import pt.isel.ls.model.commands.common.exceptions.InvalidIdException;
 import pt.isel.ls.model.commands.helpers.DatabaseDataHelper;
 import pt.isel.ls.model.commands.common.CommandResult;
 import pt.isel.ls.model.commands.results.GetUserByIdResult;
@@ -25,7 +26,7 @@ public class GetUserByIdCommand implements CommandHandler {
             try {
                 userId = commandRequest.getPath().getInt("uid");
             }  catch (NumberFormatException e) {
-                throw new CommandException("Invalid User ID");
+                throw new InvalidIdException("Invalid User ID");
             }
             ps.setInt(1, userId);
             ResultSet rs = ps.executeQuery();
@@ -36,6 +37,8 @@ public class GetUserByIdCommand implements CommandHandler {
                         rs.getString("email")
                 ));
                 result.setBookings(DatabaseDataHelper.getBookingsFromUid(userId, con));
+            } else {
+                throw new InvalidIdException("User does not exist");
             }
             rs.close();
             ps.close();

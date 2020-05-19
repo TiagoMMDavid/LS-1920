@@ -61,7 +61,7 @@ public class PostCommandsTest {
         Router router = new Router();
         router.addRoute(Method.POST, new PathTemplate("/rooms/{rid}/bookings"), new PostBookingInRoomCommand());
         CommandRequest cmd = new CommandRequest(new Path("/rooms/0/bookings"),
-                new Parameters("begin=2020-12-20+10:20&duration=00:10&uid=0"),
+                new Parameters("begin=2020-12-20T10:20&duration=00:10&uid=0"),
                 trans, null);
 
         CommandHandler handler = router.findRoute(Method.POST, cmd.getPath());
