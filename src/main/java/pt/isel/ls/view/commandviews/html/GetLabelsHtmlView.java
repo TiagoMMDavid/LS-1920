@@ -6,8 +6,6 @@ import pt.isel.ls.model.entities.Label;
 import pt.isel.ls.utils.html.elements.Element;
 import pt.isel.ls.view.View;
 
-import java.util.Iterator;
-
 import static pt.isel.ls.utils.html.HtmlDsl.a;
 import static pt.isel.ls.utils.html.HtmlDsl.body;
 import static pt.isel.ls.utils.html.HtmlDsl.h1;
@@ -18,8 +16,6 @@ import static pt.isel.ls.utils.html.HtmlDsl.td;
 import static pt.isel.ls.utils.html.HtmlDsl.th;
 import static pt.isel.ls.utils.html.HtmlDsl.title;
 import static pt.isel.ls.utils.html.HtmlDsl.tr;
-import static pt.isel.ls.view.commandviews.helpers.LabelHelper.appendId;
-import static pt.isel.ls.view.commandviews.helpers.LabelHelper.appendName;
 
 public class GetLabelsHtmlView extends View {
 
@@ -30,24 +26,7 @@ public class GetLabelsHtmlView extends View {
     }
 
     @Override
-    public String displayText() {
-        StringBuilder builder = new StringBuilder();
-        Iterator<Label> iter = result.getLabels().iterator();
-        while (iter.hasNext()) {
-            Label label = iter.next();
-            appendId(label, builder);
-            builder.append('\n');
-            appendName(label, builder);
-            builder.append('\n');
-            if (iter.hasNext()) {
-                builder.append("============================================\n");
-            }
-        }
-        return builder.toString();
-    }
-
-    @Override
-    public String displayHtml() {
+    public String display() {
         Element html =
                 html(
                         head(

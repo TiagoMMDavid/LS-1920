@@ -14,12 +14,6 @@ import static pt.isel.ls.utils.html.HtmlDsl.html;
 import static pt.isel.ls.utils.html.HtmlDsl.li;
 import static pt.isel.ls.utils.html.HtmlDsl.title;
 import static pt.isel.ls.utils.html.HtmlDsl.ul;
-import static pt.isel.ls.view.commandviews.helpers.BookingHelpers.appendBeginInst;
-import static pt.isel.ls.view.commandviews.helpers.BookingHelpers.appendBid;
-import static pt.isel.ls.view.commandviews.helpers.BookingHelpers.appendEndInst;
-import static pt.isel.ls.view.commandviews.helpers.BookingHelpers.appendRid;
-import static pt.isel.ls.view.commandviews.helpers.BookingHelpers.appendUid;
-
 public class GetBookingByRoomAndBookingIdHtmlView extends View {
     private Booking booking;
 
@@ -28,23 +22,7 @@ public class GetBookingByRoomAndBookingIdHtmlView extends View {
     }
 
     @Override
-    public String displayText() {
-        StringBuilder builder = new StringBuilder();
-        appendBid(booking, builder);
-        builder.append('\n');
-        appendRid(booking, builder);
-        builder.append('\n');
-        appendUid(booking, builder);
-        builder.append('\n');
-        appendBeginInst(booking, builder);
-        builder.append('\n');
-        appendEndInst(booking, builder);
-        builder.append('\n');
-        return builder.toString();
-    }
-
-    @Override
-    public String displayHtml() {
+    public String display() {
         return
                 html(
                         head(

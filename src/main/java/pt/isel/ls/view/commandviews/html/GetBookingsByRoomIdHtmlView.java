@@ -7,8 +7,6 @@ import pt.isel.ls.model.entities.Room;
 import pt.isel.ls.utils.html.elements.Element;
 import pt.isel.ls.view.View;
 
-import java.util.Iterator;
-
 import static pt.isel.ls.utils.html.HtmlDsl.a;
 import static pt.isel.ls.utils.html.HtmlDsl.body;
 import static pt.isel.ls.utils.html.HtmlDsl.h1;
@@ -19,9 +17,6 @@ import static pt.isel.ls.utils.html.HtmlDsl.td;
 import static pt.isel.ls.utils.html.HtmlDsl.th;
 import static pt.isel.ls.utils.html.HtmlDsl.title;
 import static pt.isel.ls.utils.html.HtmlDsl.tr;
-import static pt.isel.ls.view.commandviews.helpers.BookingHelpers.appendBeginInst;
-import static pt.isel.ls.view.commandviews.helpers.BookingHelpers.appendBid;
-import static pt.isel.ls.view.commandviews.helpers.BookingHelpers.appendEndInst;
 
 public class GetBookingsByRoomIdHtmlView extends View {
     private GetBookingsByRoomIdResult result;
@@ -31,30 +26,7 @@ public class GetBookingsByRoomIdHtmlView extends View {
     }
 
     @Override
-    public String displayText() {
-        StringBuilder builder = new StringBuilder();
-        Iterator<Booking> iter = result.getBookings().iterator();
-        builder.append("Bookings from Room with ID [")
-                .append(result.getRoom().getRid())
-                .append("]:")
-                .append('\n');
-        while (iter.hasNext()) {
-            Booking booking = iter.next();
-            appendBid(booking, builder);
-            builder.append('\n');
-            appendBeginInst(booking, builder);
-            builder.append('\n');
-            appendEndInst(booking, builder);
-            builder.append('\n');
-            if (iter.hasNext()) {
-                builder.append("============================================\n");
-            }
-        }
-        return builder.toString();
-    }
-
-    @Override
-    public String displayHtml() {
+    public String display() {
         Room room = result.getRoom();
         return
                 html(
