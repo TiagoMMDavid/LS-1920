@@ -6,8 +6,6 @@ import pt.isel.ls.model.entities.Room;
 import pt.isel.ls.utils.html.elements.Element;
 import pt.isel.ls.view.View;
 
-import java.util.Iterator;
-
 import static pt.isel.ls.utils.html.HtmlDsl.a;
 import static pt.isel.ls.utils.html.HtmlDsl.body;
 import static pt.isel.ls.utils.html.HtmlDsl.h1;
@@ -18,10 +16,6 @@ import static pt.isel.ls.utils.html.HtmlDsl.td;
 import static pt.isel.ls.utils.html.HtmlDsl.th;
 import static pt.isel.ls.utils.html.HtmlDsl.title;
 import static pt.isel.ls.utils.html.HtmlDsl.tr;
-import static pt.isel.ls.view.commandviews.helpers.RoomHelper.appendCapacity;
-import static pt.isel.ls.view.commandviews.helpers.RoomHelper.appendId;
-import static pt.isel.ls.view.commandviews.helpers.RoomHelper.appendLocation;
-import static pt.isel.ls.view.commandviews.helpers.RoomHelper.appendName;
 
 public class GetRoomsWithLabelHtmlView extends View {
 
@@ -32,32 +26,7 @@ public class GetRoomsWithLabelHtmlView extends View {
     }
 
     @Override
-    public String displayText() {
-        StringBuilder builder = new StringBuilder();
-        Iterator<Room> iter = result.getRooms().iterator();
-        builder.append("Room with label \"")
-                .append(result.getLabel().getName())
-                .append("\":")
-                .append("\n\n");
-        while (iter.hasNext()) {
-            Room room = iter.next();
-            appendId(room, builder);
-            builder.append('\n');
-            appendName(room, builder);
-            builder.append('\n');
-            appendLocation(room, builder);
-            builder.append('\n');
-            appendCapacity(room, builder);
-            builder.append('\n');
-            if (iter.hasNext()) {
-                builder.append("============================================\n");
-            }
-        }
-        return builder.toString();
-    }
-
-    @Override
-    public String displayHtml() {
+    public String display() {
         Element html =
                 html(
                         head(

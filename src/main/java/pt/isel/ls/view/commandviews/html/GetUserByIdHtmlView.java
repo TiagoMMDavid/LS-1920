@@ -20,10 +20,6 @@ import static pt.isel.ls.utils.html.HtmlDsl.th;
 import static pt.isel.ls.utils.html.HtmlDsl.title;
 import static pt.isel.ls.utils.html.HtmlDsl.tr;
 import static pt.isel.ls.utils.html.HtmlDsl.ul;
-import static pt.isel.ls.view.commandviews.helpers.UserHelpers.appendBookings;
-import static pt.isel.ls.view.commandviews.helpers.UserHelpers.appendEmail;
-import static pt.isel.ls.view.commandviews.helpers.UserHelpers.appendId;
-import static pt.isel.ls.view.commandviews.helpers.UserHelpers.appendName;
 
 public class GetUserByIdHtmlView extends View {
 
@@ -34,21 +30,7 @@ public class GetUserByIdHtmlView extends View {
     }
 
     @Override
-    public String displayText() {
-        StringBuilder builder = new StringBuilder();
-        User user = result.getUser();
-
-        appendId(user, builder);
-        appendName(user, builder);
-        appendEmail(user, builder);
-        builder.append('\n');
-        appendBookings(result.getBookings(), builder);
-
-        return builder.toString();
-    }
-
-    @Override
-    public String displayHtml() {
+    public String display() {
         User user = result.getUser();
         Iterable<Booking> bookings = result.getBookings();
         Element html =

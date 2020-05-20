@@ -7,14 +7,6 @@ import pt.isel.ls.view.View;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static pt.isel.ls.utils.html.HtmlDsl.a;
-import static pt.isel.ls.utils.html.HtmlDsl.body;
-import static pt.isel.ls.utils.html.HtmlDsl.h1;
-import static pt.isel.ls.utils.html.HtmlDsl.head;
-import static pt.isel.ls.utils.html.HtmlDsl.html;
-import static pt.isel.ls.utils.html.HtmlDsl.p;
-import static pt.isel.ls.utils.html.HtmlDsl.title;
-
 public class GetTimePlainView extends View {
 
     private GetTimeResult result;
@@ -24,23 +16,8 @@ public class GetTimePlainView extends View {
     }
 
     @Override
-    public String displayText() {
+    public String display() {
         return getTime(result.getTime()) + "\n\n";
-    }
-
-    @Override
-    public String displayHtml() {
-        return
-                html(
-                        head(
-                                title("Current Time")
-                        ),
-                        body(
-                                a("/", "Home"),
-                                h1("Current Time"),
-                                p(getTime(result.getTime()))
-                        )
-                ).toString() + '\n';
     }
 
     private String getTime(Date date) {

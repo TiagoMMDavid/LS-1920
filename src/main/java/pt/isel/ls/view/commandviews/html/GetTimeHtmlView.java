@@ -24,12 +24,7 @@ public class GetTimeHtmlView extends View {
     }
 
     @Override
-    public String displayText() {
-        return getTime(result.getTime()) + "\n\n";
-    }
-
-    @Override
-    public String displayHtml() {
+    public String display() {
         return
                 html(
                         head(

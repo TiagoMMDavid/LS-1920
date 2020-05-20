@@ -6,8 +6,6 @@ import pt.isel.ls.model.entities.User;
 import pt.isel.ls.utils.html.elements.Element;
 import pt.isel.ls.view.View;
 
-import java.util.Iterator;
-
 import static pt.isel.ls.utils.html.HtmlDsl.a;
 import static pt.isel.ls.utils.html.HtmlDsl.body;
 import static pt.isel.ls.utils.html.HtmlDsl.h1;
@@ -19,9 +17,6 @@ import static pt.isel.ls.utils.html.HtmlDsl.td;
 import static pt.isel.ls.utils.html.HtmlDsl.th;
 import static pt.isel.ls.utils.html.HtmlDsl.title;
 import static pt.isel.ls.utils.html.HtmlDsl.tr;
-import static pt.isel.ls.view.commandviews.helpers.UserHelpers.appendEmail;
-import static pt.isel.ls.view.commandviews.helpers.UserHelpers.appendId;
-import static pt.isel.ls.view.commandviews.helpers.UserHelpers.appendName;
 
 public class GetUsersHtmlView extends View {
 
@@ -32,26 +27,7 @@ public class GetUsersHtmlView extends View {
     }
 
     @Override
-    public String displayText() {
-        StringBuilder builder = new StringBuilder();
-        Iterator<User> iter = result.getUsers().iterator();
-        while (iter.hasNext()) {
-            User user = iter.next();
-
-            appendId(user, builder);
-            appendName(user, builder);
-            appendEmail(user, builder);
-
-            builder.append('\n');
-            if (iter.hasNext()) {
-                builder.append("=============\n");
-            }
-        }
-        return builder.toString();
-    }
-
-    @Override
-    public String displayHtml() {
+    public String display() {
         Iterable<User> users = result.getUsers();
         Element html =
                 html(

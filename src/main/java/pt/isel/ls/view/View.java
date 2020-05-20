@@ -174,7 +174,6 @@ public abstract class View {
         }
     }
 
-
     public void render(OutputStream out) throws IOException {
         out.write((getDisplay()).getBytes());
     }

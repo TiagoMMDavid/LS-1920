@@ -36,12 +36,7 @@ public class GetRoomsSearchHtmlView extends View {
     }
 
     @Override
-    public String displayText() {
-        return "No textual representation available, please use the accept:text/html header";
-    }
-
-    @Override
-    public String displayHtml() {
+    public String display() {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
         String currDate = formatter.format(new Date()).replace(' ', 'T');
 

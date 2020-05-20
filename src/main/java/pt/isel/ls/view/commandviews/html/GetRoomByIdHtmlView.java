@@ -20,12 +20,6 @@ import static pt.isel.ls.utils.html.HtmlDsl.th;
 import static pt.isel.ls.utils.html.HtmlDsl.title;
 import static pt.isel.ls.utils.html.HtmlDsl.tr;
 import static pt.isel.ls.utils.html.HtmlDsl.ul;
-import static pt.isel.ls.view.commandviews.helpers.RoomHelper.appendCapacity;
-import static pt.isel.ls.view.commandviews.helpers.RoomHelper.appendDescription;
-import static pt.isel.ls.view.commandviews.helpers.RoomHelper.appendId;
-import static pt.isel.ls.view.commandviews.helpers.RoomHelper.appendLabels;
-import static pt.isel.ls.view.commandviews.helpers.RoomHelper.appendLocation;
-import static pt.isel.ls.view.commandviews.helpers.RoomHelper.appendName;
 
 public class GetRoomByIdHtmlView extends View {
 
@@ -36,26 +30,7 @@ public class GetRoomByIdHtmlView extends View {
     }
 
     @Override
-    public String displayText() {
-        StringBuilder builder = new StringBuilder();
-        Room room = result.getRoom();
-        appendId(room, builder);
-        builder.append('\n');
-        appendName(room, builder);
-        builder.append('\n');
-        appendLocation(room, builder);
-        builder.append('\n');
-        appendCapacity(room, builder);
-        builder.append('\n');
-        appendDescription(room, builder);
-        builder.append('\n');
-        appendLabels(result, builder);
-        builder.append('\n');
-        return builder.toString();
-    }
-
-    @Override
-    public String displayHtml() {
+    public String display() {
         Room room = result.getRoom();
         Element html =
                 html(
