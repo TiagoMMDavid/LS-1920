@@ -1,8 +1,10 @@
 package pt.isel.ls.view;
 
+import pt.isel.ls.view.commandviews.html.EmptyHtmlView;
 import pt.isel.ls.view.commandviews.html.HttpResponseHtmlView;
 import pt.isel.ls.view.commandviews.html.NoRouteHtmlView;
 import pt.isel.ls.view.commandviews.plain.DeleteBookingInRoomPlainView;
+import pt.isel.ls.view.commandviews.plain.EmptyPlainView;
 import pt.isel.ls.view.commandviews.plain.GetBookingByRoomAndBookingIdPlainView;
 import pt.isel.ls.view.commandviews.plain.GetBookingsByRoomIdPlainView;
 import pt.isel.ls.view.commandviews.plain.GetBookingsByUserIdPlainView;
@@ -10,7 +12,6 @@ import pt.isel.ls.view.commandviews.plain.GetHomePlainView;
 import pt.isel.ls.view.commandviews.plain.GetLabelByIdPlainView;
 import pt.isel.ls.view.commandviews.plain.GetLabelsPlainView;
 import pt.isel.ls.view.commandviews.plain.GetRoomByIdPlainView;
-import pt.isel.ls.view.commandviews.plain.GetRoomsSearchPlainView;
 import pt.isel.ls.view.commandviews.plain.GetRoomsPlainView;
 import pt.isel.ls.view.commandviews.plain.GetRoomsWithLabelPlainView;
 import pt.isel.ls.view.commandviews.plain.GetTimePlainView;
@@ -26,7 +27,6 @@ import pt.isel.ls.view.commandviews.plain.PostRoomPlainView;
 import pt.isel.ls.view.commandviews.plain.PostUserPlainView;
 import pt.isel.ls.view.commandviews.plain.PutBookingInRoomPlainView;
 
-import pt.isel.ls.model.commands.common.CommandResult;
 import pt.isel.ls.view.commandviews.html.DeleteBookingInRoomHtmlView;
 import pt.isel.ls.view.commandviews.html.GetBookingByRoomAndBookingIdHtmlView;
 import pt.isel.ls.view.commandviews.html.GetBookingsByRoomIdHtmlView;
@@ -49,14 +49,19 @@ import pt.isel.ls.view.commandviews.html.PostRoomHtmlView;
 import pt.isel.ls.view.commandviews.html.PostUserHtmlView;
 import pt.isel.ls.view.commandviews.html.PutBookingInRoomHtmlView;
 
+import pt.isel.ls.model.commands.common.CommandResult;
 import java.io.IOException;
 import java.io.OutputStream;
 
 public abstract class View {
 
-    // TODO: MAKE ROUTER FOR VIEWS | RETURN NULL WHEN NO REPRESENTATION (HTTP 406)
+    protected static final String HtmlViewFormat = "text/html";
+    protected static final String PlainViewFormat = "text/plain";
+
+    protected boolean foundRoot = true;
+
     public static View findView(CommandResult commandResult, String viewFormat) {
-        if (viewFormat != null && viewFormat.equals("text/html")) {
+        if (viewFormat != null && viewFormat.equals(HtmlViewFormat)) {
             return findHtmlView(commandResult);
         }
 
@@ -66,7 +71,7 @@ public abstract class View {
 
     private static View findTextPlainView(CommandResult commandResult) {
         if (!commandResult.hasResults()) {
-            return new EmptyView();
+            return new EmptyPlainView();
         }
 
         switch (commandResult.getResultType()) {
@@ -90,8 +95,6 @@ public abstract class View {
                 return new GetRoomsPlainView(commandResult);
             case GetRoomsWithLabel:
                 return new GetRoomsWithLabelPlainView(commandResult);
-            case GetRoomsSearch:
-                return new GetRoomsSearchPlainView(commandResult);
             case GetTime:
                 return new GetTimePlainView(commandResult);
             case GetUserById:
@@ -121,7 +124,7 @@ public abstract class View {
 
     private static View findHtmlView(CommandResult commandResult) {
         if (!commandResult.hasResults()) {
-            return new EmptyView();
+            return new EmptyHtmlView();
         }
 
         switch (commandResult.getResultType()) {
@@ -179,8 +182,14 @@ public abstract class View {
     }
 
     public String getDisplay() {
-        return display() + '\n';
+        return display() + "\n\n";
     }
 
     protected abstract String display();
+
+    public abstract String getViewFormat();
+
+    public boolean foundRoot() {
+        return foundRoot;
+    }
 }

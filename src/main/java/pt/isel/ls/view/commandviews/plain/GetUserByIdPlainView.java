@@ -3,15 +3,13 @@ package pt.isel.ls.view.commandviews.plain;
 import pt.isel.ls.model.commands.common.CommandResult;
 import pt.isel.ls.model.commands.results.GetUserByIdResult;
 import pt.isel.ls.model.entities.User;
-import pt.isel.ls.view.View;
-
 
 import static pt.isel.ls.view.commandviews.helpers.UserHelpers.appendBookings;
 import static pt.isel.ls.view.commandviews.helpers.UserHelpers.appendEmail;
 import static pt.isel.ls.view.commandviews.helpers.UserHelpers.appendId;
 import static pt.isel.ls.view.commandviews.helpers.UserHelpers.appendName;
 
-public class GetUserByIdPlainView extends View {
+public class GetUserByIdPlainView extends PlainView {
 
     private GetUserByIdResult result;
 
@@ -25,7 +23,9 @@ public class GetUserByIdPlainView extends View {
         User user = result.getUser();
 
         appendId(user, builder);
+        builder.append('\n');
         appendName(user, builder);
+        builder.append('\n');
         appendEmail(user, builder);
         builder.append('\n');
         appendBookings(result.getBookings(), builder);

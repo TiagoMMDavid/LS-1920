@@ -3,7 +3,6 @@ package pt.isel.ls.view.commandviews.plain;
 import pt.isel.ls.model.commands.common.CommandResult;
 import pt.isel.ls.model.commands.results.GetRoomByIdResult;
 import pt.isel.ls.model.entities.Room;
-import pt.isel.ls.view.View;
 
 import static pt.isel.ls.view.commandviews.helpers.RoomHelper.appendCapacity;
 import static pt.isel.ls.view.commandviews.helpers.RoomHelper.appendDescription;
@@ -12,7 +11,7 @@ import static pt.isel.ls.view.commandviews.helpers.RoomHelper.appendLabels;
 import static pt.isel.ls.view.commandviews.helpers.RoomHelper.appendLocation;
 import static pt.isel.ls.view.commandviews.helpers.RoomHelper.appendName;
 
-public class GetRoomByIdPlainView extends View {
+public class GetRoomByIdPlainView extends PlainView {
 
     private GetRoomByIdResult result;
 
@@ -34,8 +33,7 @@ public class GetRoomByIdPlainView extends View {
         builder.append('\n');
         appendDescription(room, builder);
         builder.append('\n');
-        appendLabels(result, builder);
-        builder.append('\n');
+        appendLabels(result, builder);;
         return builder.toString();
     }
 }

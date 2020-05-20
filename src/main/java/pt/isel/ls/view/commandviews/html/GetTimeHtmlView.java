@@ -2,7 +2,6 @@ package pt.isel.ls.view.commandviews.html;
 
 import pt.isel.ls.model.commands.common.CommandResult;
 import pt.isel.ls.model.commands.results.GetTimeResult;
-import pt.isel.ls.view.View;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -15,7 +14,7 @@ import static pt.isel.ls.utils.html.HtmlDsl.html;
 import static pt.isel.ls.utils.html.HtmlDsl.p;
 import static pt.isel.ls.utils.html.HtmlDsl.title;
 
-public class GetTimeHtmlView extends View {
+public class GetTimeHtmlView extends HtmlView {
 
     private GetTimeResult result;
 

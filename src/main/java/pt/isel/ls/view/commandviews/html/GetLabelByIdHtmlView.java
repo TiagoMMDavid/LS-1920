@@ -5,7 +5,6 @@ import pt.isel.ls.model.commands.results.GetLabelByIdResult;
 import pt.isel.ls.model.entities.Label;
 import pt.isel.ls.model.entities.Room;
 import pt.isel.ls.utils.html.elements.Element;
-import pt.isel.ls.view.View;
 
 import static pt.isel.ls.utils.html.HtmlDsl.a;
 import static pt.isel.ls.utils.html.HtmlDsl.body;
@@ -21,7 +20,7 @@ import static pt.isel.ls.utils.html.HtmlDsl.title;
 import static pt.isel.ls.utils.html.HtmlDsl.tr;
 import static pt.isel.ls.utils.html.HtmlDsl.ul;
 
-public class GetLabelByIdHtmlView extends View {
+public class GetLabelByIdHtmlView extends HtmlView {
     private GetLabelByIdResult result;
 
     public GetLabelByIdHtmlView(CommandResult commandResult) {

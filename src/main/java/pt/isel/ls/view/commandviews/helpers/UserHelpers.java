@@ -7,13 +7,13 @@ public class UserHelpers {
 
     public static void appendEmail(User user, StringBuilder builder) {
         String email = user.getEmail();
-        builder.append("\nEmail: ");
+        builder.append("Email: ");
         builder.append(email == null ? "N/A" : email);
     }
 
     public static void appendName(User user, StringBuilder builder) {
         String name = user.getName();
-        builder.append("\nName: ");
+        builder.append("Name: ");
         builder.append(name == null ? "N/A" : name);
     }
 

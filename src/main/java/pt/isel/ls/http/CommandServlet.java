@@ -65,12 +65,16 @@ public class CommandServlet extends HttpServlet {
         }
 
         String viewFormat = headers != null ? headers.getFirst("accept") : null;
-        View view = View.findView(result != null ? result : new HttpResponseResult(resp.getStatus()));
-        String display = view.getDisplay(viewFormat);
+        View view = View.findView(result != null ? result : new HttpResponseResult(resp.getStatus()), viewFormat);
+        if (!view.foundRoot()) {
+            resp.setStatus(406); // Not Acceptable
+            view = View.findView(new HttpResponseResult(406), viewFormat);
+        }
+
+        String display = view.getDisplay();
 
         Charset utf8 = StandardCharsets.UTF_8;
-        // TODO: NOT THE VIEWFORMAT PASSED IN HEADERS, BUT THE ONE USED IN THE RESPONSE (TEXT PLAIN OR HTML)
-        resp.setContentType(String.format(viewFormat + "; charset=%s", utf8.name()));
+        resp.setContentType(String.format("%s; charset=%s", view.getViewFormat(), utf8.name()));
         byte[] respBodyBytes = display.getBytes(utf8);
 
         resp.setContentLength(respBodyBytes.length);

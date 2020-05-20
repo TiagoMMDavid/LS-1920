@@ -4,7 +4,6 @@ import pt.isel.ls.model.commands.common.CommandResult;
 import pt.isel.ls.model.commands.results.GetUsersResult;
 import pt.isel.ls.model.entities.User;
 import pt.isel.ls.utils.html.elements.Element;
-import pt.isel.ls.view.View;
 
 import static pt.isel.ls.utils.html.HtmlDsl.a;
 import static pt.isel.ls.utils.html.HtmlDsl.body;
@@ -18,7 +17,7 @@ import static pt.isel.ls.utils.html.HtmlDsl.th;
 import static pt.isel.ls.utils.html.HtmlDsl.title;
 import static pt.isel.ls.utils.html.HtmlDsl.tr;
 
-public class GetUsersHtmlView extends View {
+public class GetUsersHtmlView extends HtmlView {
 
     private GetUsersResult result;
 

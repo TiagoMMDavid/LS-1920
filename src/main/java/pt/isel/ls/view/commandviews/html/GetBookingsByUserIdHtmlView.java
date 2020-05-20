@@ -4,7 +4,6 @@ import pt.isel.ls.model.commands.common.CommandResult;
 import pt.isel.ls.model.commands.results.GetBookingsByUserIdResult;
 import pt.isel.ls.model.entities.Booking;
 import pt.isel.ls.utils.html.elements.Element;
-import pt.isel.ls.view.View;
 
 import static pt.isel.ls.utils.html.HtmlDsl.a;
 import static pt.isel.ls.utils.html.HtmlDsl.body;
@@ -17,7 +16,8 @@ import static pt.isel.ls.utils.html.HtmlDsl.th;
 import static pt.isel.ls.utils.html.HtmlDsl.title;
 import static pt.isel.ls.utils.html.HtmlDsl.tr;
 
-public class GetBookingsByUserIdHtmlView extends View {
+public class GetBookingsByUserIdHtmlView extends HtmlView {
+
     private GetBookingsByUserIdResult result;
 
     public GetBookingsByUserIdHtmlView(CommandResult commandResult) {

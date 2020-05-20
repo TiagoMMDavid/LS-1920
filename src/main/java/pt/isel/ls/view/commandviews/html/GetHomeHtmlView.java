@@ -1,7 +1,5 @@
 package pt.isel.ls.view.commandviews.html;
 
-import pt.isel.ls.view.View;
-
 import static pt.isel.ls.utils.html.HtmlDsl.a;
 import static pt.isel.ls.utils.html.HtmlDsl.body;
 import static pt.isel.ls.utils.html.HtmlDsl.h1;
@@ -10,7 +8,7 @@ import static pt.isel.ls.utils.html.HtmlDsl.html;
 import static pt.isel.ls.utils.html.HtmlDsl.br;
 import static pt.isel.ls.utils.html.HtmlDsl.title;
 
-public class GetHomeHtmlView extends View {
+public class GetHomeHtmlView extends HtmlView {
 
     @Override
     public String display() {
@@ -20,7 +18,7 @@ public class GetHomeHtmlView extends View {
                                 title("Home")
                         ),
                         body(
-                                h1("Welcome to the homepage of Group 8's Project!"),
+                                h1(true, "Welcome to the homepage of Group 8's Project!"),
                                 a("/time", "View Current Time"),
                                 br(),
                                 a("/users", "View Existing Users"),

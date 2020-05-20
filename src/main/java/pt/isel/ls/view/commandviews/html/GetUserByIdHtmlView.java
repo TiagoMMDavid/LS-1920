@@ -5,7 +5,6 @@ import pt.isel.ls.model.commands.results.GetUserByIdResult;
 import pt.isel.ls.model.entities.Booking;
 import pt.isel.ls.model.entities.User;
 import pt.isel.ls.utils.html.elements.Element;
-import pt.isel.ls.view.View;
 
 import static pt.isel.ls.utils.html.HtmlDsl.a;
 import static pt.isel.ls.utils.html.HtmlDsl.body;
@@ -21,7 +20,7 @@ import static pt.isel.ls.utils.html.HtmlDsl.title;
 import static pt.isel.ls.utils.html.HtmlDsl.tr;
 import static pt.isel.ls.utils.html.HtmlDsl.ul;
 
-public class GetUserByIdHtmlView extends View {
+public class GetUserByIdHtmlView extends HtmlView {
 
     private GetUserByIdResult result;
 

@@ -3,7 +3,6 @@ package pt.isel.ls.view.commandviews.plain;
 import pt.isel.ls.model.commands.common.CommandResult;
 import pt.isel.ls.model.commands.results.GetBookingsByUserIdResult;
 import pt.isel.ls.model.entities.Booking;
-import pt.isel.ls.view.View;
 
 import java.util.Iterator;
 
@@ -11,7 +10,8 @@ import static pt.isel.ls.view.commandviews.helpers.BookingHelpers.appendBeginIns
 import static pt.isel.ls.view.commandviews.helpers.BookingHelpers.appendBid;
 import static pt.isel.ls.view.commandviews.helpers.BookingHelpers.appendEndInst;
 
-public class GetBookingsByUserIdPlainView extends View {
+public class GetBookingsByUserIdPlainView extends PlainView {
+
     private GetBookingsByUserIdResult result;
 
     public GetBookingsByUserIdPlainView(CommandResult commandResult) {
@@ -31,10 +31,10 @@ public class GetBookingsByUserIdPlainView extends View {
             appendBid(booking, builder);
             builder.append('\n');
             appendBeginInst(booking, builder);
-            appendEndInst(booking, builder);
             builder.append('\n');
+            appendEndInst(booking, builder);
             if (iter.hasNext()) {
-                builder.append("============================================\n");
+                builder.append("\n============================================\n");
             }
         }
         return builder.toString();

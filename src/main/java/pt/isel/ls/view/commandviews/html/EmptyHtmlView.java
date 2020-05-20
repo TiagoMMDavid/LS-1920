@@ -1,33 +1,28 @@
-package pt.isel.ls.view;
+package pt.isel.ls.view.commandviews.html;
 
 import pt.isel.ls.utils.html.elements.Element;
 
-import static pt.isel.ls.utils.html.HtmlDsl.html;
 import static pt.isel.ls.utils.html.HtmlDsl.body;
 import static pt.isel.ls.utils.html.HtmlDsl.h1;
 import static pt.isel.ls.utils.html.HtmlDsl.head;
+import static pt.isel.ls.utils.html.HtmlDsl.html;
 import static pt.isel.ls.utils.html.HtmlDsl.title;
 
-public class EmptyView extends View {
+public class EmptyHtmlView extends HtmlView {
 
-    protected EmptyView() {
+    public EmptyHtmlView() {
         super();
     }
 
     @Override
-    public String displayText() {
-        return "No results found\n";
-    }
-
-    @Override
-    public String displayHtml() {
+    public String display() {
         Element html =
                 html(
                         head(
                                 title("No results")
                         ),
                         body(
-                                h1("No results found.")
+                                h1(true, "No results found.")
                         )
                 );
         return html.toString();

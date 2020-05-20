@@ -4,7 +4,6 @@ import pt.isel.ls.model.commands.common.CommandResult;
 import pt.isel.ls.model.commands.results.GetBookingByRoomAndBookingIdResult;
 import pt.isel.ls.model.entities.Booking;
 import pt.isel.ls.utils.html.elements.Element;
-import pt.isel.ls.view.View;
 
 import static pt.isel.ls.utils.html.HtmlDsl.a;
 import static pt.isel.ls.utils.html.HtmlDsl.body;
@@ -14,7 +13,8 @@ import static pt.isel.ls.utils.html.HtmlDsl.html;
 import static pt.isel.ls.utils.html.HtmlDsl.li;
 import static pt.isel.ls.utils.html.HtmlDsl.title;
 import static pt.isel.ls.utils.html.HtmlDsl.ul;
-public class GetBookingByRoomAndBookingIdHtmlView extends View {
+
+public class GetBookingByRoomAndBookingIdHtmlView extends HtmlView {
     private Booking booking;
 
     public GetBookingByRoomAndBookingIdHtmlView(CommandResult commandResult) {

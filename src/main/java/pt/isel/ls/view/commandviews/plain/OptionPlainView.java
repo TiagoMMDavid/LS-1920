@@ -3,9 +3,10 @@ package pt.isel.ls.view.commandviews.plain;
 import pt.isel.ls.model.commands.common.CommandResult;
 import pt.isel.ls.model.commands.results.OptionResult;
 import pt.isel.ls.model.entities.Command;
-import pt.isel.ls.view.View;
 
-public class OptionPlainView extends View {
+import java.util.Iterator;
+
+public class OptionPlainView extends PlainView {
     private OptionResult result;
 
     public OptionPlainView(CommandResult commandResult) {
@@ -15,11 +16,15 @@ public class OptionPlainView extends View {
     @Override
     public String display() {
         StringBuilder builder = new StringBuilder();
-        for (Command cmd : result.getCommands()) {
+        Iterator<Command> commands = result.getCommands().iterator();
+        while (commands.hasNext()) {
+            Command cmd = commands.next();
             builder.append(cmd.getName());
             builder.append(" - ");
             builder.append(cmd.getDescription());
-            builder.append('\n');
+            if (commands.hasNext()) {
+                builder.append('\n');
+            }
         }
         return builder.toString();
     }

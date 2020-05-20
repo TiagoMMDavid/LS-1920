@@ -3,7 +3,6 @@ package pt.isel.ls.view.commandviews.html;
 import pt.isel.ls.model.commands.common.CommandResult;
 import pt.isel.ls.model.commands.results.PutBookingInRoomResult;
 import pt.isel.ls.model.entities.Booking;
-import pt.isel.ls.view.View;
 
 import static pt.isel.ls.utils.html.HtmlDsl.body;
 import static pt.isel.ls.utils.html.HtmlDsl.h1;
@@ -11,7 +10,7 @@ import static pt.isel.ls.utils.html.HtmlDsl.head;
 import static pt.isel.ls.utils.html.HtmlDsl.html;
 import static pt.isel.ls.utils.html.HtmlDsl.title;
 
-public class PutBookingInRoomHtmlView extends View {
+public class PutBookingInRoomHtmlView extends HtmlView {
     private Booking booking;
 
     public PutBookingInRoomHtmlView(CommandResult commandResult) {
@@ -26,7 +25,7 @@ public class PutBookingInRoomHtmlView extends View {
                                 title("Put Booking")
                         ),
                         body(
-                                h1("Changed Booking with ID " + booking.getBid())
+                                h1(true, "Changed Booking with ID " + booking.getBid())
                         )
                 ).toString();
     }

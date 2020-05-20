@@ -3,7 +3,6 @@ package pt.isel.ls.view.commandviews.plain;
 import pt.isel.ls.model.commands.common.CommandResult;
 import pt.isel.ls.model.commands.results.GetRoomsResult;
 import pt.isel.ls.model.entities.Room;
-import pt.isel.ls.view.View;
 
 import java.util.Iterator;
 
@@ -12,7 +11,7 @@ import static pt.isel.ls.view.commandviews.helpers.RoomHelper.appendId;
 import static pt.isel.ls.view.commandviews.helpers.RoomHelper.appendLocation;
 import static pt.isel.ls.view.commandviews.helpers.RoomHelper.appendName;
 
-public class GetRoomsPlainView extends View {
+public class GetRoomsPlainView extends PlainView {
 
     private GetRoomsResult result;
 
@@ -33,9 +32,8 @@ public class GetRoomsPlainView extends View {
             appendLocation(room, builder);
             builder.append('\n');
             appendCapacity(room, builder);
-            builder.append('\n');
             if (iter.hasNext()) {
-                builder.append("============================================\n");
+                builder.append("\n============================================\n");
             }
         }
         return builder.toString();

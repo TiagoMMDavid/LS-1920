@@ -7,7 +7,7 @@ import java.util.Date;
 public class BookingHelpers {
     public static void appendEndInst(Booking booking, StringBuilder builder) {
         Date date = booking.getEndInst();
-        builder.append("\nEnd Date:\t\t");
+        builder.append("End Date:\t\t");
         builder.append(date == null ? "N/A" : date);
     }
 

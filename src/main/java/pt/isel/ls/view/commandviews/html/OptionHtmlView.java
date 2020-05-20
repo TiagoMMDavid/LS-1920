@@ -4,7 +4,6 @@ import pt.isel.ls.model.commands.common.CommandResult;
 import pt.isel.ls.model.commands.results.OptionResult;
 import pt.isel.ls.model.entities.Command;
 import pt.isel.ls.utils.html.elements.Element;
-import pt.isel.ls.view.View;
 
 import static pt.isel.ls.utils.html.HtmlDsl.html;
 import static pt.isel.ls.utils.html.HtmlDsl.body;
@@ -14,7 +13,7 @@ import static pt.isel.ls.utils.html.HtmlDsl.head;
 import static pt.isel.ls.utils.html.HtmlDsl.title;
 import static pt.isel.ls.utils.html.HtmlDsl.p;
 
-public class OptionHtmlView extends View {
+public class OptionHtmlView extends HtmlView {
     private OptionResult result;
 
     public OptionHtmlView(CommandResult commandResult) {
@@ -36,7 +35,7 @@ public class OptionHtmlView extends View {
 
     private Element buildHtmlBody() {
         Element body = body(
-                h1("List of Commands:")
+                h1(true, "List of Commands:")
         );
         for (Command cmd : result.getCommands()) {
             body.addChild(h2(cmd.getName()));

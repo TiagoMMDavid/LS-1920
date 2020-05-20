@@ -3,14 +3,13 @@ package pt.isel.ls.view.commandviews.plain;
 import pt.isel.ls.model.commands.common.CommandResult;
 import pt.isel.ls.model.commands.results.GetLabelsResult;
 import pt.isel.ls.model.entities.Label;
-import pt.isel.ls.view.View;
 
 import java.util.Iterator;
 
 import static pt.isel.ls.view.commandviews.helpers.LabelHelper.appendId;
 import static pt.isel.ls.view.commandviews.helpers.LabelHelper.appendName;
 
-public class GetLabelsPlainView extends View {
+public class GetLabelsPlainView extends PlainView {
 
     private GetLabelsResult result;
 
@@ -27,9 +26,8 @@ public class GetLabelsPlainView extends View {
             appendId(label, builder);
             builder.append('\n');
             appendName(label, builder);
-            builder.append('\n');
             if (iter.hasNext()) {
-                builder.append("============================================\n");
+                builder.append("\n============================================\n");
             }
         }
         return builder.toString();

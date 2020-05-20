@@ -4,7 +4,6 @@ import pt.isel.ls.model.commands.common.CommandResult;
 import pt.isel.ls.model.commands.results.GetRoomsWithLabelResult;
 import pt.isel.ls.model.entities.Room;
 import pt.isel.ls.utils.html.elements.Element;
-import pt.isel.ls.view.View;
 
 import static pt.isel.ls.utils.html.HtmlDsl.a;
 import static pt.isel.ls.utils.html.HtmlDsl.body;
@@ -17,7 +16,7 @@ import static pt.isel.ls.utils.html.HtmlDsl.th;
 import static pt.isel.ls.utils.html.HtmlDsl.title;
 import static pt.isel.ls.utils.html.HtmlDsl.tr;
 
-public class GetRoomsWithLabelHtmlView extends View {
+public class GetRoomsWithLabelHtmlView extends HtmlView {
 
     private GetRoomsWithLabelResult result;
 

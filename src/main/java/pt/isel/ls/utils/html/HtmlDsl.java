@@ -44,6 +44,10 @@ public class HtmlDsl {
         return new H1(text);
     }
 
+    public static Element h1(boolean isCentered, String text) {
+        return new H1(isCentered, text);
+    }
+
     public static Element h2(String text) {
         return new H2(text);
     }

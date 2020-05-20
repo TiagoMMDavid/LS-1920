@@ -2,12 +2,11 @@ package pt.isel.ls.view.commandviews.plain;
 
 import pt.isel.ls.model.commands.common.CommandResult;
 import pt.isel.ls.model.commands.results.GetTimeResult;
-import pt.isel.ls.view.View;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class GetTimePlainView extends View {
+public class GetTimePlainView extends PlainView {
 
     private GetTimeResult result;
 
@@ -17,7 +16,7 @@ public class GetTimePlainView extends View {
 
     @Override
     public String display() {
-        return getTime(result.getTime()) + "\n\n";
+        return getTime(result.getTime());
     }
 
     private String getTime(Date date) {
