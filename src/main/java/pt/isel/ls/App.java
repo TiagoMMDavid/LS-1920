@@ -163,9 +163,9 @@ public class App {
             OutputStream out = filename == null ? System.out : getFileStream(filename);
 
             // Present each entity
-            View view = View.getInstance(result);
+            View view = View.findView(result, viewFormat);
             if (view != null) {
-                view.display(out, viewFormat);
+                view.render(out);
             }
 
             // Close output stream only if it isn't System.out

@@ -55,7 +55,7 @@ public class OptionCommandTest {
         OptionResult res = (OptionResult) handler.execute(cmd);
         assertNotNull(res);
         assertTrue(res.hasResults());
-        View view = View.getInstance(res);
-        view.display(System.out, null);
+        View view = View.findView(res);
+        view.render(System.out, null);
     }
 }

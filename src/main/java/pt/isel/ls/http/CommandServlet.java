@@ -65,7 +65,7 @@ public class CommandServlet extends HttpServlet {
         }
 
         String viewFormat = headers != null ? headers.getFirst("accept") : null;
-        View view = View.getInstance(result != null ? result : new HttpResponseResult(resp.getStatus()));
+        View view = View.findView(result != null ? result : new HttpResponseResult(resp.getStatus()));
         String display = view.getDisplay(viewFormat);
 
         Charset utf8 = StandardCharsets.UTF_8;

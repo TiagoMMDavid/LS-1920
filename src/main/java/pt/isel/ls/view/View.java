@@ -1,27 +1,53 @@
 package pt.isel.ls.view;
 
+import pt.isel.ls.view.commandviews.html.HttpResponseHtmlView;
+import pt.isel.ls.view.commandviews.html.NoRouteHtmlView;
+import pt.isel.ls.view.commandviews.plain.DeleteBookingInRoomPlainView;
+import pt.isel.ls.view.commandviews.plain.GetBookingByRoomAndBookingIdPlainView;
+import pt.isel.ls.view.commandviews.plain.GetBookingsByRoomIdPlainView;
+import pt.isel.ls.view.commandviews.plain.GetBookingsByUserIdPlainView;
+import pt.isel.ls.view.commandviews.plain.GetHomePlainView;
+import pt.isel.ls.view.commandviews.plain.GetLabelByIdPlainView;
+import pt.isel.ls.view.commandviews.plain.GetLabelsPlainView;
+import pt.isel.ls.view.commandviews.plain.GetRoomByIdPlainView;
+import pt.isel.ls.view.commandviews.plain.GetRoomsSearchPlainView;
+import pt.isel.ls.view.commandviews.plain.GetRoomsPlainView;
+import pt.isel.ls.view.commandviews.plain.GetRoomsWithLabelPlainView;
+import pt.isel.ls.view.commandviews.plain.GetTimePlainView;
+import pt.isel.ls.view.commandviews.plain.GetUserByIdPlainView;
+import pt.isel.ls.view.commandviews.plain.GetUsersPlainView;
+import pt.isel.ls.view.commandviews.plain.HttpResponsePlainView;
+import pt.isel.ls.view.commandviews.plain.ListenPlainView;
+import pt.isel.ls.view.commandviews.plain.NoRoutePlainView;
+import pt.isel.ls.view.commandviews.plain.OptionPlainView;
+import pt.isel.ls.view.commandviews.plain.PostBookingInRoomPlainView;
+import pt.isel.ls.view.commandviews.plain.PostLabelPlainView;
+import pt.isel.ls.view.commandviews.plain.PostRoomPlainView;
+import pt.isel.ls.view.commandviews.plain.PostUserPlainView;
+import pt.isel.ls.view.commandviews.plain.PutBookingInRoomPlainView;
+
 import pt.isel.ls.model.commands.common.CommandResult;
-import pt.isel.ls.view.commandviews.DeleteBookingInRoomView;
-import pt.isel.ls.view.commandviews.GetBookingByRoomAndBookingIdView;
-import pt.isel.ls.view.commandviews.GetBookingsByRoomIdView;
-import pt.isel.ls.view.commandviews.GetBookingsByUserIdView;
-import pt.isel.ls.view.commandviews.GetHomeView;
-import pt.isel.ls.view.commandviews.GetLabelByIdView;
-import pt.isel.ls.view.commandviews.GetLabelsView;
-import pt.isel.ls.view.commandviews.GetRoomByIdView;
-import pt.isel.ls.view.commandviews.GetRoomsSearchView;
-import pt.isel.ls.view.commandviews.GetRoomsView;
-import pt.isel.ls.view.commandviews.GetRoomsWithLabelView;
-import pt.isel.ls.view.commandviews.GetTimeView;
-import pt.isel.ls.view.commandviews.GetUserByIdView;
-import pt.isel.ls.view.commandviews.GetUsersView;
-import pt.isel.ls.view.commandviews.ListenView;
-import pt.isel.ls.view.commandviews.OptionView;
-import pt.isel.ls.view.commandviews.PostBookingInRoomView;
-import pt.isel.ls.view.commandviews.PostLabelView;
-import pt.isel.ls.view.commandviews.PostRoomView;
-import pt.isel.ls.view.commandviews.PostUserView;
-import pt.isel.ls.view.commandviews.PutBookingInRoomView;
+import pt.isel.ls.view.commandviews.html.DeleteBookingInRoomHtmlView;
+import pt.isel.ls.view.commandviews.html.GetBookingByRoomAndBookingIdHtmlView;
+import pt.isel.ls.view.commandviews.html.GetBookingsByRoomIdHtmlView;
+import pt.isel.ls.view.commandviews.html.GetBookingsByUserIdHtmlView;
+import pt.isel.ls.view.commandviews.html.GetHomeHtmlView;
+import pt.isel.ls.view.commandviews.html.GetLabelByIdHtmlView;
+import pt.isel.ls.view.commandviews.html.GetLabelsHtmlView;
+import pt.isel.ls.view.commandviews.html.GetRoomByIdHtmlView;
+import pt.isel.ls.view.commandviews.html.GetRoomsSearchHtmlView;
+import pt.isel.ls.view.commandviews.html.GetRoomsHtmlView;
+import pt.isel.ls.view.commandviews.html.GetRoomsWithLabelHtmlView;
+import pt.isel.ls.view.commandviews.html.GetTimeHtmlView;
+import pt.isel.ls.view.commandviews.html.GetUserByIdHtmlView;
+import pt.isel.ls.view.commandviews.html.GetUsersHtmlView;
+import pt.isel.ls.view.commandviews.html.ListenHtmlView;
+import pt.isel.ls.view.commandviews.html.OptionHtmlView;
+import pt.isel.ls.view.commandviews.html.PostBookingInRoomHtmlView;
+import pt.isel.ls.view.commandviews.html.PostLabelHtmlView;
+import pt.isel.ls.view.commandviews.html.PostRoomHtmlView;
+import pt.isel.ls.view.commandviews.html.PostUserHtmlView;
+import pt.isel.ls.view.commandviews.html.PutBookingInRoomHtmlView;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -29,77 +55,133 @@ import java.io.OutputStream;
 public abstract class View {
 
     // TODO: MAKE ROUTER FOR VIEWS | RETURN NULL WHEN NO REPRESENTATION (HTTP 406)
-    public static View getInstance(CommandResult commandResult) {
+    public static View findView(CommandResult commandResult, String viewFormat) {
+        if (viewFormat != null && viewFormat.equals("text/html")) {
+            return findHtmlView(commandResult);
+        }
+
+        //Since the text/plain view is the default viewFormat we only need to specifically check the other view formats
+        return findTextPlainView(commandResult);
+    }
+
+    private static View findTextPlainView(CommandResult commandResult) {
         if (!commandResult.hasResults()) {
             return new EmptyView();
         }
 
         switch (commandResult.getResultType()) {
             case DeleteBookingInRoom:
-                return new DeleteBookingInRoomView(commandResult);
+                return new DeleteBookingInRoomPlainView(commandResult);
             case GetBookingByRoomAndBookingId:
-                return new GetBookingByRoomAndBookingIdView(commandResult);
+                return new GetBookingByRoomAndBookingIdPlainView(commandResult);
             case GetBookingsByRoomId:
-                return new GetBookingsByRoomIdView(commandResult);
+                return new GetBookingsByRoomIdPlainView(commandResult);
             case GetBookingsByUserId:
-                return new GetBookingsByUserIdView(commandResult);
+                return new GetBookingsByUserIdPlainView(commandResult);
             case GetHome:
-                return new GetHomeView();
+                return new GetHomePlainView();
             case GetLabelById:
-                return new GetLabelByIdView(commandResult);
+                return new GetLabelByIdPlainView(commandResult);
             case GetLabels:
-                return new GetLabelsView(commandResult);
+                return new GetLabelsPlainView(commandResult);
             case GetRoomById:
-                return new GetRoomByIdView(commandResult);
+                return new GetRoomByIdPlainView(commandResult);
             case GetRooms:
-                return new GetRoomsView(commandResult);
+                return new GetRoomsPlainView(commandResult);
             case GetRoomsWithLabel:
-                return new GetRoomsWithLabelView(commandResult);
+                return new GetRoomsWithLabelPlainView(commandResult);
             case GetRoomsSearch:
-                return new GetRoomsSearchView(commandResult);
+                return new GetRoomsSearchPlainView(commandResult);
             case GetTime:
-                return new GetTimeView(commandResult);
+                return new GetTimePlainView(commandResult);
             case GetUserById:
-                return new GetUserByIdView(commandResult);
+                return new GetUserByIdPlainView(commandResult);
             case GetUsers:
-                return new GetUsersView(commandResult);
+                return new GetUsersPlainView(commandResult);
             case Listen:
-                return new ListenView(commandResult);
+                return new ListenPlainView(commandResult);
             case Option:
-                return new OptionView(commandResult);
+                return new OptionPlainView(commandResult);
             case PostBookingInRoom:
-                return new PostBookingInRoomView(commandResult);
+                return new PostBookingInRoomPlainView(commandResult);
             case PostLabel:
-                return new PostLabelView(commandResult);
+                return new PostLabelPlainView(commandResult);
             case PostRoom:
-                return new PostRoomView(commandResult);
+                return new PostRoomPlainView(commandResult);
             case PostUser:
-                return new PostUserView(commandResult);
+                return new PostUserPlainView(commandResult);
             case PutBookingInRoom:
-                return new PutBookingInRoomView(commandResult);
+                return new PutBookingInRoomPlainView(commandResult);
             case HttpResponse:
-                return new HttpResponseView(commandResult);
+                return new HttpResponsePlainView(commandResult);
             default:
-                return null;
+                return new NoRoutePlainView();
         }
     }
 
-    public void display(OutputStream out, String viewFormat) throws IOException {
-        out.write((getDisplay(viewFormat)).getBytes());
-    }
-
-    public String getDisplay(String viewFormat) {
-        String text = "";
-        if (viewFormat == null || viewFormat.equals("text/plain")) {
-            text = displayText();
-        } else if (viewFormat.equals("text/html")) {
-            text = displayHtml();
+    private static View findHtmlView(CommandResult commandResult) {
+        if (!commandResult.hasResults()) {
+            return new EmptyView();
         }
-        return text + '\n';
+
+        switch (commandResult.getResultType()) {
+            case DeleteBookingInRoom:
+                return new DeleteBookingInRoomHtmlView(commandResult);
+            case GetBookingByRoomAndBookingId:
+                return new GetBookingByRoomAndBookingIdHtmlView(commandResult);
+            case GetBookingsByRoomId:
+                return new GetBookingsByRoomIdHtmlView(commandResult);
+            case GetBookingsByUserId:
+                return new GetBookingsByUserIdHtmlView(commandResult);
+            case GetHome:
+                return new GetHomeHtmlView();
+            case GetLabelById:
+                return new GetLabelByIdHtmlView(commandResult);
+            case GetLabels:
+                return new GetLabelsHtmlView(commandResult);
+            case GetRoomById:
+                return new GetRoomByIdHtmlView(commandResult);
+            case GetRooms:
+                return new GetRoomsHtmlView(commandResult);
+            case GetRoomsWithLabel:
+                return new GetRoomsWithLabelHtmlView(commandResult);
+            case GetRoomsSearch:
+                return new GetRoomsSearchHtmlView(commandResult);
+            case GetTime:
+                return new GetTimeHtmlView(commandResult);
+            case GetUserById:
+                return new GetUserByIdHtmlView(commandResult);
+            case GetUsers:
+                return new GetUsersHtmlView(commandResult);
+            case Listen:
+                return new ListenHtmlView(commandResult);
+            case Option:
+                return new OptionHtmlView(commandResult);
+            case PostBookingInRoom:
+                return new PostBookingInRoomHtmlView(commandResult);
+            case PostLabel:
+                return new PostLabelHtmlView(commandResult);
+            case PostRoom:
+                return new PostRoomHtmlView(commandResult);
+            case PostUser:
+                return new PostUserHtmlView(commandResult);
+            case PutBookingInRoom:
+                return new PutBookingInRoomHtmlView(commandResult);
+            case HttpResponse:
+                return new HttpResponseHtmlView(commandResult);
+            default:
+                return new NoRouteHtmlView();
+        }
     }
 
-    public abstract String displayText();
 
+    public void render(OutputStream out) throws IOException {
+        out.write((getDisplay()).getBytes());
+    }
 
-    public abstract String displayHtml();
+    public String getDisplay() {
+        return display() + '\n';
+    }
+
+    protected abstract String display();
 }
