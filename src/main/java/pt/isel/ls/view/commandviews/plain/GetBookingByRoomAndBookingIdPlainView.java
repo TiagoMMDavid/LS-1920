@@ -3,17 +3,8 @@ package pt.isel.ls.view.commandviews.plain;
 import pt.isel.ls.model.commands.common.CommandResult;
 import pt.isel.ls.model.commands.results.GetBookingByRoomAndBookingIdResult;
 import pt.isel.ls.model.entities.Booking;
-import pt.isel.ls.utils.html.elements.Element;
 import pt.isel.ls.view.View;
 
-import static pt.isel.ls.utils.html.HtmlDsl.a;
-import static pt.isel.ls.utils.html.HtmlDsl.body;
-import static pt.isel.ls.utils.html.HtmlDsl.h1;
-import static pt.isel.ls.utils.html.HtmlDsl.head;
-import static pt.isel.ls.utils.html.HtmlDsl.html;
-import static pt.isel.ls.utils.html.HtmlDsl.li;
-import static pt.isel.ls.utils.html.HtmlDsl.title;
-import static pt.isel.ls.utils.html.HtmlDsl.ul;
 import static pt.isel.ls.view.commandviews.helpers.BookingHelpers.appendBeginInst;
 import static pt.isel.ls.view.commandviews.helpers.BookingHelpers.appendBid;
 import static pt.isel.ls.view.commandviews.helpers.BookingHelpers.appendEndInst;
@@ -28,7 +19,7 @@ public class GetBookingByRoomAndBookingIdPlainView extends View {
     }
 
     @Override
-    public String displayText() {
+    public String display() {
         StringBuilder builder = new StringBuilder();
         appendBid(booking, builder);
         builder.append('\n');
@@ -41,40 +32,5 @@ public class GetBookingByRoomAndBookingIdPlainView extends View {
         appendEndInst(booking, builder);
         builder.append('\n');
         return builder.toString();
-    }
-
-    @Override
-    public String displayHtml() {
-        return
-                html(
-                        head(
-                                title("Booking [" + booking.getBid() + "]")
-                        ),
-                        body(
-                                a("/", "Home"),
-                                h1("Detailed Information of Booking with ID [" + booking.getBid() + "]"),
-                                buildHtmlBookingInfo(booking)
-                        )
-                ).toString();
-    }
-
-    private Element buildHtmlBookingInfo(Booking booking) {
-        Element bookingInfo = ul();
-        bookingInfo.addChild(li("Booking ID: " + booking.getBid()));
-        bookingInfo.addChild(
-                li(
-                    a("/rooms/" + booking.getRid(), "Room ID: " + booking.getRid())
-                )
-        );
-
-        bookingInfo.addChild(
-                li(
-                        a("/users/" + booking.getUid(), "User ID: " + booking.getUid())
-                )
-        );
-
-        bookingInfo.addChild(li("Begin Date: " + booking.getBeginInst()));
-        bookingInfo.addChild(li("End Date: " + booking.getEndInst()));
-        return bookingInfo;
     }
 }

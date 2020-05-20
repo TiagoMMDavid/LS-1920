@@ -20,9 +20,6 @@ import static pt.isel.ls.utils.html.HtmlDsl.th;
 import static pt.isel.ls.utils.html.HtmlDsl.title;
 import static pt.isel.ls.utils.html.HtmlDsl.tr;
 import static pt.isel.ls.utils.html.HtmlDsl.ul;
-import static pt.isel.ls.view.commandviews.helpers.LabelHelper.appendId;
-import static pt.isel.ls.view.commandviews.helpers.LabelHelper.appendName;
-import static pt.isel.ls.view.commandviews.helpers.LabelHelper.appendRooms;
 
 public class GetLabelByIdHtmlView extends View {
     private GetLabelByIdResult result;
@@ -32,19 +29,7 @@ public class GetLabelByIdHtmlView extends View {
     }
 
     @Override
-    public String displayText() {
-        StringBuilder builder = new StringBuilder();
-        Label label = result.getLabel();
-        appendId(label, builder);
-        builder.append('\n');
-        appendName(label, builder);
-        builder.append('\n');
-        appendRooms(result, builder);
-        return builder.toString();
-    }
-
-    @Override
-    public String displayHtml() {
+    public String display() {
         Label label = result.getLabel();
         Iterable<Room> rooms = result.getRooms();
 

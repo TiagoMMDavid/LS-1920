@@ -13,12 +13,7 @@ import static pt.isel.ls.utils.html.HtmlDsl.title;
 public class GetHomeHtmlView extends View {
 
     @Override
-    public String displayText() {
-        return "No textual representation available, please use the accept:text/html header";
-    }
-
-    @Override
-    public String displayHtml() {
+    public String display() {
         return
                 html(
                         head(

@@ -19,12 +19,7 @@ public class PostUserHtmlView extends View {
     }
 
     @Override
-    public String displayText() {
-        return "Created User \"" + user.getName() + "\" with ID " + user.getUid();
-    }
-
-    @Override
-    public String displayHtml() {
+    public String display() {
         return
                 html(
                         head(

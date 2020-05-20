@@ -6,8 +6,6 @@ import pt.isel.ls.model.entities.Booking;
 import pt.isel.ls.utils.html.elements.Element;
 import pt.isel.ls.view.View;
 
-import java.util.Iterator;
-
 import static pt.isel.ls.utils.html.HtmlDsl.a;
 import static pt.isel.ls.utils.html.HtmlDsl.body;
 import static pt.isel.ls.utils.html.HtmlDsl.h1;
@@ -18,9 +16,6 @@ import static pt.isel.ls.utils.html.HtmlDsl.td;
 import static pt.isel.ls.utils.html.HtmlDsl.th;
 import static pt.isel.ls.utils.html.HtmlDsl.title;
 import static pt.isel.ls.utils.html.HtmlDsl.tr;
-import static pt.isel.ls.view.commandviews.helpers.BookingHelpers.appendBeginInst;
-import static pt.isel.ls.view.commandviews.helpers.BookingHelpers.appendBid;
-import static pt.isel.ls.view.commandviews.helpers.BookingHelpers.appendEndInst;
 
 public class GetBookingsByUserIdHtmlView extends View {
     private GetBookingsByUserIdResult result;
@@ -30,29 +25,7 @@ public class GetBookingsByUserIdHtmlView extends View {
     }
 
     @Override
-    public String displayText() {
-        StringBuilder builder = new StringBuilder();
-        Iterator<Booking> iter = result.getBookings().iterator();
-        builder.append("Bookings from User with ID [")
-                .append(result.getUid())
-                .append("]:")
-                .append("\n\n");
-        while (iter.hasNext()) {
-            Booking booking = iter.next();
-            appendBid(booking, builder);
-            builder.append('\n');
-            appendBeginInst(booking, builder);
-            appendEndInst(booking, builder);
-            builder.append('\n');
-            if (iter.hasNext()) {
-                builder.append("============================================\n");
-            }
-        }
-        return builder.toString();
-    }
-
-    @Override
-    public String displayHtml() {
+    public String display() {
         int uid = result.getUid();
         return
                 html(

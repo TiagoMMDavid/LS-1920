@@ -19,12 +19,7 @@ public class PutBookingInRoomHtmlView extends View {
     }
 
     @Override
-    public String displayText() {
-        return "Changed Booking with ID " + booking.getBid();
-    }
-
-    @Override
-    public String displayHtml() {
+    public String display() {
         return
                 html(
                         head(

@@ -20,12 +20,7 @@ public class ListenHtmlView extends View {
     }
 
     @Override
-    public String displayText() {
-        return "Servlet now listening on Port: " + result.getPort();
-    }
-
-    @Override
-    public String displayHtml() {
+    public String display() {
         Element html =
                 html(
                         head(
