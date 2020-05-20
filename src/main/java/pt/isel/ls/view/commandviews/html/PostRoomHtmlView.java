@@ -19,12 +19,7 @@ public class PostRoomHtmlView extends View {
     }
 
     @Override
-    public String displayText() {
-        return "Created Room \"" + room.getName() + "\" with ID " + room.getRid();
-    }
-
-    @Override
-    public String displayHtml() {
+    public String display() {
         return
                 html(
                         head(

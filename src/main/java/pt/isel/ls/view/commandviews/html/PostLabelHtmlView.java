@@ -19,12 +19,7 @@ public class PostLabelHtmlView extends View {
     }
 
     @Override
-    public String displayText() {
-        return "Created Label \"" + label.getName() + "\" with ID " + label.getLid();
-    }
-
-    @Override
-    public String displayHtml() {
+    public String display() {
         return
                 html(
                         head(

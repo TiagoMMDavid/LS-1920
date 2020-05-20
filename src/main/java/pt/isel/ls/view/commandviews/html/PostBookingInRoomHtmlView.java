@@ -19,12 +19,7 @@ public class PostBookingInRoomHtmlView extends View {
     }
 
     @Override
-    public String displayText() {
-        return "Created Booking with ID " + booking.getBid();
-    }
-
-    @Override
-    public String displayHtml() {
+    public String display() {
         return
                 html(
                         head(

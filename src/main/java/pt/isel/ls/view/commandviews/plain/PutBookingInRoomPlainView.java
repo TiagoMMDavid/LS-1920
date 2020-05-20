@@ -5,12 +5,6 @@ import pt.isel.ls.model.commands.results.PutBookingInRoomResult;
 import pt.isel.ls.model.entities.Booking;
 import pt.isel.ls.view.View;
 
-import static pt.isel.ls.utils.html.HtmlDsl.body;
-import static pt.isel.ls.utils.html.HtmlDsl.h1;
-import static pt.isel.ls.utils.html.HtmlDsl.head;
-import static pt.isel.ls.utils.html.HtmlDsl.html;
-import static pt.isel.ls.utils.html.HtmlDsl.title;
-
 public class PutBookingInRoomPlainView extends View {
     private Booking booking;
 
@@ -19,20 +13,7 @@ public class PutBookingInRoomPlainView extends View {
     }
 
     @Override
-    public String displayText() {
+    public String display() {
         return "Changed Booking with ID " + booking.getBid();
-    }
-
-    @Override
-    public String displayHtml() {
-        return
-                html(
-                        head(
-                                title("Put Booking")
-                        ),
-                        body(
-                                h1("Changed Booking with ID " + booking.getBid())
-                        )
-                ).toString();
     }
 }

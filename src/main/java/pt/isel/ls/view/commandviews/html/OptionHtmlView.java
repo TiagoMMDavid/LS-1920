@@ -21,20 +21,9 @@ public class OptionHtmlView extends View {
         this.result = (OptionResult) commandResult;
     }
 
-    @Override
-    public String displayText() {
-        StringBuilder builder = new StringBuilder();
-        for (Command cmd : result.getCommands()) {
-            builder.append(cmd.getName());
-            builder.append(" - ");
-            builder.append(cmd.getDescription());
-            builder.append('\n');
-        }
-        return builder.toString();
-    }
 
     @Override
-    public String displayHtml() {
+    public String display() {
         Element html =
                 html(
                         head(
