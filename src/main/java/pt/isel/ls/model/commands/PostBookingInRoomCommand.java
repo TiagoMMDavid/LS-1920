@@ -1,10 +1,10 @@
 package pt.isel.ls.model.commands;
 
-import pt.isel.ls.model.commands.common.exceptions.CommandException;
 import pt.isel.ls.model.commands.common.CommandHandler;
 import pt.isel.ls.model.commands.common.CommandRequest;
 import pt.isel.ls.model.commands.common.CommandResult;
 import pt.isel.ls.model.commands.common.Parameters;
+import pt.isel.ls.model.commands.common.exceptions.CommandException;
 import pt.isel.ls.model.commands.common.exceptions.InvalidIdException;
 import pt.isel.ls.model.commands.common.exceptions.MissingArgumentsException;
 import pt.isel.ls.model.commands.common.exceptions.ParseArgumentException;
@@ -13,16 +13,15 @@ import pt.isel.ls.model.commands.sql.TransactionManager;
 import pt.isel.ls.model.entities.Booking;
 
 import java.sql.PreparedStatement;
-import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
+import java.sql.Statement;
 import java.text.ParseException;
 import java.util.Date;
 
 import static pt.isel.ls.model.commands.helpers.DatabaseDataHelper.dateOverlaps;
-import static pt.isel.ls.utils.DateUtils.parseTimeWithTimezone;
 import static pt.isel.ls.utils.DateUtils.parseTime;
+import static pt.isel.ls.utils.DateUtils.parseTimeWithTimezone;
 
 public class PostBookingInRoomCommand implements CommandHandler {
     @Override

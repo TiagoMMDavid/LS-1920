@@ -12,7 +12,7 @@ begin;
 		name				varchar(30) NOT NULL,
 		description         varchar(50),
 		location	 		varchar(50) not NULL,
-		capacity		  	int,
+		capacity		  	int CHECK (capacity > 0),
 		UNIQUE (name)
 	);
 	

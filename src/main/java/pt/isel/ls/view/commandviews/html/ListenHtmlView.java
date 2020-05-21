@@ -23,10 +23,10 @@ public class ListenHtmlView extends HtmlView {
         Element html =
                 html(
                         head(
-                                title("Listening on Port: " + result.getPort())
+                                title("Listening on port: " + result.getPort())
                         ),
                         body(
-                                h1(true, "Servlet now listening on Port: " + result.getPort())
+                                h1(true, "Servlet now listening on port: " + result.getPort())
                         )
                 );
         return html.toString();

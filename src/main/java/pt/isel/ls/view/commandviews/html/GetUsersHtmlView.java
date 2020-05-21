@@ -3,6 +3,7 @@ package pt.isel.ls.view.commandviews.html;
 import pt.isel.ls.model.commands.common.CommandResult;
 import pt.isel.ls.model.commands.results.GetUsersResult;
 import pt.isel.ls.model.entities.User;
+import pt.isel.ls.utils.html.HtmlTableBuilder;
 import pt.isel.ls.utils.html.elements.Element;
 
 import static pt.isel.ls.utils.html.HtmlDsl.a;
@@ -11,11 +12,7 @@ import static pt.isel.ls.utils.html.HtmlDsl.h1;
 import static pt.isel.ls.utils.html.HtmlDsl.head;
 import static pt.isel.ls.utils.html.HtmlDsl.html;
 import static pt.isel.ls.utils.html.HtmlDsl.p;
-import static pt.isel.ls.utils.html.HtmlDsl.table;
-import static pt.isel.ls.utils.html.HtmlDsl.td;
-import static pt.isel.ls.utils.html.HtmlDsl.th;
 import static pt.isel.ls.utils.html.HtmlDsl.title;
-import static pt.isel.ls.utils.html.HtmlDsl.tr;
 
 public class GetUsersHtmlView extends HtmlView {
 
@@ -47,25 +44,10 @@ public class GetUsersHtmlView extends HtmlView {
             return p("No Users found in database.");
         }
 
-        Element usersHeaders = tr();
-        usersHeaders.addChild(th("User ID"));
-        usersHeaders.addChild(th("Name"));
-        usersHeaders.addChild(th("Email"));
-        Element usersInfo = table();
-        usersInfo.addChild(usersHeaders);
-
-        for (User user : users) {
-            usersInfo.addChild(buildUserData(user));
-        }
-
-        return usersInfo;
-    }
-
-    private Element buildUserData(User user) {
-        Element tableRowData = tr();
-        tableRowData.addChild(td(a("/users/" + user.getUid(), String.valueOf(user.getUid()))));
-        tableRowData.addChild(td(user.getName()));
-        tableRowData.addChild(td(user.getEmail()));
-        return tableRowData;
+        return new HtmlTableBuilder<>(users)
+            .withColumn("User ID", user -> a("/users/" + user.getUid(), String.valueOf(user.getUid())))
+            .withColumn("Name", User::getName)
+            .withColumn("Email", User::getEmail)
+            .build();
     }
 }

@@ -1,10 +1,10 @@
 package pt.isel.ls.model.commands;
 
-import pt.isel.ls.model.commands.common.exceptions.CommandException;
 import pt.isel.ls.model.commands.common.CommandHandler;
 import pt.isel.ls.model.commands.common.CommandRequest;
 import pt.isel.ls.model.commands.common.CommandResult;
 import pt.isel.ls.model.commands.common.Parameters;
+import pt.isel.ls.model.commands.common.exceptions.CommandException;
 import pt.isel.ls.model.commands.common.exceptions.MissingArgumentsException;
 import pt.isel.ls.model.commands.common.exceptions.ParseArgumentException;
 import pt.isel.ls.model.commands.results.PostRoomResult;
@@ -13,11 +13,10 @@ import pt.isel.ls.model.entities.Room;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Types;
-
 import java.util.LinkedList;
 
 import static pt.isel.ls.model.commands.helpers.DatabaseDataHelper.getLids;
@@ -45,6 +44,10 @@ public class PostRoomCommand implements CommandHandler {
                 capacity = params.getInt("capacity");
             } catch (NumberFormatException e) {
                 throw new ParseArgumentException("Invalid capacity");
+            }
+
+            if (capacity != null && capacity <= 0) {
+                throw new ParseArgumentException("Capacity must be higher than 0");
             }
 
             if (name != null && location != null) {

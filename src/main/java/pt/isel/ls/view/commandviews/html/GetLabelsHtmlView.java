@@ -3,6 +3,7 @@ package pt.isel.ls.view.commandviews.html;
 import pt.isel.ls.model.commands.common.CommandResult;
 import pt.isel.ls.model.commands.results.GetLabelsResult;
 import pt.isel.ls.model.entities.Label;
+import pt.isel.ls.utils.html.HtmlTableBuilder;
 import pt.isel.ls.utils.html.elements.Element;
 
 import static pt.isel.ls.utils.html.HtmlDsl.a;
@@ -10,11 +11,7 @@ import static pt.isel.ls.utils.html.HtmlDsl.body;
 import static pt.isel.ls.utils.html.HtmlDsl.h1;
 import static pt.isel.ls.utils.html.HtmlDsl.head;
 import static pt.isel.ls.utils.html.HtmlDsl.html;
-import static pt.isel.ls.utils.html.HtmlDsl.table;
-import static pt.isel.ls.utils.html.HtmlDsl.td;
-import static pt.isel.ls.utils.html.HtmlDsl.th;
 import static pt.isel.ls.utils.html.HtmlDsl.title;
-import static pt.isel.ls.utils.html.HtmlDsl.tr;
 
 public class GetLabelsHtmlView extends HtmlView {
 
@@ -41,21 +38,10 @@ public class GetLabelsHtmlView extends HtmlView {
     }
 
     private Element buildLabelInfo() {
-        Element labelInfo = table();
-        Element tableRow = tr();
-        tableRow.addChild(th("Label ID"));
-        tableRow.addChild(th("Name"));
-        labelInfo.addChild(tableRow);
-        for (Label label : result.getLabels()) {
-            addHtmlTableRow(labelInfo, label);
-        }
-        return labelInfo;
-    }
-
-    private void addHtmlTableRow(Element table, Label label) {
-        Element tableRowData = tr();
-        tableRowData.addChild(td(a("/labels/" + label.getLid(), "" + label.getLid())));
-        tableRowData.addChild(td(label.getName()));
-        table.addChild(tableRowData);
+        return new HtmlTableBuilder<>(result.getLabels())
+                .withColumn("Label ID",
+                    label -> a("/labels/" + label.getLid(), "" + label.getLid()))
+                .withColumn("Name", Label::getName)
+                .build();
     }
 }

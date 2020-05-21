@@ -13,6 +13,6 @@ public class ListenPlainView extends PlainView {
 
     @Override
     public String display() {
-        return "Servlet now listening on Port: " + result.getPort();
+        return "Servlet now listening on port: " + result.getPort();
     }
 }

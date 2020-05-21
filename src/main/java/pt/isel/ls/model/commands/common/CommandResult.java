@@ -1,5 +1,7 @@
 package pt.isel.ls.model.commands.common;
 
+import pt.isel.ls.utils.ExitRoutine;
+
 public interface CommandResult {
 
     boolean hasResults();
@@ -27,6 +29,10 @@ public interface CommandResult {
         PostUser,
         PutBookingInRoom,
         HttpResponse
+    }
+
+    default ExitRoutine getExitRoutine() {
+        return null;
     }
 
     ResultType getResultType();

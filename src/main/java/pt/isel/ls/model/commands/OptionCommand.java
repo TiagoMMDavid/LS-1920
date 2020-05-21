@@ -1,9 +1,9 @@
 package pt.isel.ls.model.commands;
 
-import pt.isel.ls.model.commands.common.exceptions.CommandException;
 import pt.isel.ls.model.commands.common.CommandHandler;
 import pt.isel.ls.model.commands.common.CommandRequest;
 import pt.isel.ls.model.commands.common.CommandResult;
+import pt.isel.ls.model.commands.common.exceptions.CommandException;
 import pt.isel.ls.model.commands.results.OptionResult;
 import pt.isel.ls.model.entities.Command;
 import pt.isel.ls.utils.Pair;

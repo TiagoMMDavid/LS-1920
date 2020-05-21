@@ -3,15 +3,14 @@ package pt.isel.ls.view.commandviews.html;
 import pt.isel.ls.model.commands.common.CommandResult;
 import pt.isel.ls.model.commands.results.OptionResult;
 import pt.isel.ls.model.entities.Command;
+import pt.isel.ls.utils.html.HtmlTableBuilder;
 import pt.isel.ls.utils.html.elements.Element;
 
-import static pt.isel.ls.utils.html.HtmlDsl.html;
 import static pt.isel.ls.utils.html.HtmlDsl.body;
 import static pt.isel.ls.utils.html.HtmlDsl.h1;
-import static pt.isel.ls.utils.html.HtmlDsl.h2;
 import static pt.isel.ls.utils.html.HtmlDsl.head;
+import static pt.isel.ls.utils.html.HtmlDsl.html;
 import static pt.isel.ls.utils.html.HtmlDsl.title;
-import static pt.isel.ls.utils.html.HtmlDsl.p;
 
 public class OptionHtmlView extends HtmlView {
     private OptionResult result;
@@ -37,10 +36,12 @@ public class OptionHtmlView extends HtmlView {
         Element body = body(
                 h1(true, "List of Commands:")
         );
-        for (Command cmd : result.getCommands()) {
-            body.addChild(h2(cmd.getName()));
-            body.addChild(p(cmd.getDescription().replace("\n", "<br>")));
-        }
-        return body;
+
+        Element table = new HtmlTableBuilder<>(result.getCommands())
+                .withColumn("Command Name", Command::getName)
+                .withColumn("Description", cmd -> cmd.getDescription().replace("\n", "<br>"))
+                .build();
+
+        return body.addChild(table);
     }
 }

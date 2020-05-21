@@ -59,7 +59,7 @@ public class GetRoomsSearchHtmlView extends HtmlView {
                                     ),
                                     div(
                                         label("capacity", "Select minimum capacity: "),
-                                        input(NUMBER, "capacity", "0", "capacity")
+                                        input(NUMBER, "capacity", "1", "capacity", "1")
                                     ),
                                     buildLabelCheckboxes(),
                                     input(SUBMIT, "submit", "Search")

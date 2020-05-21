@@ -12,6 +12,7 @@ import pt.isel.ls.utils.html.elements.Head;
 import pt.isel.ls.utils.html.elements.Html;
 import pt.isel.ls.utils.html.elements.Input;
 import pt.isel.ls.utils.html.elements.Label;
+import pt.isel.ls.utils.html.elements.List;
 import pt.isel.ls.utils.html.elements.ListElement;
 import pt.isel.ls.utils.html.elements.Paragraph;
 import pt.isel.ls.utils.html.elements.Table;
@@ -21,7 +22,6 @@ import pt.isel.ls.utils.html.elements.TableHeader;
 import pt.isel.ls.utils.html.elements.TableRow;
 import pt.isel.ls.utils.html.elements.Title;
 import pt.isel.ls.utils.html.elements.UnorderedList;
-import pt.isel.ls.utils.html.elements.List;
 
 public class HtmlDsl {
     public static Element html(Element... elements) {
@@ -124,4 +124,7 @@ public class HtmlDsl {
         return new Input(type, name, value, id);
     }
 
+    public static Element input(Input.InputType type, String name, String value, String id, String min) {
+        return new Input(type, name, value, id, min);
+    }
 }

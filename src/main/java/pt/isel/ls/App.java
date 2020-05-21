@@ -1,13 +1,6 @@
 package pt.isel.ls;
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.Scanner;
-
 import pt.isel.ls.model.Router;
-
 import pt.isel.ls.model.commands.DeleteBookingInRoomCommand;
 import pt.isel.ls.model.commands.ExitCommand;
 import pt.isel.ls.model.commands.GetBookingByRoomAndBookingIdCommand;
@@ -30,23 +23,30 @@ import pt.isel.ls.model.commands.PostLabelCommand;
 import pt.isel.ls.model.commands.PostRoomCommand;
 import pt.isel.ls.model.commands.PostUserCommand;
 import pt.isel.ls.model.commands.PutBookingInRoomCommand;
-
 import pt.isel.ls.model.commands.common.CommandHandler;
 import pt.isel.ls.model.commands.common.CommandRequest;
 import pt.isel.ls.model.commands.common.CommandResult;
 import pt.isel.ls.model.commands.common.Headers;
 import pt.isel.ls.model.commands.common.Method;
 import pt.isel.ls.model.commands.common.Parameters;
+import pt.isel.ls.model.commands.common.exceptions.ExitException;
 import pt.isel.ls.model.commands.sql.TransactionManager;
-
 import pt.isel.ls.model.paths.Path;
 import pt.isel.ls.model.paths.PathTemplate;
-
+import pt.isel.ls.utils.ExitRoutine;
 import pt.isel.ls.view.View;
+
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.util.LinkedList;
+import java.util.Scanner;
 
 public class App {
     private static TransactionManager trans = new TransactionManager(System.getenv("postgresUrl"));
     private static Router router = new Router();
+    private static LinkedList<ExitRoutine> exitRoutines = new LinkedList<>();
 
     public static void main(String[] args) {
         addCommands();
@@ -55,6 +55,18 @@ public class App {
             executeCommand(args);
         } else {
             run();
+        }
+
+        try {
+            executeExitRoutines();
+        } catch (ExitException e) {
+            e.getMessage();
+        }
+    }
+
+    private static void executeExitRoutines() throws ExitException {
+        for (ExitRoutine exitRoutine : exitRoutines) {
+            exitRoutine.close();
         }
     }
 
@@ -136,6 +148,7 @@ public class App {
             result = handler.execute(cmd);
             if (result != null) {
                 displayResult(result, headers);
+                addExitRoutine(result);
             }
         } catch (Exception e) {
             System.out.println(e.getMessage() + "\n");
@@ -143,6 +156,13 @@ public class App {
         }
 
         return result != null;
+    }
+
+    private static void addExitRoutine(CommandResult result) {
+        ExitRoutine exitRoutine = result.getExitRoutine();
+        if (exitRoutine != null) {
+            exitRoutines.add(exitRoutine);
+        }
     }
 
     private static boolean isHeader(String command) {

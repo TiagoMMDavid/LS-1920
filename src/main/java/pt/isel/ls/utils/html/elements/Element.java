@@ -28,8 +28,9 @@ public abstract class Element {
         delimiters = new Pair<>(startDelimiter, endDelimiter);
     }
 
-    public void addChild(Element element) {
+    public Element addChild(Element element) {
         children.add(element);
+        return this;
     }
 
     public String getString(int tabAmount) {

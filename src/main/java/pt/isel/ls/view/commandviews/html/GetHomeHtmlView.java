@@ -2,10 +2,10 @@ package pt.isel.ls.view.commandviews.html;
 
 import static pt.isel.ls.utils.html.HtmlDsl.a;
 import static pt.isel.ls.utils.html.HtmlDsl.body;
+import static pt.isel.ls.utils.html.HtmlDsl.br;
 import static pt.isel.ls.utils.html.HtmlDsl.h1;
 import static pt.isel.ls.utils.html.HtmlDsl.head;
 import static pt.isel.ls.utils.html.HtmlDsl.html;
-import static pt.isel.ls.utils.html.HtmlDsl.br;
 import static pt.isel.ls.utils.html.HtmlDsl.title;
 
 public class GetHomeHtmlView extends HtmlView {
