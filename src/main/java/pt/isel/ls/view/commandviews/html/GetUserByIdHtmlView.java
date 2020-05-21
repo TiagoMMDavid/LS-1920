@@ -46,6 +46,7 @@ public class GetUserByIdHtmlView extends HtmlView {
 
     private Element buildUserInfo(User user) {
         Element list = ul();
+        list.addChild(li("User ID: " + user.getUid()));
         list.addChild(li("Name: " + user.getName()));
         list.addChild(li("Email: " + user.getEmail()));
         return list;

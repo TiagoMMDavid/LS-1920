@@ -1,4 +1,3 @@
-  
 begin;
 	CREATE TABLE USERS (
 		uid					serial PRIMARY key CHECK (uid >= 0),

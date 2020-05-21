@@ -42,7 +42,7 @@ public class GetLabelByIdHtmlView extends HtmlView {
         Element body =
                 body(
                         a("/", "Home"), a("/labels", "Labels"),
-                        h1("Detailed Information for Label [" + label.getLid() + "]"),
+                        h1("Detailed Information for Label \"" + label.getName() + "\""),
                         buildLabelInfo(label)
                 );
 
@@ -58,7 +58,7 @@ public class GetLabelByIdHtmlView extends HtmlView {
     private Element buildLabelInfo(Label label) {
         Element labelInfo = ul();
         labelInfo.addChild(li("Label ID: " + label.getLid()));
-        labelInfo.addChild(li("Label Name: " + label.getName()));
+        labelInfo.addChild(li("Name: " + label.getName()));
         return labelInfo;
     }
 
