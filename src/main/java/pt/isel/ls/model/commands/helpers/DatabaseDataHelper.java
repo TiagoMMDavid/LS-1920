@@ -1,6 +1,7 @@
 package pt.isel.ls.model.commands.helpers;
 
 import pt.isel.ls.model.commands.common.exceptions.CommandException;
+import pt.isel.ls.model.commands.common.exceptions.ParseArgumentException;
 import pt.isel.ls.model.entities.Booking;
 import pt.isel.ls.model.entities.Label;
 import pt.isel.ls.model.entities.Room;
@@ -129,7 +130,7 @@ public class DatabaseDataHelper {
                 beginInst = parseTimeWithTimezone(rs.getString("begin_inst"), "yyyy-MM-dd HH:mm:ss");
                 endInst = parseTimeWithTimezone(rs.getString("end_inst"),"yyyy-MM-dd HH:mm:ss");
             } catch (ParseException e) {
-                throw new CommandException("Failed to parse dates");
+                throw new ParseArgumentException("Failed to parse dates");
             }
 
             bookings.add(new Booking(

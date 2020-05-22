@@ -1,4 +1,4 @@
-# Relatório técnico da Fase 1
+# Relatório técnico
 
 ## Introdução
 
@@ -53,10 +53,17 @@ De maneira a ser possível implementar vários tipos de comandos de um modo de u
 Em termos de classes, foram implementadas as seguintes classes, que serão utilizadas pelos *handlers*:
 
 #### CommandResult
-Um CommandResult é responsável pelo armazenamento dos resultados obtidos de um comando. Esta classe conta com a presença de apenas um campo:
-* LinkedList\<Entity> results    : Os resultados em si.
+Um CommandResult é uma interface responsável pelo armazenamento dos resultados obtidos de um comando. Para cada *CommandHandler* deve ser criada uma nova classe que implemente esta interface e que consiga armazenar os resultados obtidos.
 
-A aplicação encontra-se desenvolvida de maneira a apresentar os resultados um a um, obtendo sempre a View correspondente a Entity atual para realizar a apresentação da mesma. No caso do comando não ter sido concluído com sucesso, é lançada uma exceção, dizendo qual o erro durante a execução do comando. O preenchimento de um objeto deste tipo é responsabilidade de cada CommandHandler.
+A interface *CommandResult* dispõe de: 
+* boolean hasResults()          : Método que retorna um booleano representante da presença de resultados;
+* enum ResultType               : Enumerador que contém todos os nomes dos resultados dos comandos existentes (de maneira a conseguir identificar o tipo do resultado fora do modelo da aplicação);
+* ResultType getResultType()    : Método que retorna o tipo de resultado respetivo;
+* ExitRoutine getExitRoutine()  : Método que retorna uma interface funcional que consta de um método que representa uma rotina de saída que possa ser necessária para dado comando. 
+
+
+A aplicação encontra-se desenvolvida de maneira a apresentar os resultados dados por um *CommandResult*. Para isso obtem-se sempre a View correspondente ao resultado atual realizando a apresentação da mesma. No caso do comando não ter sido concluído com sucesso, é lançada uma exceção, dizendo qual o erro durante a execução do comando. O preenchimento de um objeto deste tipo é responsabilidade de cada *CommandHandler*.
+As classes que implementam *CommandResult* geralmente armazenam uma ou várias entidades e dispõe de métodos para obter as mesmas.
 
 ### Entities
 De forma a representar cada tipo de resultado, foi realizada a *interface* Entity, que servirá de base para, por exemplo, todas as concretizações das linhas das tabelas da base de dados em classes, onde cada campo vai corresponder a um atributo.
@@ -186,12 +193,18 @@ Este último irá obter um MethodNode do seu HashMap, utilizando como chave o Me
 
 Para a representação dos resultados, foi decidido separar a secção visual do resto das outras classes, com o objetivo de conter tudo o que se encarrega com apresentação de resultados num único *package*.
 Assim sendo, foi concebida a classe abstrata View, cujas concretizações vão ser as representações visuais dos vários resultados.
-Esta classe conta com dois campos:
 
-* Iterable\<Entity> entities - Contém as várias entidades resultantes da execução de um comando.
-* Entity entity - Armazena apenas a primeira entidade do conjunto de entidades recebidas. Usado para views que contam com apenas uma entidade.
+Esta classe conta com um método estático denominado *findView()*, que recebe um resultado de um comando, assim como o formato de visualização pretendido. Este método funciona como um *router* de views, pois a partir destas informações, retorna a View pretendida. Caso não exista uma View correspondente às informações passadas, é retornada uma NoRouteView correspondente ao *viewFormat* pretendido. Estes tipos de *views* afetam o campo *foundRoute*, de maneira a ser possível, no contexto da aplicação, determinar se foi possível "encontrar um caminho" para uma View.
 
-Para além disto, a classe base contém também um método estático designado por *getInstance*, cujo objetivo é fornecer a concretização adequada à entidade fornecida. O tipo de entidade verificado é o primeiro do conjunto recebido, o que é válido por agora devido à não existência de comandos que resultem em duas (ou mais) entidades distintas. Existe também o método de instância *display*, que recebe uma *stream* de *output* e o formato de visualização que se pretende utilizar. Este método é responsável pelo chamamento de um dos métodos específicos de *display* (*displayHtml* ou *displayText*), assim como pela escrita na *output stream* pretendida. Estes últimos métodos terão de ser implementados pelas várias concretizações de *View*, sendo estas específicas para cada uma das entidades existentes.
+Existe também os métodos de instância: 
+* *getDisplay* -  retorna a representação da View em String;
+* *render* - renderiza a View para a OutputStream passada por parâmetro;
+
+Será também necessária a implementação destes métodos abstratos por parte das concretizações de View:
+* *display* - retorna a String correspondente à representação da View;
+* *getViewFormat* - retorna o formato da View implementada. Estes formatos encontram-se na forma de campos finais e estáticos da classe View.
+
+Em termos destas mesmas concretizações, estas encontram-se divididas em classes separadas, sendo que estas classes estão também divididas em packages associadas ao formato das mesmas (plain ou html).
 
 #### Representação em HTML
 
@@ -207,6 +220,17 @@ Esta classe conta também com a presença de um método *toString()*, que retorn
 Foi também criada a classe ElementText, que estende de Element, cujo objetivo é refletir elementos de HTML terminadores, ou seja, elementos que contêm apenas texto e não outros elementos, como, por exemplo, os elementos *Header* e *Paragraph*.
 
 Para aumentar a legibilidade do código e evitar a constante criação de objetos usando o operador *new*, foi concebida a classe *HTMLDsl*, constituída apenas por métodos estáticos que correspondem a cada uma das classes que foram criadas. Desta forma, para utilizar a DSL, basta importar esta última classe e utilizar os métodos estáticos da mesma.
+
+##### Construtor de Tabelas HTML
+
+De maneira a simplificar a construção de tabelas em HTML, foi realizada a classe HTMLTableBuilder, que por sua vez faz uso da HTML DSL previamente desenvolvida. Esta classe é genérica de forma a ser possível definir o tipo recebido nas funções de obtenção de dados. Esta classe conta com os seguintes campos:
+
+* Iterable\<T> rowData - Armazena os elementos que contém os dados da tabela;
+* LinkedList<Pair<String, Function\<T, Object>>> columns - Armazena os nomes das colunas, assim como as funções de obtenção de um objeto convertível para String.
+
+A razão pelo armazenamento de funções que retornam Object é devido a tornar a classe um pouco mais genérica. Desta forma, é possível retornar qualquer tipo de objeto, e a classe apenas chama o método toString() do mesmo para obter os dados em String.
+
+No construtor, esta classe recebe um iterável de T, que contém os dados da tabela. Com a instância obtida, é possível chamar o método withColumn para adicionar colunas à tabela, ou seja, o nome e função de obtenção de dados da mesma. No final, pode-se então chamar o método build() para obter um Element, que é a tabela HTML pretendida.
 
 ### Gestão de ligações
 
@@ -230,19 +254,21 @@ Dentro do mesmo Method, os handlers são semelhantes, sendo assim, basta explica
 
 Por via do nosso modelo de base de dados, não existem nenhuns _statements_ em _SQL_ que consideramos não-triviais, assim sendo, não achamos pertinente realçar nenhum deles.
 
-### CommandServlet
-Tirando partido da _library_ javax.servlet, foi concebida a classe CommandServlet, que irá servir de interface entre o utilizador, e a aplicação em modo servidor. 
+### Servlet
+
+De maneira a possibilitar a entrega de um servidor HTTP capaz de lidar com todos os comandos *GET* desenvolvidos foi desenvolvido um *CommandHandler* nomeado de *ListenCommand* que se encarrega de inicializar o servidor. Para a execução deste comando apenas é necessário passar como parâmetro a porta por onde o servidor encontrar-se-á acessível. No comando *Listen* é inicializado uma instância de *CommandServlet*, passando-lhe o *router* (de modo a aceder aos comandos disponíveis). *CommandServlet* tem a responsabilidade de processar os pedidos e a sua respetiva resposta. 
+Relativamente ao *CommandResult* gerado por este *handler*, é necessário incluir uma *ExitRoutine* de maneira a ser possível fechar o servidor quando a aplicação é terminada.
+
+Tirando partido da _library_ javax.servlet, foi concebida a classe *CommandServlet*, que irá servir de interface entre o utilizador, e a aplicação em modo servidor. 
 Esta classe conta com os seguintes campos, sendo muito semelhante à classe _App_:
 * Router router – O mesmo router que a aplicação principal usa, para obter o _handler_ de cada comando.
 * TransactionManager trans – Que servirá de interface com a base de dados.
-* Logger log – Um _logger_ que usufrui da _library_ SLF4J (Simple Logger Factory 4 Java), que é utilizado para debug e apresentação de dados  do pedido e da resposta.
+* Logger log – Um _logger_ que usufrui da _library_ SLF4J (Simple Logger Factory 4 Java), que é utilizado para debug e apresentação de dados do pedido e da resposta.
 
-Foi necessário efetuar um _Override_ do método _doGet_ da _library_ do _servlet_, este método recebe uma _HttpServletRequest_ e uma _HttpServletResponse_, a sua função é preencher a resposta com os dados em formato HTML ou texto, dependendo do _header_ fornecido.
-Para obter o _CommandHandler_ correspondente a um pedido é necessário extrair do mesmo o _Path_, através do seu _URI_,   os parâmetros, que se encontram na _Query String_ do pedido, sendo obtida através do método _getQueryString()_. Para além disto, é também necessário obter os _headers_ (neste caso, só nos vamos preocupar com o _header accept_), para tal, é usado o método _getHeader(“Accept”)_ do pedido.
-
-Tendo agora o caminho completo tal como na aplicação, basta efetuar o _findRoute()_ com o caminho obtido, e executar o comando resultante dessa pesquisa.
+Foi necessário efetuar um _Override_ do método _doGet_ da _library_ do _servlet_. Este método recebe uma _HttpServletRequest_ e uma _HttpServletResponse_, e a sua função é preencher a resposta com os dados em formato HTML ou texto, dependendo do _header_ fornecido.
+Para obter o _CommandHandler_ correspondente a um pedido é necessário extrair do mesmo o _Path_ através do seu _URI_,  os parâmetros que se encontram na _Query String_ do pedido, sendo obtida através do método _getQueryString()_. Para além disto, é também necessário obter os _headers_ (neste caso, só nos vamos preocupar com o _header accept_). Para tal, é usado o método _getHeader(“Accept”)_ do pedido.
+Tendo agora o caminho completo tal como na classe _App_, basta efetuar o _findRoute()_ com o caminho obtido, e executar o comando resultante dessa pesquisa.
 Por fim, é obtida a _View_ correspondente ao comando efetuado, e, utilizando o _OutputStream_ da resposta, são colocados os _Bytes_ da _String_ resultante da representação visual do comando no corpo da resposta. 
-
 
 ### Processamento de erros
 

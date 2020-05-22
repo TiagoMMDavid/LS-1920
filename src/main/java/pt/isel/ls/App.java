@@ -44,9 +44,9 @@ import java.util.LinkedList;
 import java.util.Scanner;
 
 public class App {
-    private static TransactionManager trans = new TransactionManager(System.getenv("postgresUrl"));
-    private static Router router = new Router();
-    private static LinkedList<ExitRoutine> exitRoutines = new LinkedList<>();
+    private static final TransactionManager trans = new TransactionManager(System.getenv("postgresUrl"));
+    private static final Router router = new Router();
+    private static final LinkedList<ExitRoutine> exitRoutines = new LinkedList<>();
 
     public static void main(String[] args) {
         addCommands();

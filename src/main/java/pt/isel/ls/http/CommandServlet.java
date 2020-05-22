@@ -27,8 +27,8 @@ import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 
 public class CommandServlet extends HttpServlet {
-    private Router router;
-    private TransactionManager trans;
+    private final Router router;
+    private final TransactionManager trans;
     private static final Logger log = LoggerFactory.getLogger(CommandServlet.class);
 
     public CommandServlet(Router router, TransactionManager trans) {
