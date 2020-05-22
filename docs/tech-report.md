@@ -1,4 +1,4 @@
-# Relatório técnico da Fase 1
+# Relatório técnico
 
 ## Introdução
 
@@ -186,12 +186,18 @@ Este último irá obter um MethodNode do seu HashMap, utilizando como chave o Me
 
 Para a representação dos resultados, foi decidido separar a secção visual do resto das outras classes, com o objetivo de conter tudo o que se encarrega com apresentação de resultados num único *package*.
 Assim sendo, foi concebida a classe abstrata View, cujas concretizações vão ser as representações visuais dos vários resultados.
-Esta classe conta com dois campos:
 
-* Iterable\<Entity> entities - Contém as várias entidades resultantes da execução de um comando.
-* Entity entity - Armazena apenas a primeira entidade do conjunto de entidades recebidas. Usado para views que contam com apenas uma entidade.
+Esta classe conta com um método estático denominado *findView()*, que recebe um resultado de um comando, assim como o formato de visualização pretendido. Este método funciona como um *router* de views, pois a partir destas informações, retorna a View pretendida. Caso não exista uma View correspondente às informações passadas, é retornada uma NoRouteView correspondente ao *viewFormat* pretendido. Estes tipos de *views* afetam o campo *foundRoute*, de maneira a ser possível, no contexto da aplicação, determinar se foi possível "encontrar um caminho" para uma View.
 
-Para além disto, a classe base contém também um método estático designado por *getInstance*, cujo objetivo é fornecer a concretização adequada à entidade fornecida. O tipo de entidade verificado é o primeiro do conjunto recebido, o que é válido por agora devido à não existência de comandos que resultem em duas (ou mais) entidades distintas. Existe também o método de instância *display*, que recebe uma *stream* de *output* e o formato de visualização que se pretende utilizar. Este método é responsável pelo chamamento de um dos métodos específicos de *display* (*displayHtml* ou *displayText*), assim como pela escrita na *output stream* pretendida. Estes últimos métodos terão de ser implementados pelas várias concretizações de *View*, sendo estas específicas para cada uma das entidades existentes.
+Existe também os métodos de instância: 
+* *getDisplay* -  retorna a representação da View em String;
+* *render* - renderiza a View para a OutputStream passada por parâmetro;
+
+Será também necessária a implementação destes métodos abstratos por parte das concretizações de View:
+* *display* - retorna a String correspondente à representação da View;
+* *getViewFormat* - retorna o formato da View implementada. Estes formatos encontram-se na forma de campos finais e estáticos da classe View.
+
+Em termos destas mesmas concretizações, estas encontram-se divididas em classes separadas, sendo que estas classes estão também divididas em packages associadas ao formato das mesmas (plain ou html).
 
 #### Representação em HTML
 
@@ -207,6 +213,17 @@ Esta classe conta também com a presença de um método *toString()*, que retorn
 Foi também criada a classe ElementText, que estende de Element, cujo objetivo é refletir elementos de HTML terminadores, ou seja, elementos que contêm apenas texto e não outros elementos, como, por exemplo, os elementos *Header* e *Paragraph*.
 
 Para aumentar a legibilidade do código e evitar a constante criação de objetos usando o operador *new*, foi concebida a classe *HTMLDsl*, constituída apenas por métodos estáticos que correspondem a cada uma das classes que foram criadas. Desta forma, para utilizar a DSL, basta importar esta última classe e utilizar os métodos estáticos da mesma.
+
+##### Construtor de Tabelas HTML
+
+De maneira a simplificar a construção de tabelas em HTML, foi realizada a classe HTMLTableBuilder, que por sua vez faz uso da HTML DSL previamente desenvolvida. Esta classe é genérica de forma a ser possível definir o tipo recebido nas funções de obtenção de dados. Esta classe conta com os seguintes campos:
+
+* Iterable\<T> rowData - Armazena os elementos que contém os dados da tabela;
+* LinkedList<Pair<String, Function\<T, Object>>> columns - Armazena os nomes das colunas, assim como as funções de obtenção de um objeto convertível para String.
+
+A razão pelo armazenamento de funções que retornam Object é devido a tornar a classe um pouco mais genérica. Desta forma, é possível retornar qualquer tipo de objeto, e a classe apenas chama o método toString() do mesmo para obter os dados em String.
+
+No construtor, esta classe recebe um iterável de T, que contém os dados da tabela. Com a instância obtida, é possível chamar o método withColumn para adicionar colunas à tabela, ou seja, o nome e função de obtenção de dados da mesma. No final, pode-se então chamar o método build() para obter um Element, que é a tabela HTML pretendida.
 
 ### Gestão de ligações
 
