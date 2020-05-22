@@ -3,7 +3,7 @@ package pt.isel.ls.view.commandviews.plain;
 public class NoRoutePlainView extends PlainView {
 
     public NoRoutePlainView() {
-        this.foundRoot = false;
+        this.foundRoute = false;
     }
 
     @Override

@@ -57,7 +57,7 @@ public abstract class View {
     protected static final String HtmlViewFormat = "text/html";
     protected static final String PlainViewFormat = "text/plain";
 
-    protected boolean foundRoot = true;
+    protected boolean foundRoute = true;
 
     public static View findView(CommandResult commandResult, String viewFormat) {
         if (viewFormat != null && viewFormat.equals(HtmlViewFormat)) {
@@ -188,7 +188,7 @@ public abstract class View {
 
     public abstract String getViewFormat();
 
-    public boolean foundRoot() {
-        return foundRoot;
+    public boolean foundRoute() {
+        return foundRoute;
     }
 }

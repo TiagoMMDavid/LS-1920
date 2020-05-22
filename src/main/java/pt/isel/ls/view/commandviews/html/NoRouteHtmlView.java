@@ -9,7 +9,7 @@ import static pt.isel.ls.utils.html.HtmlDsl.title;
 public class NoRouteHtmlView extends HtmlView {
 
     public NoRouteHtmlView() {
-        this.foundRoot = false;
+        this.foundRoute = false;
     }
 
     @Override

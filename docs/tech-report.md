@@ -230,15 +230,39 @@ Dentro do mesmo Method, os handlers são semelhantes, sendo assim, basta explica
 
 Por via do nosso modelo de base de dados, não existem nenhuns _statements_ em _SQL_ que consideramos não-triviais, assim sendo, não achamos pertinente realçar nenhum deles.
 
+### CommandServlet
+Tirando partido da _library_ javax.servlet, foi concebida a classe CommandServlet, que irá servir de interface entre o utilizador, e a aplicação em modo servidor. 
+Esta classe conta com os seguintes campos, sendo muito semelhante à classe _App_:
+* Router router – O mesmo router que a aplicação principal usa, para obter o _handler_ de cada comando.
+* TransactionManager trans – Que servirá de interface com a base de dados.
+* Logger log – Um _logger_ que usufrui da _library_ SLF4J (Simple Logger Factory 4 Java), que é utilizado para debug e apresentação de dados  do pedido e da resposta.
+
+Foi necessário efetuar um _Override_ do método _doGet_ da _library_ do _servlet_, este método recebe uma _HttpServletRequest_ e uma _HttpServletResponse_, a sua função é preencher a resposta com os dados em formato HTML ou texto, dependendo do _header_ fornecido.
+Para obter o _CommandHandler_ correspondente a um pedido é necessário extrair do mesmo o _Path_, através do seu _URI_,   os parâmetros, que se encontram na _Query String_ do pedido, sendo obtida através do método _getQueryString()_. Para além disto, é também necessário obter os _headers_ (neste caso, só nos vamos preocupar com o _header accept_), para tal, é usado o método _getHeader(“Accept”)_ do pedido.
+
+Tendo agora o caminho completo tal como na aplicação, basta efetuar o _findRoute()_ com o caminho obtido, e executar o comando resultante dessa pesquisa.
+Por fim, é obtida a _View_ correspondente ao comando efetuado, e, utilizando o _OutputStream_ da resposta, são colocados os _Bytes_ da _String_ resultante da representação visual do comando no corpo da resposta. 
+
+
 ### Processamento de erros
 
 De modo a averiguar o correto funcionamento do programa é necessário efetuar o processamento de erros e comunicá-los ao utilizador do programa.
 
-Os erros que possam eventualmente occorer durante a execução do programa são comunicados através do uso de exceções. Em particular, no caso da aplicação desenvolvida, a classe App poderá receber exceções dos tipos CommandException, SQLException, e IllegalArgumentException.
+Os erros que possam eventualmente ocorrer durante a execução do programa são comunicados através do uso de exceções. Para tal, foram concebidas várias exceções específicas a cada um dos casos que possamos encontrar, tal como:
+Quando ocorre um erro genérico:
+* CommandException - Quando há um erro a executar um comando (cada comando é responsável por descrever o erro que ocorreu).
+Quando quando ocorre o erro específico (estas classes extendem CommandException): 
+* ExitException - Quando ocorre um erro ao executar uma rotina de saída para dado comando.
+* InvalidIdException - Quando o utilizador fornece um ID inválido.
+* MissingArgumentsException - Quando o utilizador não fornece argumentos, aplica-se especificamente a comandos encarregues de colocar nova informação na base de dados (POST e PUT).
+* ParseArgumentException – Quando o utilizador não introduz um argumento no formato correto, ou não suportado.
 
-Primeiramente, é verificado se o comando passado à aplicação encontra-se descrito de maneira correta. Esta verificação é feita por partes, começando pela verificação da existência de um método, passando à verificação dos headers e parâmetros, e finalmente à verificação do *path*. Cabe às classes representantes de cada um destes tipos efetuar a verificação dos mesmos. No caso desta falhar, estas devem lançar uma exceção contendo uma mensagem de erro informativa.
+Na introdução de um comando também são feitas verificações, no entanto, a informação é simplesmente apresentada na janela da consola. Neste processo é verificado se o comando passado à aplicação se encontra descrito de maneira correta. Esta verificação é feita por partes, começando pela verificação da existência de um método, passando à verificação dos _headers_ e parâmetros, e finalmente à verificação do *path*. Cabe às classes representantes de cada um destes tipos efetuar a verificação dos mesmos. No caso desta falhar, estas devem lançar uma exceção contendo uma mensagem de erro informativa. Quando se executa um comando, a App irá apanhar eventuais exceções lançadas pelo mesmo, apresentando a mensagem da mesma ao utilizador. Cabe aos _handlers_ preencherem esta mensagem na exceção lançada. 
+Do lado _HTML_ foi concebida a classe _HttpResponseView_, que se encarrega de apresentar os _status codes_ dos erros que possam ocorrer aquando da execução de um comando. O _status code_ a ser representado depende da exceção que ocorreu no processo de execução:
+* InvalidIdException corresponde ao _status code_ 404 (Not Found), visto que não é possível encontrar o que utilizador pede.
+* SQLException (que faz parte da _library JDBC_), CommandException ou IllegalArgumentException (quando se realiza o parse dos parâmetros) correspondem ao _status code_ 500 (Internal Server Error), que indica que houve um erro interno no servidor.
+* Quando o utilizador introduz um comando que não tem representação em formato HTML, é aplicado o _status code_ 406 (Not Acceptable). 
 
-Quando se executa um comando, a App irá apanhar eventuais exceções lançadas pelo mesmo, apresentando a mensagem da mesma ao utilizador. Cabe aos handlers preencherem esta mensagem na exceção lançada.
 
 ## Avaliação crítica
 
@@ -246,5 +270,6 @@ Quando se executa um comando, a App irá apanhar eventuais exceções lançadas 
 Entre eles achamos pertinente destacar:
 * Repetição de código em todos os Handlers, para efetuar o acesso à base de dados;
 * Algoritmo de procura de HandlerNodes não revela ser o mais eficiente;
+* Foram apenas implementados os _status codes_ necessário no contexto da aplicação desenvolvida, portanto é possível abrangir todos os _status codes_ que possam eventualmente surgir.
 
 Para a próxima fase podemos melhorar os aspetos referidos na lista anterior, tanto como há sempre a possibilidade de encontrarmos mais defeitos e necessitarmos de soluções para os mesmos. É possível que o código não esteja completamente legível, ou com falta de comentários, no entanto, isso é um esforço que tem de ser feito ao longo do desenvolvimento. Dito isto, esperemos melhorar na próxima fase em todas as vertentes.

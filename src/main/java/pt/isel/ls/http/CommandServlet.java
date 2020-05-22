@@ -66,7 +66,7 @@ public class CommandServlet extends HttpServlet {
 
         String viewFormat = headers != null ? headers.getFirst("accept") : null;
         View view = View.findView(result != null ? result : new HttpResponseResult(resp.getStatus()), viewFormat);
-        if (!view.foundRoot()) {
+        if (!view.foundRoute()) {
             resp.setStatus(406); // Not Acceptable
             view = View.findView(new HttpResponseResult(406), viewFormat);
         }
