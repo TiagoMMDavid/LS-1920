@@ -14,8 +14,11 @@ import pt.isel.ls.model.commands.common.exceptions.ParseArgumentException;
 import pt.isel.ls.model.commands.results.ListenResult;
 
 import java.sql.SQLException;
+import java.util.HashSet;
 
 public class ListenCommand implements CommandHandler {
+
+    private static HashSet<Integer> runningServerPorts = new HashSet<>();
 
     @Override
     public CommandResult execute(CommandRequest commandRequest) throws CommandException, SQLException {
@@ -29,24 +32,27 @@ public class ListenCommand implements CommandHandler {
         } catch (NumberFormatException e) {
             throw new ParseArgumentException("Invalid port number");
         }
+
         if (port == null) {
             throw new MissingArgumentsException("No port specified");
+        } else if (runningServerPorts.contains(port)) {
+            throw new CommandException("Failed to start server. Server is already running on the same port");
         }
+
         Server server = new Server(port);
         ServletHandler handler = new ServletHandler();
         CommandServlet servlet = new CommandServlet(commandRequest.getRouter(), commandRequest.getTransactionHandler());
 
         handler.addServletWithMapping(new ServletHolder(servlet), "/*");
-
         server.setHandler(handler);
         try {
             server.start();
+            runningServerPorts.add(port);
         } catch (Exception e) {
             throw new CommandException("Failed to start server");
         }
 
-        ListenResult result = new ListenResult(server, port);
-        return result;
+        return new ListenResult(server, port);
     }
 
     @Override
