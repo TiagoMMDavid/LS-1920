@@ -6,8 +6,8 @@ import pt.isel.ls.model.paths.Path;
 import pt.isel.ls.model.paths.PathTemplate;
 
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
 public class NTree implements Iterable<Pair<String,String>> {
@@ -36,7 +36,7 @@ public class NTree implements Iterable<Pair<String,String>> {
     }
 
     static class MethodNode {
-        private HashSet<HandlerNode> cmdhandlers = new HashSet<>();
+        private LinkedList<HandlerNode> cmdhandlers = new LinkedList<>();
 
         public MethodNode(PathTemplate template, CommandHandler cmd) {
             HandlerNode toAdd = new HandlerNode(cmd, template);
