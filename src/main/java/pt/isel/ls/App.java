@@ -44,7 +44,7 @@ import java.util.LinkedList;
 import java.util.Scanner;
 
 public class App {
-    private static final TransactionManager trans = new TransactionManager(System.getenv("postgresUrl"));
+    private static final TransactionManager trans = new TransactionManager(System.getenv("JDBC_DATABASE_URL"));
     private static final Router router = new Router();
     private static final LinkedList<ExitRoutine> exitRoutines = new LinkedList<>();
 
@@ -57,11 +57,6 @@ public class App {
             run();
         }
 
-        try {
-            executeExitRoutines();
-        } catch (ExitException e) {
-            e.getMessage();
-        }
     }
 
     private static void executeExitRoutines() throws ExitException {
@@ -155,7 +150,15 @@ public class App {
             return true;
         }
 
-        return result != null;
+        boolean isNull = result == null;
+        if (isNull) {
+            try {
+                executeExitRoutines();
+            } catch (ExitException e) {
+                System.out.println(e.getMessage() + "\n");
+            }
+        }
+        return !isNull;
     }
 
     private static void addExitRoutine(CommandResult result) {

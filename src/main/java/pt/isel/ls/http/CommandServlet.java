@@ -55,10 +55,10 @@ public class CommandServlet extends HttpServlet {
 
         CommandResult result = null;
 
-        // Status code from response remains as 0 when setStatus() wasn't yet called
+        // Status code from response remains as 200 when setStatus() wasn't yet called
         // Before this line, that method is only called whenever we catch an error while parsing
         // the method, the path, the parameters and the headers
-        if (resp.getStatus() == 0) {
+        if (resp.getStatus() == 200) {
             CommandRequest request = new CommandRequest(path, params, trans, router);
             CommandHandler handler = router.findRoute(method, path);
             result = executeCommand(resp, request, handler);

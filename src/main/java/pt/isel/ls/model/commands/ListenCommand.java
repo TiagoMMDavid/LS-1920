@@ -1,7 +1,7 @@
 package pt.isel.ls.model.commands;
 
-import org.eclipse.jetty.plus.servlet.ServletHandler;
 import org.eclipse.jetty.server.Server;
+import org.eclipse.jetty.servlet.ServletHandler;
 import org.eclipse.jetty.servlet.ServletHolder;
 import pt.isel.ls.http.CommandServlet;
 import pt.isel.ls.model.commands.common.CommandHandler;
@@ -23,18 +23,25 @@ public class ListenCommand implements CommandHandler {
     @Override
     public CommandResult execute(CommandRequest commandRequest) throws CommandException, SQLException {
         Parameters params = commandRequest.getParams();
-        if (params == null) {
-            throw new MissingArgumentsException("No parameters specified");
-        }
-        Integer port;
-        try {
-            port = params.getInt("port");
-        } catch (NumberFormatException e) {
-            throw new ParseArgumentException("Invalid port number");
+        Integer port = null;
+        if (params != null) {
+            try {
+                port = params.getInt("port");
+            } catch (NumberFormatException e) {
+                throw new ParseArgumentException("Invalid port number");
+            }
         }
 
         if (port == null) {
-            throw new MissingArgumentsException("No port specified");
+            String envPort = System.getenv("PORT");
+            if (envPort == null) {
+                throw new MissingArgumentsException("No port specified");
+            }
+            try {
+                port = Integer.parseInt(envPort);
+            } catch (NumberFormatException e) {
+                throw new ParseArgumentException("Invalid port number");
+            }
         } else if (runningServerPorts.contains(port)) {
             throw new CommandException("Failed to start server. Server is already running on the same port");
         }
