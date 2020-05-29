@@ -116,6 +116,8 @@ public class HtmlDsl {
         return new Form(method, path, elements);
     }
 
+    //TODO: Change input methods to just one that receives Pair<String, String> which represents all attributes desired
+
     public static Element input(Input.InputType type, String name, String value) {
         return new Input(type, name, value);
     }

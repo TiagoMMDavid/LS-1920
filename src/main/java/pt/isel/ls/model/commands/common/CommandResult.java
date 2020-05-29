@@ -15,6 +15,7 @@ public interface CommandResult {
         GetLabelById,
         GetLabels,
         GetRoomById,
+        GetRoomsCreate,
         GetRooms,
         GetRoomsSearch,
         GetRoomsWithLabel,

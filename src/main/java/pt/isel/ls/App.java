@@ -11,6 +11,7 @@ import pt.isel.ls.model.commands.GetLabelByIdCommand;
 import pt.isel.ls.model.commands.GetLabelsCommand;
 import pt.isel.ls.model.commands.GetRoomByIdCommand;
 import pt.isel.ls.model.commands.GetRoomsCommand;
+import pt.isel.ls.model.commands.GetRoomsCreateCommand;
 import pt.isel.ls.model.commands.GetRoomsSearchCommand;
 import pt.isel.ls.model.commands.GetRoomsWithLabelCommand;
 import pt.isel.ls.model.commands.GetTimeCommand;
@@ -205,13 +206,10 @@ public class App {
     }
 
     private static void addCommands() {
-        //Path Templates (shared between different commands)
-        final PathTemplate roomsTemplate = new PathTemplate("/rooms");
-        final PathTemplate labelsTemplate = new PathTemplate("/labels");
-
-        //GET commands
-        router.addRoute(Method.GET, roomsTemplate, new GetRoomsCommand());
+        // GET commands
+        router.addRoute(Method.GET, new PathTemplate("/rooms"), new GetRoomsCommand());
         router.addRoute(Method.GET, new PathTemplate("/rooms/search"), new GetRoomsSearchCommand());
+        router.addRoute(Method.GET, new PathTemplate("/rooms/create"), new GetRoomsCreateCommand());
         router.addRoute(Method.GET, new PathTemplate("/rooms/{rid}"), new GetRoomByIdCommand());
         router.addRoute(Method.GET, new PathTemplate("/rooms/{rid}/bookings"), new GetBookingsByRoomIdCommand());
         router.addRoute(Method.GET, new PathTemplate("/rooms/{rid}/bookings/{bid}"),
@@ -219,27 +217,28 @@ public class App {
         router.addRoute(Method.GET, new PathTemplate("/users"), new GetUsersCommand());
         router.addRoute(Method.GET, new PathTemplate("/users/{uid}"), new GetUserByIdCommand());
         router.addRoute(Method.GET, new PathTemplate("/users/{uid}/bookings"), new GetBookingsByUserIdCommand());
-        router.addRoute(Method.GET, labelsTemplate, new GetLabelsCommand());
+        router.addRoute(Method.GET, new PathTemplate("/labels"), new GetLabelsCommand());
         router.addRoute(Method.GET, new PathTemplate("/labels/{lid}"), new GetLabelByIdCommand());
         router.addRoute(Method.GET, new PathTemplate("/labels/{lid}/rooms"), new GetRoomsWithLabelCommand());
         router.addRoute(Method.GET, new PathTemplate("/time"), new GetTimeCommand());
         router.addRoute(Method.GET, new PathTemplate("/"), new GetHomeCommand());
 
-        //POST commands
-        router.addRoute(Method.POST, roomsTemplate, new PostRoomCommand());
-        router.addRoute(Method.POST, new PathTemplate("/rooms/{rid}/bookings"), new PostBookingInRoomCommand());
-        router.addRoute(Method.POST, new PathTemplate("/users"), new PostUserCommand());
-        router.addRoute(Method.POST, labelsTemplate, new PostLabelCommand());
 
-        //DELETE command
+        // POST commands
+        router.addRoute(Method.POST, new PathTemplate("/rooms/create"), new PostRoomCommand());
+        router.addRoute(Method.POST, new PathTemplate("/rooms/{rid}/bookings/create"), new PostBookingInRoomCommand());
+        router.addRoute(Method.POST, new PathTemplate("/users/create"), new PostUserCommand());
+        router.addRoute(Method.POST, new PathTemplate("/labels/create"), new PostLabelCommand());
+
+        // DELETE command
         router.addRoute(Method.DELETE, new PathTemplate("/rooms/{rid}/bookings/{bid}"),
                 new DeleteBookingInRoomCommand());
 
-        //PUT command
+        // PUT command
         router.addRoute(Method.PUT, new PathTemplate("/rooms/{rid}/bookings/{bid}"),
                 new PutBookingInRoomCommand());
 
-        //EXIT command
+        // EXIT command
         router.addRoute(Method.EXIT, new PathTemplate("/"), new ExitCommand());
 
         // OPTION command

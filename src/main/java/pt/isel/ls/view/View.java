@@ -10,6 +10,7 @@ import pt.isel.ls.view.commandviews.html.GetHomeHtmlView;
 import pt.isel.ls.view.commandviews.html.GetLabelByIdHtmlView;
 import pt.isel.ls.view.commandviews.html.GetLabelsHtmlView;
 import pt.isel.ls.view.commandviews.html.GetRoomByIdHtmlView;
+import pt.isel.ls.view.commandviews.html.GetRoomsCreateHtmlView;
 import pt.isel.ls.view.commandviews.html.GetRoomsHtmlView;
 import pt.isel.ls.view.commandviews.html.GetRoomsSearchHtmlView;
 import pt.isel.ls.view.commandviews.html.GetRoomsWithLabelHtmlView;
@@ -145,6 +146,8 @@ public abstract class View {
                 return new GetRoomByIdHtmlView(commandResult);
             case GetRooms:
                 return new GetRoomsHtmlView(commandResult);
+            case GetRoomsCreate:
+                return new GetRoomsCreateHtmlView(commandResult);
             case GetRoomsWithLabel:
                 return new GetRoomsWithLabelHtmlView(commandResult);
             case GetRoomsSearch:
