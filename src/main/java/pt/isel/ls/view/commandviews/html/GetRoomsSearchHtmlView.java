@@ -26,6 +26,7 @@ import static pt.isel.ls.utils.html.elements.Input.InputType.DATETIME_LOCAL;
 import static pt.isel.ls.utils.html.elements.Input.InputType.NUMBER;
 import static pt.isel.ls.utils.html.elements.Input.InputType.SUBMIT;
 import static pt.isel.ls.utils.html.elements.Input.InputType.TIME;
+import static pt.isel.ls.utils.html.elements.Input.attrib;
 
 public class GetRoomsSearchHtmlView extends HtmlView {
 
@@ -49,20 +50,33 @@ public class GetRoomsSearchHtmlView extends HtmlView {
                                 a("/", "Home"),
                                 h1("Search for desired Room"),
                                 form("get", "/rooms",
-                                    div(
-                                        label("begin", "Enter begin date: "),
-                                        input(DATETIME_LOCAL, "begin", currDate, "begin")
-                                    ),
-                                    div(
-                                        label("duration", "Enter duration time: "),
-                                        input(TIME, "duration", "00:10", "duration")
-                                    ),
-                                    div(
-                                        label("capacity", "Select minimum capacity: "),
-                                        input(NUMBER, "capacity", "1", "capacity", "1")
-                                    ),
-                                    buildLabelCheckboxes(),
-                                    input(SUBMIT, "submit", "Search")
+                                        div(
+                                                label("begin", "Enter begin date: "),
+                                                input(DATETIME_LOCAL,
+                                                        attrib("name", "begin"),
+                                                        attrib("id", "begin"),
+                                                        attrib("value", currDate)
+                                                )
+                                        ),
+                                        div(
+                                                label("duration", "Enter duration time: "),
+                                                input(TIME,
+                                                        attrib("name", "duration"),
+                                                        attrib("id", "duration"),
+                                                        attrib("value", "00:10")
+                                                )
+                                        ),
+                                        div(
+                                                label("capacity", "Select minimum capacity: "),
+                                                input(NUMBER,
+                                                        attrib("name", "capacity"),
+                                                        attrib("id", "capacity"),
+                                                        attrib("value", "1"),
+                                                        attrib("min", "1")
+                                                )
+                                        ),
+                                        buildLabelCheckboxes(),
+                                        input(SUBMIT, attrib("name","submit"), attrib("value","Search"))
                                 )
                         )
                 ).toString();
@@ -76,10 +90,13 @@ public class GetRoomsSearchHtmlView extends HtmlView {
         } else {
             for (Label label : result.getLabels()) {
                 String currLid = "lid" + label.getLid();
-                div.addChild(input(CHECKBOX,
-                        "label",
-                        label.getName(),
-                        currLid));
+                div.addChild(
+                        input(CHECKBOX,
+                                attrib("name", "label"),
+                                attrib("id", currLid),
+                                attrib("value", label.getName())
+                        )
+                );
                 div.addChild(label(currLid, label.getName()));
                 div.addChild(br());
             }

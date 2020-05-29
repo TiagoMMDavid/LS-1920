@@ -16,6 +16,7 @@ import pt.isel.ls.model.commands.sql.TransactionManager;
 import pt.isel.ls.model.paths.Path;
 import pt.isel.ls.view.View;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -87,6 +88,12 @@ public class CommandServlet extends HttpServlet {
                 req.getRequestURI(),
                 resp.getStatus(),
                 resp.getHeader("Content-Type"));
+    }
+
+    //TODO:
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        super.doPost(req, resp);
     }
 
     private CommandResult executeCommand(HttpServletResponse resp, CommandRequest request, CommandHandler handler) {

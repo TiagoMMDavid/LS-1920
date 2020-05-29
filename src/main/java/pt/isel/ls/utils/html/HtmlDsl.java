@@ -1,5 +1,6 @@
 package pt.isel.ls.utils.html;
 
+import pt.isel.ls.utils.Pair;
 import pt.isel.ls.utils.html.elements.Anchor;
 import pt.isel.ls.utils.html.elements.Body;
 import pt.isel.ls.utils.html.elements.Break;
@@ -116,17 +117,7 @@ public class HtmlDsl {
         return new Form(method, path, elements);
     }
 
-    //TODO: Change input methods to just one that receives Pair<String, String> which represents all attributes desired
-
-    public static Element input(Input.InputType type, String name, String value) {
-        return new Input(type, name, value);
-    }
-
-    public static Element input(Input.InputType type, String name, String value, String id) {
-        return new Input(type, name, value, id);
-    }
-
-    public static Element input(Input.InputType type, String name, String value, String id, String min) {
-        return new Input(type, name, value, id, min);
+    public static Element input(Input.InputType type, Pair<String, String>... attributes) {
+        return new Input(type, attributes);
     }
 }

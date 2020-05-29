@@ -23,6 +23,7 @@ import static pt.isel.ls.utils.html.elements.Input.InputType.CHECKBOX;
 import static pt.isel.ls.utils.html.elements.Input.InputType.NUMBER;
 import static pt.isel.ls.utils.html.elements.Input.InputType.SUBMIT;
 import static pt.isel.ls.utils.html.elements.Input.InputType.TEXT;
+import static pt.isel.ls.utils.html.elements.Input.attrib;
 
 public class GetRoomsCreateHtmlView extends HtmlView {
 
@@ -45,22 +46,46 @@ public class GetRoomsCreateHtmlView extends HtmlView {
                                 form("post", "/rooms/create",
                                         div(
                                                 label("name", "Enter name: "),
-                                                input(TEXT, "name", "New Room", "name")
+                                                input(TEXT,
+                                                        attrib("name", "name"),
+                                                        attrib("id", "name"),
+                                                        attrib("placeholder", "Name"),
+                                                        attrib("required", "true"),
+                                                        attrib("pattern", ".*\\S.*"),
+                                                        attrib("maxlength", "30")
+                                                )
                                         ),
                                         div(
                                                 label("description", "Enter description: "),
-                                                input(TEXT, "description", "", "description")
+                                                input(TEXT,
+                                                        attrib("name", "description"),
+                                                        attrib("id", "description"),
+                                                        attrib("placeholder", "Description"),
+                                                        attrib("maxlength", "50")
+                                                )
                                         ),
                                         div(
                                                 label("location", "Enter location: "),
-                                                input(TEXT, "location", "", "location")
+                                                input(TEXT,
+                                                        attrib("name", "location"),
+                                                        attrib("id", "location"),
+                                                        attrib("placeholder", "Location"),
+                                                        attrib("required", "true"),
+                                                        attrib("pattern", ".*\\S.*"),
+                                                        attrib("maxlength", "50")
+                                                )
                                         ),
                                         div(
                                                 label("capacity", "Select minimum capacity: "),
-                                                input(NUMBER, "capacity", "1", "capacity", "1")
+                                                input(NUMBER,
+                                                        attrib("name", "capacity"),
+                                                        attrib("id", "capacity"),
+                                                        attrib("value", "1"),
+                                                        attrib("min", "1")
+                                                )
                                         ),
                                         buildLabelCheckboxes(),
-                                        input(SUBMIT, "submit", "Search")
+                                        input(SUBMIT, attrib("name","submit"), attrib("value","Create"))
                                 )
                         )
                 ).toString();
@@ -74,10 +99,13 @@ public class GetRoomsCreateHtmlView extends HtmlView {
         } else {
             for (Label label : result.getLabels()) {
                 String currLid = "lid" + label.getLid();
-                div.addChild(input(CHECKBOX,
-                        "label",
-                        label.getName(),
-                        currLid));
+                div.addChild(
+                        input(CHECKBOX,
+                            attrib("name", "label"),
+                                attrib("id", currLid),
+                                attrib("value", label.getName())
+                        )
+                );
                 div.addChild(label(currLid, label.getName()));
                 div.addChild(br());
             }
