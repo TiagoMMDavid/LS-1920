@@ -275,8 +275,10 @@ Por fim, é obtida a _View_ correspondente ao comando efetuado, e, utilizando o 
 De modo a averiguar o correto funcionamento do programa é necessário efetuar o processamento de erros e comunicá-los ao utilizador do programa.
 
 Os erros que possam eventualmente ocorrer durante a execução do programa são comunicados através do uso de exceções. Para tal, foram concebidas várias exceções específicas a cada um dos casos que possamos encontrar, tal como:
+
 Quando ocorre um erro genérico:
 * CommandException - Quando há um erro a executar um comando (cada comando é responsável por descrever o erro que ocorreu).
+
 Quando quando ocorre o erro específico (estas classes extendem CommandException): 
 * ExitException - Quando ocorre um erro ao executar uma rotina de saída para dado comando.
 * InvalidIdException - Quando o utilizador fornece um ID inválido.
