@@ -28,7 +28,7 @@ public class GetBookingsByRoomIdCommand implements CommandHandler {
         trans.executeTransaction(con -> {
             PreparedStatement ps = con.prepareStatement("SELECT * "
                     + "FROM BOOKING "
-                    + "WHERE rid = ?");
+                    + "WHERE rid = ? ORDER BY bid");
             int roomId;
             try {
                 roomId = commandRequest.getPath().getInt("rid");

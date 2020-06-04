@@ -10,6 +10,7 @@ import pt.isel.ls.utils.html.elements.Form;
 import pt.isel.ls.utils.html.elements.H1;
 import pt.isel.ls.utils.html.elements.H2;
 import pt.isel.ls.utils.html.elements.Head;
+import pt.isel.ls.utils.html.elements.HorizontalRule;
 import pt.isel.ls.utils.html.elements.Html;
 import pt.isel.ls.utils.html.elements.Input;
 import pt.isel.ls.utils.html.elements.Label;
@@ -99,6 +100,10 @@ public class HtmlDsl {
 
     public static Element br() {
         return new Break();
+    }
+
+    public static Element hr() {
+        return new HorizontalRule();
     }
 
     public static Element a(String href, String text) {

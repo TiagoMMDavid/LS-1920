@@ -20,7 +20,7 @@ public class GetUsersCommand implements CommandHandler {
         TransactionManager trans = commandRequest.getTransactionHandler();
         trans.executeTransaction(con -> {
             PreparedStatement ps = con.prepareStatement("SELECT * "
-                    + "FROM USERS");
+                    + "FROM USERS ORDER BY uid");
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 result.addUser(new User(

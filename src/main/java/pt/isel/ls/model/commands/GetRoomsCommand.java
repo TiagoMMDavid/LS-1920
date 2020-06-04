@@ -87,7 +87,7 @@ public class GetRoomsCommand implements CommandHandler {
                     + "FROM BOOKING JOIN ROOM ON BOOKING.rid = ROOM.rid "
                     + "WHERE (?, ?) OVERLAPS (begin_inst, end_inst)");
         }
-
+        query.append(" ORDER BY rid");
         return query.toString();
     }
 

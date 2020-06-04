@@ -2,6 +2,7 @@ package pt.isel.ls.model.commands.common;
 
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
 
 public class Parameters {
     private HashMap<String, LinkedList<String>> params;
@@ -45,6 +46,10 @@ public class Parameters {
     }
 
     public Iterable<String> getValues(String key) {
+        return params.get(key);
+    }
+
+    public List<String> getValuesAsList(String key) {
         return params.get(key);
     }
 

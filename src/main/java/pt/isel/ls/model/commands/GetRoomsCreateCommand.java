@@ -3,6 +3,7 @@ package pt.isel.ls.model.commands;
 import pt.isel.ls.model.commands.common.CommandHandler;
 import pt.isel.ls.model.commands.common.CommandRequest;
 import pt.isel.ls.model.commands.common.CommandResult;
+import pt.isel.ls.model.commands.common.Parameters;
 import pt.isel.ls.model.commands.common.exceptions.CommandException;
 import pt.isel.ls.model.commands.results.GetRoomsCreateResult;
 import pt.isel.ls.model.commands.sql.TransactionManager;
@@ -31,6 +32,15 @@ public class GetRoomsCreateCommand implements CommandHandler {
             rs.close();
             ps.close();
         });
+        Parameters params = commandRequest.getParams();
+        if (params != null) {
+            result.setError();
+            result.setPreviousName(params.getString("name"));
+            result.setPreviousCapacity(params.getString("capacity"));
+            result.setPreviousDescription(params.getString("description"));
+            result.setPreviousLocation(params.getString("location"));
+            result.setPreviousLabels(params.getValuesAsList("label"));
+        }
         return result;
     }
 

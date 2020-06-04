@@ -15,7 +15,9 @@ import static pt.isel.ls.utils.html.HtmlDsl.br;
 import static pt.isel.ls.utils.html.HtmlDsl.div;
 import static pt.isel.ls.utils.html.HtmlDsl.form;
 import static pt.isel.ls.utils.html.HtmlDsl.h1;
+import static pt.isel.ls.utils.html.HtmlDsl.h2;
 import static pt.isel.ls.utils.html.HtmlDsl.head;
+import static pt.isel.ls.utils.html.HtmlDsl.hr;
 import static pt.isel.ls.utils.html.HtmlDsl.html;
 import static pt.isel.ls.utils.html.HtmlDsl.input;
 import static pt.isel.ls.utils.html.HtmlDsl.label;
@@ -56,7 +58,8 @@ public class GetRoomsSearchHtmlView extends HtmlView {
                                                         attrib("name", "begin"),
                                                         attrib("id", "begin"),
                                                         attrib("value", currDate)
-                                                )
+                                                ),
+                                                br(), br()
                                         ),
                                         div(
                                                 label("duration", "Enter duration time: "),
@@ -64,18 +67,22 @@ public class GetRoomsSearchHtmlView extends HtmlView {
                                                         attrib("name", "duration"),
                                                         attrib("id", "duration"),
                                                         attrib("value", "00:10")
-                                                )
+                                                ),
+                                                br(), br()
                                         ),
                                         div(
                                                 label("capacity", "Select minimum capacity: "),
                                                 input(NUMBER,
                                                         attrib("name", "capacity"),
                                                         attrib("id", "capacity"),
-                                                        attrib("value", "1"),
+                                                        attrib("placeholder", "Capacity"),
                                                         attrib("min", "1")
-                                                )
+                                                ),
+                                                br(), br()
                                         ),
+                                        hr(),
                                         buildLabelCheckboxes(),
+                                        br(),
                                         input(SUBMIT, attrib("name","submit"), attrib("value","Search"))
                                 )
                         )
@@ -88,6 +95,7 @@ public class GetRoomsSearchHtmlView extends HtmlView {
         if (!iter.hasNext()) {
             div.addChild(p("No labels available."));
         } else {
+            div.addChild(h2("Select Labels"));
             for (Label label : result.getLabels()) {
                 String currLid = "lid" + label.getLid();
                 div.addChild(

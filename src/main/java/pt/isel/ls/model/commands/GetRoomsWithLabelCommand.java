@@ -22,7 +22,7 @@ public class GetRoomsWithLabelCommand implements CommandHandler {
         TransactionManager trans = commandRequest.getTransactionHandler();
         trans.executeTransaction(con -> {
             PreparedStatement ps = con.prepareStatement("SELECT ROOM.rid, name, location, capacity "
-                    + "FROM ROOMLABEL INNER JOIN ROOM ON ROOMLABEL.rid = ROOM.rid WHERE lid = ?");
+                    + "FROM ROOMLABEL INNER JOIN ROOM ON ROOMLABEL.rid = ROOM.rid WHERE lid = ? ORDER BY ROOM.rid");
             int labelId;
             try {
                 labelId = commandRequest.getPath().getInt("lid");

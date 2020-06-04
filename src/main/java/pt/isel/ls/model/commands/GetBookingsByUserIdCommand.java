@@ -25,7 +25,7 @@ public class GetBookingsByUserIdCommand implements CommandHandler {
         TransactionManager trans = commandRequest.getTransactionHandler();
         trans.executeTransaction(con -> {
             PreparedStatement ps = con.prepareStatement("SELECT * "
-                    + "FROM BOOKING WHERE uid = ?");
+                    + "FROM BOOKING WHERE uid = ? ORDER BY bid");
             int userId;
             try {
                 userId = commandRequest.getPath().getInt("uid");
