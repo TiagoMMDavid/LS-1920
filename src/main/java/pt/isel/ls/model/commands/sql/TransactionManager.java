@@ -7,6 +7,11 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 public class TransactionManager {
+
+    public static final String  DUPLICATE_COLUMN_ERROR = "23505";
+    public static final String  CONNECTION_REFUSED_ERROR = "08001";
+
+
     private final String connectionUrl;
 
     public TransactionManager(String connectionUrl) {

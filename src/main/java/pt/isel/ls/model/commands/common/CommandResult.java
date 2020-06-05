@@ -21,6 +21,7 @@ public interface CommandResult {
         GetRoomsWithLabel,
         GetTime,
         GetUserById,
+        GetUsersCreate,
         GetUsers,
         Listen,
         Option,

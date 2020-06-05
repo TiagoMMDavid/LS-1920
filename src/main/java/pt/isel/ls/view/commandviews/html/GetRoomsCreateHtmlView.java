@@ -70,6 +70,7 @@ public class GetRoomsCreateHtmlView extends HtmlView {
                                                         attrib("name", "description"),
                                                         attrib("id", "description"),
                                                         attrib("placeholder", "Description"),
+                                                        attrib("pattern", regex),
                                                         attrib("maxlength", "50")
                                                 ),
                                                 br(), br()

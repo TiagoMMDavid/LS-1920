@@ -1,9 +1,10 @@
 package pt.isel.ls.model.commands.results;
 
 import pt.isel.ls.model.commands.common.CommandResult;
+import pt.isel.ls.model.commands.common.PostResult;
 import pt.isel.ls.model.entities.User;
 
-public class PostUserResult implements CommandResult {
+public class PostUserResult implements CommandResult, PostResult {
 
     private boolean hasResult = false;
     private User user;
@@ -25,5 +26,10 @@ public class PostUserResult implements CommandResult {
     @Override
     public CommandResult.ResultType getResultType() {
         return ResultType.PostUser;
+    }
+
+    @Override
+    public String getCreatedId() {
+        return "" + user.getUid();
     }
 }

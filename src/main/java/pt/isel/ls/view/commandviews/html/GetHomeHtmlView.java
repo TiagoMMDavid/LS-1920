@@ -27,7 +27,13 @@ public class GetHomeHtmlView extends HtmlView {
                                 br(), br(),
                                 a("/rooms/search", "Search for Rooms"),
                                 br(), br(),
-                                a("/labels", "View Existing Labels")
+                                a("/labels", "View Existing Labels"),
+                                br(), br(), br(),
+                                a("/users/create", "Create a User"),
+                                br(), br(),
+                                a("/rooms/create", "Create a Room"),
+                                br(), br(),
+                                a("/labels/create", "Create a Label")
                         )
                 ).toString();
     }

@@ -16,6 +16,7 @@ import pt.isel.ls.view.commandviews.html.GetRoomsSearchHtmlView;
 import pt.isel.ls.view.commandviews.html.GetRoomsWithLabelHtmlView;
 import pt.isel.ls.view.commandviews.html.GetTimeHtmlView;
 import pt.isel.ls.view.commandviews.html.GetUserByIdHtmlView;
+import pt.isel.ls.view.commandviews.html.GetUsersCreateHtmlView;
 import pt.isel.ls.view.commandviews.html.GetUsersHtmlView;
 import pt.isel.ls.view.commandviews.html.HttpResponseHtmlView;
 import pt.isel.ls.view.commandviews.html.ListenHtmlView;
@@ -156,6 +157,8 @@ public abstract class View {
                 return new GetTimeHtmlView(commandResult);
             case GetUserById:
                 return new GetUserByIdHtmlView(commandResult);
+            case GetUsersCreate:
+                return new GetUsersCreateHtmlView(commandResult);
             case GetUsers:
                 return new GetUsersHtmlView(commandResult);
             case Listen:

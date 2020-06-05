@@ -28,6 +28,9 @@ import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.util.Map;
 
+import static pt.isel.ls.model.commands.sql.TransactionManager.CONNECTION_REFUSED_ERROR;
+import static pt.isel.ls.model.commands.sql.TransactionManager.DUPLICATE_COLUMN_ERROR;
+
 public class CommandServlet extends HttpServlet {
     private final Router router;
     private final TransactionManager trans;
@@ -75,7 +78,6 @@ public class CommandServlet extends HttpServlet {
                 resp.getHeader("Content-Type"));
     }
 
-    //TODO:
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         log.info("incoming request from {}: method={}, uri={}, query-string={}, accept={}",
@@ -109,9 +111,13 @@ public class CommandServlet extends HttpServlet {
             resp.setHeader("location", result.getCreatedId());
         } else {
             Headers headers = getAccept(req, resp);
-            CommandHandler handler = router.findRoute(Method.GET, path);
-            CommandResult resultView = executeCommand(resp, request, handler);
-            resp.setStatus(400);
+            CommandResult resultView = null;
+
+            // We only want to present the same page when the error is 400 (Bad Request)
+            if (resp.getStatus() == 400) {
+                CommandHandler handler = router.findRoute(Method.GET, path);
+                resultView = executeCommand(resp, request, handler);
+            }
             writeView(resp, headers, resultView);
         }
 
@@ -128,11 +134,23 @@ public class CommandServlet extends HttpServlet {
         if (handler != null) {
             try {
                 result = handler.execute(request);
-                resp.setStatus(200); // OK
             } catch (InvalidIdException e) {
                 resp.setStatus(404); // Not Found
                 log.error(e.getMessage());
-            } catch (SQLException | CommandException e) {
+            } catch (SQLException e) {
+                log.error("SQL ERROR STATE: {}", e.getSQLState());
+                switch (e.getSQLState()) {
+                    case DUPLICATE_COLUMN_ERROR:
+                        resp.setStatus(400); // Bad Request
+                        break;
+                    case CONNECTION_REFUSED_ERROR:
+                        resp.setStatus(500); // Internal Server Error
+                        break;
+                    default:
+                        resp.setStatus(500); // Internal Server Error
+                }
+                log.error(e.getMessage());
+            } catch (CommandException e) {
                 resp.setStatus(500); // Internal Server Error
                 log.error(e.getMessage());
             }
