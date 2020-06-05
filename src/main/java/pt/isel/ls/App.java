@@ -9,6 +9,7 @@ import pt.isel.ls.model.commands.GetBookingsByUserIdCommand;
 import pt.isel.ls.model.commands.GetHomeCommand;
 import pt.isel.ls.model.commands.GetLabelByIdCommand;
 import pt.isel.ls.model.commands.GetLabelsCommand;
+import pt.isel.ls.model.commands.GetLabelsCreateCommand;
 import pt.isel.ls.model.commands.GetRoomByIdCommand;
 import pt.isel.ls.model.commands.GetRoomsCommand;
 import pt.isel.ls.model.commands.GetRoomsCreateCommand;
@@ -215,11 +216,14 @@ public class App {
         router.addRoute(Method.GET, new PathTemplate("/rooms/{rid}/bookings"), new GetBookingsByRoomIdCommand());
         router.addRoute(Method.GET, new PathTemplate("/rooms/{rid}/bookings/{bid}"),
                 new GetBookingByRoomAndBookingIdCommand());
+
         router.addRoute(Method.GET, new PathTemplate("/users"), new GetUsersCommand());
         router.addRoute(Method.GET, new PathTemplate("/users/create"), new GetUsersCreateCommand());
         router.addRoute(Method.GET, new PathTemplate("/users/{uid}"), new GetUserByIdCommand());
         router.addRoute(Method.GET, new PathTemplate("/users/{uid}/bookings"), new GetBookingsByUserIdCommand());
+
         router.addRoute(Method.GET, new PathTemplate("/labels"), new GetLabelsCommand());
+        router.addRoute(Method.GET, new PathTemplate("/labels/create"), new GetLabelsCreateCommand());
         router.addRoute(Method.GET, new PathTemplate("/labels/{lid}"), new GetLabelByIdCommand());
         router.addRoute(Method.GET, new PathTemplate("/labels/{lid}/rooms"), new GetRoomsWithLabelCommand());
         router.addRoute(Method.GET, new PathTemplate("/time"), new GetTimeCommand());

@@ -29,7 +29,7 @@ public class GetRoomsHtmlView extends HtmlView {
                                 title("Rooms")
                         ),
                         body(
-                                a("/", "Home"),
+                                a("/", "Home"), a("/rooms/create", "Create a Room"),
                                 h1("List of Rooms"),
                                 buildLabelInfo()
                         )

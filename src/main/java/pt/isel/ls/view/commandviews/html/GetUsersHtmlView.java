@@ -31,7 +31,7 @@ public class GetUsersHtmlView extends HtmlView {
                                 title("Information of all Users")
                         ),
                         body(
-                                a("/", "Home"),
+                                a("/", "Home"), a("/users/create", "Create a User"),
                                 h1("Information of all Users"),
                                 buildUsersTable(users)
                         )

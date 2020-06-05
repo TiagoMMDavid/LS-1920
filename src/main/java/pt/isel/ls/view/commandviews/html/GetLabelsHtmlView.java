@@ -29,7 +29,7 @@ public class GetLabelsHtmlView extends HtmlView {
                                 title("Labels")
                         ),
                         body(
-                                a("/", "Home"),
+                                a("/", "Home"), a("/labels/create", "Create a Label"),
                                 h1("Information of all Labels"),
                                 buildLabelInfo()
                         )
