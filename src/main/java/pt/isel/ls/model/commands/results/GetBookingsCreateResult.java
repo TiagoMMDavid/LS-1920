@@ -5,12 +5,14 @@ import pt.isel.ls.model.entities.User;
 
 import java.util.LinkedList;
 
+import static pt.isel.ls.model.commands.common.exceptions.CommandException.ExceptionType;
+
 public class GetBookingsCreateResult implements CommandResult {
 
     private String roomId;
     private LinkedList<User> users;
 
-    private boolean wasError = false;
+    private ExceptionType errorType;
     private String previousDuration = "";
     private String previousBeginInst = "";
     private String previousUserId = "";
@@ -56,12 +58,12 @@ public class GetBookingsCreateResult implements CommandResult {
         }
     }
 
-    public boolean wasError() {
-        return wasError;
+    public ExceptionType getErrorType() {
+        return errorType;
     }
 
-    public void setError() {
-        this.wasError = true;
+    public void setError(String errorType) {
+        this.errorType = ExceptionType.valueOf(errorType);
     }
 
     public String getRoomId() {

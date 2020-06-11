@@ -30,7 +30,8 @@ public class GetBookingsByRoomIdHtmlView extends HtmlView {
                                 title("Bookings from Room with ID [" + room.getRid() + "]")
                         ),
                         body(
-                                a("/", "Home"), a("/rooms/" + room.getRid(), "Room [" + room.getRid() + "]"),
+                                a("/", "Home"), a("/rooms/" + room.getRid(), "Return to Room [" + room.getRid() + "]"),
+                                a("/rooms/" + room.getRid() + "/bookings/create", "Create a Booking"),
                                 h1("Information of all Bookings from Room \"" + result.getRoom().getName() + "\""),
                                 buildHtmlBookingInfo(result.getBookings(), room)
                         )

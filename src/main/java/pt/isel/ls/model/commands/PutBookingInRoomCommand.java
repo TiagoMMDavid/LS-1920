@@ -7,6 +7,7 @@ import pt.isel.ls.model.commands.common.Parameters;
 import pt.isel.ls.model.commands.common.exceptions.CommandException;
 import pt.isel.ls.model.commands.common.exceptions.InvalidIdException;
 import pt.isel.ls.model.commands.common.exceptions.MissingArgumentsException;
+import pt.isel.ls.model.commands.common.exceptions.OverlapException;
 import pt.isel.ls.model.commands.common.exceptions.ParseArgumentException;
 import pt.isel.ls.model.commands.results.PutBookingInRoomResult;
 import pt.isel.ls.model.commands.sql.TransactionManager;
@@ -75,7 +76,7 @@ public class PutBookingInRoomCommand implements CommandHandler {
                         throw new InvalidIdException("Booking does not exist");
                     }
                 } else {
-                    throw new CommandException("Could not modify Booking, as it overlaps with an existing one");
+                    throw new OverlapException("Could not modify Booking, as it overlaps with an existing one");
                 }
             } else {
                 throw new MissingArgumentsException();

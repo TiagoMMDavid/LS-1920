@@ -9,4 +9,9 @@ public class MissingArgumentsException extends CommandException {
     public MissingArgumentsException() {
         super("No arguments found / Invalid arguments");
     }
+
+    @Override
+    public ExceptionType getExceptionType() {
+        return ExceptionType.MissingArgumentsException;
+    }
 }

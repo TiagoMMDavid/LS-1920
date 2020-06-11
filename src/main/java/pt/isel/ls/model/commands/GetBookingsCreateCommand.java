@@ -37,7 +37,7 @@ public class GetBookingsCreateCommand implements CommandHandler {
         result.setRoomId(rid);
 
         if (params != null) {
-            result.setError();
+            result.setError(params.getString("errorType"));
             result.setPreviousBeginInst(params.getString("begin"));
             result.setPreviousDuration(params.getString("duration"));
             result.setPreviousUserId(params.getString("uid"));

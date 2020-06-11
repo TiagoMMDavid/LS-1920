@@ -1,13 +1,13 @@
 package pt.isel.ls.model.commands.common.exceptions;
 
-public class ExitException extends CommandException {
+public class ServerException extends CommandException {
 
-    public ExitException(String message) {
+    public ServerException(String message) {
         super(message);
     }
 
     @Override
     public ExceptionType getExceptionType() {
-        return ExceptionType.ExitException;
+        return ExceptionType.ServerException;
     }
 }

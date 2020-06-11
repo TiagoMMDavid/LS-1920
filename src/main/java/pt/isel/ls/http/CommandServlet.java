@@ -141,6 +141,7 @@ public class CommandServlet extends HttpServlet {
                 log.error(e.getMessage());
             } catch (OverlapException | ParseArgumentException e) {
                 resp.setStatus(400); // Bad Request
+                request.getParams().addParam("errorType", e.getExceptionType().name());
                 log.error(e.getMessage());
             } catch (SQLException e) {
                 log.error("SQL ERROR STATE: {}", e.getSQLState());

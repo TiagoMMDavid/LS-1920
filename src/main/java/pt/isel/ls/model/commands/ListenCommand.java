@@ -11,6 +11,7 @@ import pt.isel.ls.model.commands.common.Parameters;
 import pt.isel.ls.model.commands.common.exceptions.CommandException;
 import pt.isel.ls.model.commands.common.exceptions.MissingArgumentsException;
 import pt.isel.ls.model.commands.common.exceptions.ParseArgumentException;
+import pt.isel.ls.model.commands.common.exceptions.ServerException;
 import pt.isel.ls.model.commands.results.ListenResult;
 
 import java.sql.SQLException;
@@ -43,7 +44,7 @@ public class ListenCommand implements CommandHandler {
                 throw new ParseArgumentException("Invalid port number");
             }
         } else if (runningServerPorts.contains(port)) {
-            throw new CommandException("Failed to start server. Server is already running on the same port");
+            throw new ServerException("Failed to start server. Server is already running on the same port");
         }
 
         Server server = new Server(port);
@@ -56,7 +57,7 @@ public class ListenCommand implements CommandHandler {
             server.start();
             runningServerPorts.add(port);
         } catch (Exception e) {
-            throw new CommandException("Failed to start server");
+            throw new ServerException("Failed to start server");
         }
 
         return new ListenResult(server, port);

@@ -1,13 +1,17 @@
 package pt.isel.ls.view.commandviews.html;
 
 import pt.isel.ls.model.commands.common.CommandResult;
+import pt.isel.ls.model.commands.common.exceptions.CommandException;
 import pt.isel.ls.model.commands.results.GetBookingsCreateResult;
 import pt.isel.ls.model.entities.User;
+import pt.isel.ls.utils.DateUtils;
 import pt.isel.ls.utils.html.elements.Element;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
+import static pt.isel.ls.model.commands.common.exceptions.CommandException.ExceptionType.OverlapException;
 import static pt.isel.ls.utils.html.HtmlDsl.a;
 import static pt.isel.ls.utils.html.HtmlDsl.body;
 import static pt.isel.ls.utils.html.HtmlDsl.br;
@@ -19,6 +23,7 @@ import static pt.isel.ls.utils.html.HtmlDsl.html;
 import static pt.isel.ls.utils.html.HtmlDsl.input;
 import static pt.isel.ls.utils.html.HtmlDsl.label;
 import static pt.isel.ls.utils.html.HtmlDsl.option;
+import static pt.isel.ls.utils.html.HtmlDsl.p;
 import static pt.isel.ls.utils.html.HtmlDsl.select;
 import static pt.isel.ls.utils.html.HtmlDsl.title;
 import static pt.isel.ls.utils.html.elements.Input.InputType.DATETIME_LOCAL;
@@ -36,11 +41,10 @@ public class GetBookingsCreateHtmlView extends HtmlView {
 
     @Override
     public String display() {
-        String regex = "^([A-Za-z0-9-_]+ )+[A-Za-z0-9-_]+$|^[A-Za-z0-9-_]+$";
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
         String beginDate = result.getPreviousBeginInst().isEmpty()
-                ? formatter.format(new Date()).replace(' ', 'T')
+                ? formatter.format(DateUtils.roundDateToTenMin(new Date())).replace(' ', 'T')
                 : result.getPreviousBeginInst();
 
         String duration = result.getPreviousDuration().isEmpty() ? "00:10" : result.getPreviousDuration();
@@ -54,6 +58,7 @@ public class GetBookingsCreateHtmlView extends HtmlView {
                         ),
                         body(
                                 a("/", "Home"), a("/rooms/" + roomId, "Return to Room [" + roomId + "]"),
+                                a("/rooms/" + roomId + "/bookings", "Bookings of Room [" + roomId + "]"),
                                 h1("Create a Booking for Room [" + roomId + "]"),
                                 form("post", "/rooms/" + roomId + "/bookings/create",
                                         div(
@@ -66,16 +71,21 @@ public class GetBookingsCreateHtmlView extends HtmlView {
                                                 input(DATETIME_LOCAL,
                                                         attrib("name", "begin"),
                                                         attrib("id", "begin"),
-                                                        attrib("value", beginDate)
+                                                        attrib("value", beginDate),
+                                                        attrib("required", "true"),
+                                                        attrib("step", "600") // 600 seconds = 10 min
                                                 ),
-                                                br(), br()
+                                                p(result.getErrorType() == OverlapException
+                                                        ? "Date overlaps with an existing booking!" : "")
                                         ),
                                         div(
                                                 label("duration", "Enter duration time: "),
                                                 input(TIME,
                                                         attrib("name", "duration"),
                                                         attrib("id", "duration"),
-                                                        attrib("value", duration)
+                                                        attrib("value", duration),
+                                                        attrib("required", "true"),
+                                                        attrib("step", "600")
                                                 ),
                                                 br(), br()
                                         ),

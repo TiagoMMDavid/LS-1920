@@ -32,11 +32,11 @@ public class Parameters {
             }
 
             value = value.replace('+', ' ');
-            addToMap(name, value);
+            addParam(name, value);
         }
     }
 
-    private void addToMap(String name, String value) {
+    public void addParam(String name, String value) {
         LinkedList<String> list = params.get(name);
         if (list == null) {
             list = new LinkedList<>();

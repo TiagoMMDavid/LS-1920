@@ -5,4 +5,9 @@ public class ParseArgumentException extends CommandException {
     public ParseArgumentException(String message) {
         super(message);
     }
+
+    @Override
+    public ExceptionType getExceptionType() {
+        return ExceptionType.ParseArgumentException;
+    }
 }
