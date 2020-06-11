@@ -1,14 +1,12 @@
 package pt.isel.ls.view.commandviews.html;
 
 import pt.isel.ls.model.commands.common.CommandResult;
-import pt.isel.ls.model.commands.common.exceptions.CommandException;
 import pt.isel.ls.model.commands.results.GetBookingsCreateResult;
 import pt.isel.ls.model.entities.User;
 import pt.isel.ls.utils.DateUtils;
 import pt.isel.ls.utils.html.elements.Element;
 
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 
 import static pt.isel.ls.model.commands.common.exceptions.CommandException.ExceptionType.OverlapException;
