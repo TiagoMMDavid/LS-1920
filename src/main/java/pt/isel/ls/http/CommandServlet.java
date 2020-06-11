@@ -12,6 +12,8 @@ import pt.isel.ls.model.commands.common.Parameters;
 import pt.isel.ls.model.commands.common.PostResult;
 import pt.isel.ls.model.commands.common.exceptions.CommandException;
 import pt.isel.ls.model.commands.common.exceptions.InvalidIdException;
+import pt.isel.ls.model.commands.common.exceptions.OverlapException;
+import pt.isel.ls.model.commands.common.exceptions.ParseArgumentException;
 import pt.isel.ls.model.commands.results.HttpResponseResult;
 import pt.isel.ls.model.commands.sql.TransactionManager;
 import pt.isel.ls.model.paths.Path;
@@ -136,6 +138,9 @@ public class CommandServlet extends HttpServlet {
                 result = handler.execute(request);
             } catch (InvalidIdException e) {
                 resp.setStatus(404); // Not Found
+                log.error(e.getMessage());
+            } catch (OverlapException | ParseArgumentException e) {
+                resp.setStatus(400); // Bad Request
                 log.error(e.getMessage());
             } catch (SQLException e) {
                 log.error("SQL ERROR STATE: {}", e.getSQLState());

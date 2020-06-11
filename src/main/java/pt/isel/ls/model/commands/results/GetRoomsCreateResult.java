@@ -3,11 +3,12 @@ package pt.isel.ls.model.commands.results;
 import pt.isel.ls.model.commands.common.CommandResult;
 import pt.isel.ls.model.entities.Label;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class GetRoomsCreateResult implements CommandResult {
 
-    private Iterable<Label> labels;
+    private LinkedList<Label> labels;
 
     private boolean wasError = false;
     private String previousName = "";
@@ -21,8 +22,11 @@ public class GetRoomsCreateResult implements CommandResult {
         return labels;
     }
 
-    public void setLabels(Iterable<Label> labels) {
-        this.labels = labels;
+    public void addLabel(Label label) {
+        if (labels == null) {
+            labels = new LinkedList<>();
+        }
+        labels.add(label);
     }
 
     public void setError() {

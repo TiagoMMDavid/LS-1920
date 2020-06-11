@@ -10,7 +10,7 @@ public class Input extends ElementText {
         TIME,
         SUBMIT,
         CHECKBOX,
-        NUMBER
+        NUMBER,
     }
 
     // Static method to construct input attributes as Pair objects

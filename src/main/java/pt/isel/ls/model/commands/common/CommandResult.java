@@ -11,6 +11,7 @@ public interface CommandResult {
         GetBookingByRoomAndBookingId,
         GetBookingsByRoomId,
         GetBookingsByUserId,
+        GetBookingsCreate,
         GetHome,
         GetLabelById,
         GetLabelsCreate,

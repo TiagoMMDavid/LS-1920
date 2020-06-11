@@ -16,7 +16,9 @@ import pt.isel.ls.utils.html.elements.Input;
 import pt.isel.ls.utils.html.elements.Label;
 import pt.isel.ls.utils.html.elements.List;
 import pt.isel.ls.utils.html.elements.ListElement;
+import pt.isel.ls.utils.html.elements.Option;
 import pt.isel.ls.utils.html.elements.Paragraph;
+import pt.isel.ls.utils.html.elements.Select;
 import pt.isel.ls.utils.html.elements.Table;
 import pt.isel.ls.utils.html.elements.TableData;
 import pt.isel.ls.utils.html.elements.TableDataElement;
@@ -124,5 +126,17 @@ public class HtmlDsl {
 
     public static Element input(Input.InputType type, Pair<String, String>... attributes) {
         return new Input(type, attributes);
+    }
+
+    public static Element select(String name, String id, Element... options) {
+        return new Select(name, id, options);
+    }
+
+    public static Element option(String value, String text) {
+        return new Option(value, text);
+    }
+
+    public static Element option(String value, String text, boolean isSelected) {
+        return new Option(value, text, isSelected);
     }
 }

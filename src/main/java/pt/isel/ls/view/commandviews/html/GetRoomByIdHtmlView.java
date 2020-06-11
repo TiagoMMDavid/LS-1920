@@ -42,7 +42,9 @@ public class GetRoomByIdHtmlView extends HtmlView {
     private Element buildBody(Room room, Iterable<Label> labels) {
         Element body =
                 body(
-                        a("/", "Home"), a("/rooms/search", "Search for Rooms"),
+                        a("/", "Home"),
+                        a("/rooms/" + room.getRid() + "/bookings/create", "Create a Booking"),
+                        a("/rooms/search", "Search for Rooms"),
                         h1("Detailed Information of Room \"" + room.getName() + "\""),
                         buildHtmlRoomInfo()
                 );
