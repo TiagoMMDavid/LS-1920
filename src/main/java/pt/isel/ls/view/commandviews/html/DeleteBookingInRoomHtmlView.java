@@ -24,7 +24,7 @@ public class DeleteBookingInRoomHtmlView extends HtmlView {
                         head(
                                 title("Deleted Booking")
                         ),
-                        body(
+                        body(HTML_DEFAULT_FONT,
                                 h1("Deleted Booking with ID " + booking.getBid())
                         )
                 ).toString();

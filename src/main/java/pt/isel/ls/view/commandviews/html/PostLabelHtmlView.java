@@ -24,7 +24,7 @@ public class PostLabelHtmlView extends HtmlView {
                         head(
                                 title("Post Label")
                         ),
-                        body(
+                        body(HTML_DEFAULT_FONT,
                                 h1(true, "Created Label \"" + label.getName() + "\" with ID " + label.getLid())
                         )
                 ).toString();

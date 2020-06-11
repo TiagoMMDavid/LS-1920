@@ -25,7 +25,7 @@ public class HttpResponseHtmlView extends HtmlView {
                         head(
                                 title("Error " + statusCode)
                         ),
-                        body(
+                        body(HTML_DEFAULT_FONT,
                                 h1(true, "Error " + statusCode + " : " + HttpStatus.getMessage(statusCode))
                         )
                 ).toString();

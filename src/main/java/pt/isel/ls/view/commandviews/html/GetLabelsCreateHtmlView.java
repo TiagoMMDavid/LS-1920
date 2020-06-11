@@ -34,7 +34,7 @@ public class GetLabelsCreateHtmlView extends HtmlView {
                         head(
                                 title("Label Creation")
                         ),
-                        body(
+                        body(HTML_DEFAULT_FONT,
                                 a("/", "Home"),
                                 h1("Create a Label"),
                                 form("post", "/labels/create",

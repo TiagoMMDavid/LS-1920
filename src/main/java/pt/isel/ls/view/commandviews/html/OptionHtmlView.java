@@ -33,7 +33,7 @@ public class OptionHtmlView extends HtmlView {
     }
 
     private Element buildHtmlBody() {
-        Element body = body(
+        Element body = body(HTML_DEFAULT_FONT,
                 h1(true, "List of Commands:")
         );
 

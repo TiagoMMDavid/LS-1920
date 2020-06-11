@@ -28,7 +28,7 @@ public class GetLabelsHtmlView extends HtmlView {
                         head(
                                 title("Labels")
                         ),
-                        body(
+                        body(HTML_DEFAULT_FONT,
                                 a("/", "Home"), a("/labels/create", "Create a Label"),
                                 h1("Information of all Labels"),
                                 buildLabelInfo()

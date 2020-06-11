@@ -24,7 +24,7 @@ public class PostUserHtmlView extends HtmlView {
                         head(
                                 title("Post User")
                         ),
-                        body(
+                        body(HTML_DEFAULT_FONT,
                                 h1(true, "Created User \"" + user.getName() + "\" with ID " + user.getUid())
                         )
                 ).toString();

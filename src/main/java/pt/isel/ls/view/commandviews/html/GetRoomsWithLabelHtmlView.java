@@ -28,7 +28,7 @@ public class GetRoomsWithLabelHtmlView extends HtmlView {
                         head(
                                 title("Rooms with Label [" + result.getLabel().getLid() + "]")
                         ),
-                        body(
+                        body(HTML_DEFAULT_FONT,
                                 a("/", "Home"),
                                 h1("List of Rooms with Label \"" + result.getLabel().getName() + "\""),
                                 buildLabelInfo()

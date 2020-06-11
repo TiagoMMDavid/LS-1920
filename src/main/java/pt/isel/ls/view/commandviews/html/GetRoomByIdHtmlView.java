@@ -41,7 +41,7 @@ public class GetRoomByIdHtmlView extends HtmlView {
 
     private Element buildBody(Room room, Iterable<Label> labels) {
         Element body =
-                body(
+                body(HTML_DEFAULT_FONT,
                         a("/", "Home"),
                         a("/rooms/" + room.getRid() + "/bookings/create", "Create a Booking"),
                         a("/rooms/search", "Search for Rooms"),

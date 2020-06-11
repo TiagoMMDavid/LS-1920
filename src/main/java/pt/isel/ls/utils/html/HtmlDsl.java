@@ -44,6 +44,10 @@ public class HtmlDsl {
         return new Body(elements);
     }
 
+    public static Element body(String font, Element... elements) {
+        return new Body(font, elements);
+    }
+
     public static Element h1(String text) {
         return new H1(text);
     }

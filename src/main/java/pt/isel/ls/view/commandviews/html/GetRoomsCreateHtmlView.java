@@ -44,7 +44,7 @@ public class GetRoomsCreateHtmlView extends HtmlView {
                         head(
                                 title("Room Creation")
                         ),
-                        body(
+                        body(HTML_DEFAULT_FONT,
                                 a("/", "Home"),
                                 h1("Create a Room"),
                                 form("post", "/rooms/create",

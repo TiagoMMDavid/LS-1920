@@ -48,7 +48,7 @@ public class GetRoomsSearchHtmlView extends HtmlView {
                         head(
                                 title("Rooms Search")
                         ),
-                        body(
+                        body(HTML_DEFAULT_FONT,
                                 a("/", "Home"),
                                 h1("Search for desired Room"),
                                 form("get", "/rooms",

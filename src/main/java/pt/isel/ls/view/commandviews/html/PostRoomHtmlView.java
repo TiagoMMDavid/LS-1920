@@ -24,7 +24,7 @@ public class PostRoomHtmlView extends HtmlView {
                         head(
                                 title("Post Room")
                         ),
-                        body(
+                        body(HTML_DEFAULT_FONT,
                                 h1(true, "Created Room \"" + room.getName() + "\" with ID " + room.getRid())
                         )
                 ).toString();

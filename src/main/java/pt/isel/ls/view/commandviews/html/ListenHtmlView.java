@@ -25,7 +25,7 @@ public class ListenHtmlView extends HtmlView {
                         head(
                                 title("Listening on port: " + result.getPort())
                         ),
-                        body(
+                        body(HTML_DEFAULT_FONT,
                                 h1(true, "Servlet now listening on port: " + result.getPort())
                         )
                 );

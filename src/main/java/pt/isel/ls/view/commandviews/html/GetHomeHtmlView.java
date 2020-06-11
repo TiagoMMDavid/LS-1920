@@ -18,7 +18,7 @@ public class GetHomeHtmlView extends HtmlView {
                         head(
                                 title("Home")
                         ),
-                        body(
+                        body(HTML_DEFAULT_FONT,
                                 h1(true, "Welcome to the homepage of Group 8's Project!"),
                                 hr(),
                                 a("/time", "View Current Time"),

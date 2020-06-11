@@ -24,7 +24,7 @@ public class PostBookingInRoomHtmlView extends HtmlView {
                         head(
                                 title("Post Booking")
                         ),
-                        body(
+                        body(HTML_DEFAULT_FONT,
                                 h1(true, "Created Booking with ID " + booking.getBid())
                         )
                 ).toString();

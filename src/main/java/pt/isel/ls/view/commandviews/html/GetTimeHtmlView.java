@@ -29,7 +29,7 @@ public class GetTimeHtmlView extends HtmlView {
                         head(
                                 title("Current Time")
                         ),
-                        body(
+                        body(HTML_DEFAULT_FONT,
                                 a("/", "Home"),
                                 h1("Current Time"),
                                 p(getTime(result.getTime()))

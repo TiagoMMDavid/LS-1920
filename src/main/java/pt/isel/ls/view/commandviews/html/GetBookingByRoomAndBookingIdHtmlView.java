@@ -28,7 +28,7 @@ public class GetBookingByRoomAndBookingIdHtmlView extends HtmlView {
                         head(
                                 title("Booking [" + booking.getBid() + "]")
                         ),
-                        body(
+                        body(HTML_DEFAULT_FONT,
                                 a("/", "Home"),
                                 h1("Detailed Information of Booking with ID [" + booking.getBid() + "]"),
                                 buildHtmlBookingInfo(booking)

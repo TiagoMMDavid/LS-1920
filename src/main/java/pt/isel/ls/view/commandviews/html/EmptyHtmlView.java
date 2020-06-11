@@ -21,7 +21,7 @@ public class EmptyHtmlView extends HtmlView {
                         head(
                                 title("No results")
                         ),
-                        body(
+                        body(HTML_DEFAULT_FONT,
                                 h1(true, "No results found.")
                         )
                 );

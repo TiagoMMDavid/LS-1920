@@ -29,7 +29,7 @@ public class GetBookingsByUserIdHtmlView extends HtmlView {
                         head(
                                 title("Bookings from User with ID [" + uid + "]")
                         ),
-                        body(
+                        body(HTML_DEFAULT_FONT,
                                 a("/", "Home"), a("/users/" + uid, "User [" + uid + "]"),
                                 h1("Information of all Bookings from User with ID [" + uid + "]"),
                                 buildHtmlBookingInfo(result.getBookings())

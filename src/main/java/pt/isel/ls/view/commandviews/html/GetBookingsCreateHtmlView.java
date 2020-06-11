@@ -54,7 +54,7 @@ public class GetBookingsCreateHtmlView extends HtmlView {
                         head(
                                 title("Booking Creation")
                         ),
-                        body(
+                        body(HTML_DEFAULT_FONT,
                                 a("/", "Home"), a("/rooms/" + roomId, "Return to Room [" + roomId + "]"),
                                 a("/rooms/" + roomId + "/bookings", "Bookings of Room [" + roomId + "]"),
                                 h1("Create a Booking for Room [" + roomId + "]"),

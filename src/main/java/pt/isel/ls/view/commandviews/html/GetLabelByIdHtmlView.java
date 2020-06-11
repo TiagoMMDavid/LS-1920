@@ -40,7 +40,7 @@ public class GetLabelByIdHtmlView extends HtmlView {
 
     private Element buildBody(Label label, Iterable<Room> rooms) {
         Element body =
-                body(
+                body(HTML_DEFAULT_FONT,
                         a("/", "Home"), a("/labels", "Labels"),
                         h1("Detailed Information for Label \"" + label.getName() + "\""),
                         buildLabelInfo(label)

@@ -35,7 +35,7 @@ public class GetUsersCreateHtmlView extends HtmlView {
                         head(
                                 title("User Creation")
                         ),
-                        body(
+                        body(HTML_DEFAULT_FONT,
                                 a("/", "Home"),
                                 h1("Create a User"),
                                 form("post", "/users/create",

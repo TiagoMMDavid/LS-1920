@@ -19,7 +19,7 @@ public class NoRouteHtmlView extends HtmlView {
                         head(
                                 title("No representation")
                         ),
-                        body(
+                        body(HTML_DEFAULT_FONT,
                                 h1(true, "Error: No html representation available!")
                         )
                 ).toString();

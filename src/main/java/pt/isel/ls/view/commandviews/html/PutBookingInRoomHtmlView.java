@@ -24,7 +24,7 @@ public class PutBookingInRoomHtmlView extends HtmlView {
                         head(
                                 title("Put Booking")
                         ),
-                        body(
+                        body(HTML_DEFAULT_FONT,
                                 h1(true, "Changed Booking with ID " + booking.getBid())
                         )
                 ).toString();
