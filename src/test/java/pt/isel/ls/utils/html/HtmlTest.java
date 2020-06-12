@@ -23,8 +23,8 @@ public class HtmlTest {
         final String expected =
                 "<!DOCTYPE html>\n"
                 + "<html>\n"
-                +   "\t<head>\n"
-                +       "\t\t<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n"
+                +   "\t<head>"
+                +       "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n"
                 +       "\t\t<title>The title</title>\n"
                 +   "\t</head>\n"
                 +   "\t<body>\n"
@@ -52,8 +52,8 @@ public class HtmlTest {
         final String expected =
                "<!DOCTYPE html>\n"
                + "<html>\n"
-               + "\t<head>\n"
-               + "\t\t<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n"
+               + "\t<head>"
+               + "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n"
                + "\t\t<title>The title</title>\n"
                + "\t</head>\n"
                + "\t<body>\n"
@@ -107,8 +107,8 @@ public class HtmlTest {
         final String expected =
                 "<!DOCTYPE html>\n"
                 + "<html>\n"
-                + "\t<head>\n"
-                + "\t\t<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n"
+                + "\t<head>"
+                + "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n"
                 + "\t\t<title>The title</title>\n"
                 + "\t</head>\n"
                 + "\t<body>\n"

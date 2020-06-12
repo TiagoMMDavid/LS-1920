@@ -61,8 +61,10 @@ public class GetUserByIdHtmlView extends HtmlView {
         return new HtmlTableBuilder<>(bookings)
                 .withColumn("Booking ID",
                     booking -> a("/rooms/" + booking.getRid() + "/bookings/" + booking.getBid(), "" + booking.getBid()))
-                .withColumn("Begin Date", booking -> DateUtils.formatDate(booking.getBeginInst(), "dd-MM-yyyy HH:mm (z)"))
-                .withColumn("End Date", booking -> DateUtils.formatDate(booking.getEndInst(), "dd-MM-yyyy HH:mm (z)"))
+                .withColumn("Begin Date",
+                    booking -> DateUtils.formatDate(booking.getBeginInst(), "dd-MM-yyyy HH:mm (z)"))
+                .withColumn("End Date",
+                    booking -> DateUtils.formatDate(booking.getEndInst(), "dd-MM-yyyy HH:mm (z)"))
                 .build();
     }
 }
