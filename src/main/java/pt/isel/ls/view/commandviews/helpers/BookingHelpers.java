@@ -1,6 +1,7 @@
 package pt.isel.ls.view.commandviews.helpers;
 
 import pt.isel.ls.model.entities.Booking;
+import pt.isel.ls.utils.DateUtils;
 
 import java.util.Date;
 
@@ -8,13 +9,13 @@ public class BookingHelpers {
     public static void appendEndInst(Booking booking, StringBuilder builder) {
         Date date = booking.getEndInst();
         builder.append("End Date:\t\t");
-        builder.append(date == null ? "N/A" : date);
+        builder.append(date == null ? "N/A" : DateUtils.formatDate(date, "dd-MM-yyyy HH:mm (z)"));
     }
 
     public static void appendBeginInst(Booking booking, StringBuilder builder) {
         Date date = booking.getBeginInst();
         builder.append("Begin Date:\t\t");
-        builder.append(date == null ? "N/A" : date);
+        builder.append(date == null ? "N/A" : DateUtils.formatDate(date, "dd-MM-yyyy HH:mm (z)"));
     }
 
     public static  void appendRid(Booking booking, StringBuilder builder) {

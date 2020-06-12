@@ -2,6 +2,7 @@ package pt.isel.ls.view.commandviews.helpers;
 
 import pt.isel.ls.model.entities.Booking;
 import pt.isel.ls.model.entities.User;
+import pt.isel.ls.utils.DateUtils;
 
 public class UserHelpers {
 
@@ -36,10 +37,10 @@ public class UserHelpers {
             builder.append(booking.getBid());
             builder.append("\n");
             builder.append("\t\tBegin Instant: ");
-            builder.append(booking.getBeginInst());
+            builder.append(DateUtils.formatDate(booking.getBeginInst(), "dd-MM-yyyy HH:mm (z)"));
             builder.append("\n");
             builder.append("\t\tEnd Instant: ");
-            builder.append(booking.getEndInst());
+            builder.append(DateUtils.formatDate(booking.getEndInst(), "dd-MM-yyyy HH:mm (z)"));
         }
     }
 }

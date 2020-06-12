@@ -4,6 +4,7 @@ import pt.isel.ls.model.commands.common.CommandResult;
 import pt.isel.ls.model.commands.results.GetBookingsByRoomIdResult;
 import pt.isel.ls.model.entities.Booking;
 import pt.isel.ls.model.entities.Room;
+import pt.isel.ls.utils.DateUtils;
 import pt.isel.ls.utils.html.HtmlTableBuilder;
 import pt.isel.ls.utils.html.elements.Element;
 
@@ -42,8 +43,8 @@ public class GetBookingsByRoomIdHtmlView extends HtmlView {
         return new HtmlTableBuilder<>(bookings)
                 .withColumn("Booking ID",
                     booking -> a("/rooms/" + room.getRid() + "/bookings/" + booking.getBid(), "" + booking.getBid()))
-                .withColumn("Begin Date", Booking::getBeginInst)
-                .withColumn("End Date", Booking::getEndInst)
+                .withColumn("Begin Date", booking -> DateUtils.formatDate(booking.getBeginInst(), "dd-MM-yyyy HH:mm (z)"))
+                .withColumn("End Date", booking -> DateUtils.formatDate(booking.getEndInst(), "dd-MM-yyyy HH:mm (z)"))
                 .build();
     }
 }

@@ -109,7 +109,7 @@ public class CommandServlet extends HttpServlet {
         }
 
         if (result != null) {
-            resp.setStatus(301); // Permanently Moved / Redirect
+            resp.setStatus(303); // See Other / Redirect
             resp.setHeader("location", result.getCreatedId());
         } else {
             Headers headers = getAccept(req, resp);

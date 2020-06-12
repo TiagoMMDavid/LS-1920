@@ -3,6 +3,7 @@ package pt.isel.ls.view.commandviews.html;
 import pt.isel.ls.model.commands.common.CommandResult;
 import pt.isel.ls.model.commands.results.GetBookingByRoomAndBookingIdResult;
 import pt.isel.ls.model.entities.Booking;
+import pt.isel.ls.utils.DateUtils;
 import pt.isel.ls.utils.html.elements.Element;
 
 import static pt.isel.ls.utils.html.HtmlDsl.a;
@@ -51,8 +52,8 @@ public class GetBookingByRoomAndBookingIdHtmlView extends HtmlView {
                 )
         );
 
-        bookingInfo.addChild(li("Begin Date: " + booking.getBeginInst()));
-        bookingInfo.addChild(li("End Date: " + booking.getEndInst()));
+        bookingInfo.addChild(li("Begin Date: " + DateUtils.formatDate(booking.getBeginInst(), "dd-MM-yyyy HH:mm (z)")));
+        bookingInfo.addChild(li("End Date: " + DateUtils.formatDate(booking.getEndInst(), "dd-MM-yyyy HH:mm (z)")));
         return bookingInfo;
     }
 }
