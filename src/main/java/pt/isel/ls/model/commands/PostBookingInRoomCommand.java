@@ -34,10 +34,12 @@ public class PostBookingInRoomCommand implements CommandHandler {
                             + "(uid, rid, begin_inst, end_inst) Values(?,?,?,?)",
                     Statement.RETURN_GENERATED_KEYS
             );
+
             Parameters params = commandRequest.getParams();
             if (params == null) {
                 throw new MissingArgumentsException("No parameters specified");
             }
+
             Integer uid;
             Integer rid;
             try {
@@ -46,6 +48,7 @@ public class PostBookingInRoomCommand implements CommandHandler {
             } catch (NumberFormatException e) {
                 throw new InvalidIdException("Invalid User ID or Room ID");
             }
+
             String duration = params.getString("duration");
             String begin = params.getString("begin");
             if (uid != null && rid != null && duration != null && begin != null) {

@@ -16,7 +16,11 @@ public class GetLabelsCreateCommand implements CommandHandler {
         GetLabelsCreateResult result = new GetLabelsCreateResult();
         Parameters params = commandRequest.getParams();
         if (params != null) {
-            result.setError();
+            result.setError(
+                    params.getString("errorType"),
+                    params.getString("errorMessage"),
+                    params.getString("validatedString"));
+
             result.setPreviousName(params.getString("name"));
         }
         return result;

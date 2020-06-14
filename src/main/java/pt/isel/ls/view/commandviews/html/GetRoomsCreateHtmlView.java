@@ -27,6 +27,7 @@ import static pt.isel.ls.utils.html.elements.Input.InputType.NUMBER;
 import static pt.isel.ls.utils.html.elements.Input.InputType.SUBMIT;
 import static pt.isel.ls.utils.html.elements.Input.InputType.TEXT;
 import static pt.isel.ls.utils.html.elements.Input.attrib;
+import static pt.isel.ls.view.commandviews.helpers.ErrorHelper.getResultError;
 
 public class GetRoomsCreateHtmlView extends HtmlView {
 
@@ -38,14 +39,14 @@ public class GetRoomsCreateHtmlView extends HtmlView {
 
     @Override
     public String display() {
-        String regex = "^([A-Za-z0-9-_]+ )+[A-Za-z0-9-_]+$|^[A-Za-z0-9-_]+$";
+        String regex = "^(?! )[^<>]*(?<! )$";
         return
                 html(
                         head(
                                 title("Room Creation")
                         ),
                         body(HTML_DEFAULT_FONT,
-                                a("/", "Home"),
+                                a("/", "Home"), a("/rooms/search", "Search for Rooms"),
                                 h1("Create a Room"),
                                 form("post", "/rooms/create",
                                         div(
@@ -59,9 +60,11 @@ public class GetRoomsCreateHtmlView extends HtmlView {
                                                         attrib("pattern", regex),
                                                         attrib("maxlength", "30")
                                                 ),
-                                                p(result.wasError()
-                                                        ? "Name '" + result.getPreviousName() + "' already exists!"
-                                                        : "")
+                                                p(
+                                                        70, "red",
+                                                        getResultError(result,
+                                                                "name", "Name", result.getPreviousName())
+                                                )
                                         ),
                                         div(
                                                 label("description", "Enter description: "),
@@ -73,7 +76,11 @@ public class GetRoomsCreateHtmlView extends HtmlView {
                                                         attrib("pattern", regex),
                                                         attrib("maxlength", "50")
                                                 ),
-                                                br(), br()
+                                                p(
+                                                        70, "red",
+                                                        getResultError(result, "description",
+                                                                "Description", result.getPreviousDescription())
+                                                )
                                         ),
                                         div(
                                                 label("location", "Enter location: "),
@@ -86,7 +93,11 @@ public class GetRoomsCreateHtmlView extends HtmlView {
                                                         attrib("pattern", regex),
                                                         attrib("maxlength", "50")
                                                 ),
-                                                br(), br()
+                                                p(
+                                                        70, "red",
+                                                        getResultError(result,
+                                                                "location", "Location", result.getPreviousLocation())
+                                                )
                                         ),
                                         div(
                                                 label("capacity", "Enter capacity: "),

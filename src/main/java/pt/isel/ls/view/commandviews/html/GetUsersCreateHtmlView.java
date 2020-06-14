@@ -18,6 +18,7 @@ import static pt.isel.ls.utils.html.HtmlDsl.title;
 import static pt.isel.ls.utils.html.elements.Input.InputType.SUBMIT;
 import static pt.isel.ls.utils.html.elements.Input.InputType.TEXT;
 import static pt.isel.ls.utils.html.elements.Input.attrib;
+import static pt.isel.ls.view.commandviews.helpers.ErrorHelper.getResultError;
 
 public class GetUsersCreateHtmlView extends HtmlView {
 
@@ -29,14 +30,14 @@ public class GetUsersCreateHtmlView extends HtmlView {
 
     @Override
     public String display() {
-        String regex = "^([A-Za-z0-9-_]+ )+[A-Za-z0-9-_]+$|^[A-Za-z0-9-_]+$";
+        String regex = "^(?! )[^<>]*(?<! )$";
         return
                 html(
                         head(
                                 title("User Creation")
                         ),
                         body(HTML_DEFAULT_FONT,
-                                a("/", "Home"),
+                                a("/", "Home"), a("/users", "View Existing Users"),
                                 h1("Create a User"),
                                 form("post", "/users/create",
                                         div(
@@ -50,7 +51,11 @@ public class GetUsersCreateHtmlView extends HtmlView {
                                                         attrib("pattern", regex),
                                                         attrib("maxlength", "50")
                                                 ),
-                                                br(), br()
+                                                p(
+                                                        70, "red",
+                                                        getResultError(result,
+                                                                "name", "Name", result.getPreviousName())
+                                                )
                                         ),
                                         div(
                                                 label("email", "Enter email: "),
@@ -61,9 +66,11 @@ public class GetUsersCreateHtmlView extends HtmlView {
                                                         attrib("placeholder", "Email"),
                                                         attrib("maxlength", "50")
                                                 ),
-                                                p(result.wasError()
-                                                        ? "Email '" + result.getPreviousEmail() + "' already exists!"
-                                                        : "")
+                                                p(
+                                                        70, "red",
+                                                        getResultError(result,
+                                                                "email", "Email", result.getPreviousEmail())
+                                                )
                                         ),
                                         br(),
                                         input(SUBMIT, attrib("name","submit"), attrib("value","Create"))

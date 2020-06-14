@@ -1,18 +1,16 @@
 package pt.isel.ls.model.commands.results;
 
 import pt.isel.ls.model.commands.common.CommandResult;
+import pt.isel.ls.model.commands.common.ValidatedResult;
 import pt.isel.ls.model.entities.User;
 
 import java.util.LinkedList;
 
-import static pt.isel.ls.model.commands.common.exceptions.CommandException.ExceptionType;
-
-public class GetBookingsCreateResult implements CommandResult {
+public class GetBookingsCreateResult extends ValidatedResult implements CommandResult {
 
     private String roomId;
     private LinkedList<User> users;
 
-    private ExceptionType errorType;
     private String previousDuration = "";
     private String previousBeginInst = "";
     private String previousUserId = "";
@@ -24,12 +22,10 @@ public class GetBookingsCreateResult implements CommandResult {
         users.add(user);
     }
 
-    public Iterable<User> getUsers() {
-        return users;
-    }
-
-    public String getPreviousDuration() {
-        return previousDuration;
+    public void setPreviousUserId(String previousUserId) {
+        if (previousUserId != null) {
+            this.previousUserId = previousUserId;
+        }
     }
 
     public void setPreviousDuration(String previousDuration) {
@@ -38,40 +34,34 @@ public class GetBookingsCreateResult implements CommandResult {
         }
     }
 
-    public String getPreviousBeginInst() {
-        return previousBeginInst;
-    }
-
     public void setPreviousBeginInst(String previousBeginInst) {
         if (previousBeginInst != null) {
             this.previousBeginInst = previousBeginInst;
         }
     }
 
+    public void setRoomId(String roomId) {
+        this.roomId = roomId;
+    }
+
+    public Iterable<User> getUsers() {
+        return users;
+    }
+
+    public String getPreviousDuration() {
+        return previousDuration;
+    }
+
+    public String getPreviousBeginInst() {
+        return previousBeginInst;
+    }
+
     public String getPreviousUserId() {
         return previousUserId;
     }
 
-    public void setPreviousUserId(String previousUserId) {
-        if (previousUserId != null) {
-            this.previousUserId = previousUserId;
-        }
-    }
-
-    public ExceptionType getErrorType() {
-        return errorType;
-    }
-
-    public void setError(String errorType) {
-        this.errorType = ExceptionType.valueOf(errorType);
-    }
-
     public String getRoomId() {
         return roomId;
-    }
-
-    public void setRoomId(String roomId) {
-        this.roomId = roomId;
     }
 
     @Override

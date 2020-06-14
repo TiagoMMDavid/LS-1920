@@ -1,16 +1,12 @@
 package pt.isel.ls.model.commands.results;
 
 import pt.isel.ls.model.commands.common.CommandResult;
+import pt.isel.ls.model.commands.common.ValidatedResult;
 
-public class GetUsersCreateResult implements CommandResult {
+public class GetUsersCreateResult extends ValidatedResult implements CommandResult {
 
-    private boolean wasError = false;
     private String previousName = "";
     private String previousEmail = "";
-
-    public void setError() {
-        wasError = true;
-    }
 
     public void setPreviousName(String previousName) {
         if (previousName != null) {
@@ -22,10 +18,6 @@ public class GetUsersCreateResult implements CommandResult {
         if (previousEmail != null) {
             this.previousEmail = previousEmail;
         }
-    }
-
-    public boolean wasError() {
-        return wasError;
     }
 
     public String getPreviousName() {

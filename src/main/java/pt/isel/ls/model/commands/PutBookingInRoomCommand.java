@@ -33,11 +33,13 @@ public class PutBookingInRoomCommand implements CommandHandler {
                             + "SET uid = ?, begin_inst = ?, end_inst = ? "
                             + "WHERE rid = ? AND bid = ?"
             );
+
             Parameters params = commandRequest.getParams();
             Path path = commandRequest.getPath();
             if (params == null) {
                 throw new MissingArgumentsException("No parameters specified");
             }
+
             Integer uid;
             Integer rid;
             Integer bid;
@@ -48,6 +50,7 @@ public class PutBookingInRoomCommand implements CommandHandler {
             } catch (NumberFormatException e) {
                 throw new InvalidIdException("Invalid Room, Booking or User ID");
             }
+
             String duration = params.getString("duration");
             String begin = params.getString("begin");
             if (uid != null && rid != null && bid != null && duration != null && begin != null) {

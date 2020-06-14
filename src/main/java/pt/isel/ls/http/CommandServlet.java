@@ -11,9 +11,11 @@ import pt.isel.ls.model.commands.common.Method;
 import pt.isel.ls.model.commands.common.Parameters;
 import pt.isel.ls.model.commands.common.PostResult;
 import pt.isel.ls.model.commands.common.exceptions.CommandException;
+import pt.isel.ls.model.commands.common.exceptions.CommandException.ExceptionType;
 import pt.isel.ls.model.commands.common.exceptions.InvalidIdException;
 import pt.isel.ls.model.commands.common.exceptions.OverlapException;
 import pt.isel.ls.model.commands.common.exceptions.ParseArgumentException;
+import pt.isel.ls.model.commands.common.exceptions.ValidationException;
 import pt.isel.ls.model.commands.results.HttpResponseResult;
 import pt.isel.ls.model.commands.sql.TransactionManager;
 import pt.isel.ls.model.paths.Path;
@@ -143,10 +145,17 @@ public class CommandServlet extends HttpServlet {
                 resp.setStatus(400); // Bad Request
                 request.getParams().addParam("errorType", e.getExceptionType().name());
                 log.error(e.getMessage());
+            } catch (ValidationException e) {
+                resp.setStatus(400); // Bad Request
+                Parameters params = request.getParams();
+                params.addParam("errorType", e.getExceptionType().name());
+                params.addParam("errorMessage", e.getErrorMessage());
+                params.addParam("validatedString", e.getValidatedString());
             } catch (SQLException e) {
                 log.error("SQL ERROR STATE: {}", e.getSQLState());
                 switch (e.getSQLState()) {
                     case DUPLICATE_COLUMN_ERROR:
+                        request.getParams().addParam("errorType", ExceptionType.DuplicateColumnError.name());
                         resp.setStatus(400); // Bad Request
                         break;
                     case CONNECTION_REFUSED_ERROR:
@@ -161,7 +170,7 @@ public class CommandServlet extends HttpServlet {
                 log.error(e.getMessage());
             }
         } else {
-            resp.setStatus(404);
+            resp.setStatus(404); // Not Found
         }
         return result;
     }

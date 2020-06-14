@@ -8,7 +8,11 @@ public abstract class CommandException extends Exception {
         MissingArgumentsException,
         OverlapException,
         ParseArgumentException,
-        ServerException
+        ServerException,
+        ValidationException,
+
+        //SQL Exceptions
+        DuplicateColumnError
     }
 
     public CommandException(String message) {

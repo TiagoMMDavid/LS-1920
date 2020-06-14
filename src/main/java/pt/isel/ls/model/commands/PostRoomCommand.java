@@ -19,6 +19,7 @@ import java.sql.Statement;
 import java.sql.Types;
 import java.util.LinkedList;
 
+import static pt.isel.ls.model.commands.common.Validator.validateString;
 import static pt.isel.ls.model.commands.helpers.DatabaseDataHelper.getLids;
 
 public class PostRoomCommand implements CommandHandler {
@@ -50,7 +51,10 @@ public class PostRoomCommand implements CommandHandler {
                 throw new ParseArgumentException("Capacity must be higher than 0");
             }
 
-            if (name != null && location != null) {
+            if (name != null && validateString(name, "name", 30)
+                    && location != null && validateString(location, "location", 50)
+                    && validateString(description, "description", 50)) {
+
                 ps.setString(1, name);
                 ps.setString(2, description);
                 ps.setString(3, location);

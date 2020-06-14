@@ -1,24 +1,16 @@
 package pt.isel.ls.model.commands.results;
 
 import pt.isel.ls.model.commands.common.CommandResult;
+import pt.isel.ls.model.commands.common.ValidatedResult;
 
-public class GetLabelsCreateResult implements CommandResult {
+public class GetLabelsCreateResult extends ValidatedResult implements CommandResult {
 
-    private boolean wasError = false;
     private String previousName = "";
-
-    public void setError() {
-        wasError = true;
-    }
 
     public void setPreviousName(String previousName) {
         if (previousName != null) {
             this.previousName = previousName;
         }
-    }
-
-    public boolean wasError() {
-        return wasError;
     }
 
     public String getPreviousName() {

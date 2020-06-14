@@ -36,7 +36,7 @@ public class GetUserByIdHtmlView extends HtmlView {
                                 title("User [" + user.getUid() + "]")
                         ),
                         body(HTML_DEFAULT_FONT,
-                                a("/", "Home"), a("/users", "Users"),
+                                a("/", "Home"), a("/users", "View Existing Users"),
                                 h1("Detailed information of User \"" + user.getName() + "\""),
                                 buildUserInfo(user),
                                 buildBookingInfo(bookings)

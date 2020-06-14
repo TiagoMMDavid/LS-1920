@@ -16,7 +16,11 @@ public class GetUsersCreateCommand implements CommandHandler {
         GetUsersCreateResult result = new GetUsersCreateResult();
         Parameters params = commandRequest.getParams();
         if (params != null) {
-            result.setError();
+            result.setError(
+                    params.getString("errorType"),
+                    params.getString("errorMessage"),
+                    params.getString("validatedString"));
+
             result.setPreviousName(params.getString("name"));
             result.setPreviousEmail(params.getString("email"));
         }

@@ -31,7 +31,11 @@ public class GetRoomsCreateCommand implements CommandHandler {
         });
         Parameters params = commandRequest.getParams();
         if (params != null) {
-            result.setError();
+            result.setError(
+                    params.getString("errorType"),
+                    params.getString("errorMessage"),
+                    params.getString("validatedString"));
+
             result.setPreviousName(params.getString("name"));
             result.setPreviousCapacity(params.getString("capacity"));
             result.setPreviousDescription(params.getString("description"));

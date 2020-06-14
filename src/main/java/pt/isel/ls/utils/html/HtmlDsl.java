@@ -64,6 +64,18 @@ public class HtmlDsl {
         return new Paragraph(text);
     }
 
+    public static Element p(String color, String text) {
+        return new Paragraph(color, text);
+    }
+
+    public static Element p(float fontSizePercentage, String text) {
+        return new Paragraph(fontSizePercentage, text);
+    }
+
+    public static Element p(float fontSizePercentage, String color, String text) {
+        return new Paragraph(fontSizePercentage, color, text);
+    }
+
     public static Element table(Element... elements) {
         return table(1, elements);
     }

@@ -17,6 +17,7 @@ import static pt.isel.ls.utils.html.HtmlDsl.title;
 import static pt.isel.ls.utils.html.elements.Input.InputType.SUBMIT;
 import static pt.isel.ls.utils.html.elements.Input.InputType.TEXT;
 import static pt.isel.ls.utils.html.elements.Input.attrib;
+import static pt.isel.ls.view.commandviews.helpers.ErrorHelper.getResultError;
 
 public class GetLabelsCreateHtmlView extends HtmlView {
 
@@ -28,14 +29,14 @@ public class GetLabelsCreateHtmlView extends HtmlView {
 
     @Override
     public String display() {
-        String regex = "^([A-Za-z0-9-_]+ )+[A-Za-z0-9-_]+$|^[A-Za-z0-9-_]+$";
+        String regex = "^(?! )[^<>]*(?<! )$";
         return
                 html(
                         head(
                                 title("Label Creation")
                         ),
                         body(HTML_DEFAULT_FONT,
-                                a("/", "Home"),
+                                a("/", "Home"), a("/labels", "View Existing Labels"),
                                 h1("Create a Label"),
                                 form("post", "/labels/create",
                                         div(
@@ -49,9 +50,11 @@ public class GetLabelsCreateHtmlView extends HtmlView {
                                                         attrib("pattern", regex),
                                                         attrib("maxlength", "30")
                                                 ),
-                                                p(result.wasError()
-                                                        ? "Name '" + result.getPreviousName() + "' already exists!"
-                                                        : "")
+                                                p(
+                                                        70, "red",
+                                                        getResultError(result,
+                                                                "name", "Name", result.getPreviousName())
+                                                )
                                         ),
                                         input(SUBMIT, attrib("name","submit"), attrib("value","Create"))
                                 )

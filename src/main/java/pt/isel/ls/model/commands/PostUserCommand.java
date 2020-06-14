@@ -15,6 +15,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import static pt.isel.ls.model.commands.common.Validator.validateString;
+
 public class PostUserCommand implements CommandHandler {
     @Override
     public CommandResult execute(CommandRequest commandRequest) throws CommandException, SQLException {
@@ -31,7 +33,9 @@ public class PostUserCommand implements CommandHandler {
             }
             String name = params.getString("name");
             String email = params.getString("email");
-            if (name != null && email != null) {
+            if (name != null && validateString(name, "name", 50)
+                    && email != null && validateString(email, "email", 50)) {
+
                 ps.setString(1, name);
                 ps.setString(2, email);
                 ps.executeUpdate();

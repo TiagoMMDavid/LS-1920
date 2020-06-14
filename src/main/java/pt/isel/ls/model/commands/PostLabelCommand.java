@@ -15,6 +15,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import static pt.isel.ls.model.commands.common.Validator.validateString;
+
 
 public class PostLabelCommand implements CommandHandler {
 
@@ -33,7 +35,7 @@ public class PostLabelCommand implements CommandHandler {
                 throw new MissingArgumentsException("No parameters specified");
             }
             String label = params.getString("name");
-            if (label != null) {
+            if (label != null && validateString(label, "name", 30)) {
                 ps.setString(1, label);
                 ps.executeUpdate();
 

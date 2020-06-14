@@ -1,36 +1,27 @@
 package pt.isel.ls.model.commands.results;
 
 import pt.isel.ls.model.commands.common.CommandResult;
+import pt.isel.ls.model.commands.common.ValidatedResult;
 import pt.isel.ls.model.entities.Label;
 
 import java.util.LinkedList;
 import java.util.List;
 
-public class GetRoomsCreateResult implements CommandResult {
+public class GetRoomsCreateResult extends ValidatedResult implements CommandResult {
 
     private LinkedList<Label> labels;
 
-    private boolean wasError = false;
     private String previousName = "";
     private String previousDescription = "";
     private String previousLocation = "";
     private String previousCapacity = "";
     private List<String> previousLabels;
 
-
-    public Iterable<Label> getLabels() {
-        return labels;
-    }
-
     public void addLabel(Label label) {
         if (labels == null) {
             labels = new LinkedList<>();
         }
         labels.add(label);
-    }
-
-    public void setError() {
-        wasError = true;
     }
 
     public void setPreviousName(String previousName) {
@@ -61,8 +52,8 @@ public class GetRoomsCreateResult implements CommandResult {
         this.previousLabels = previousLabels;
     }
 
-    public boolean wasError() {
-        return wasError;
+    public Iterable<Label> getLabels() {
+        return labels;
     }
 
     public String getPreviousName() {

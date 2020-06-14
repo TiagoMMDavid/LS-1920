@@ -34,6 +34,7 @@ import pt.isel.ls.model.commands.common.Headers;
 import pt.isel.ls.model.commands.common.Method;
 import pt.isel.ls.model.commands.common.Parameters;
 import pt.isel.ls.model.commands.common.exceptions.ExitException;
+import pt.isel.ls.model.commands.common.exceptions.ValidationException;
 import pt.isel.ls.model.commands.sql.TransactionManager;
 import pt.isel.ls.model.paths.Path;
 import pt.isel.ls.model.paths.PathTemplate;
@@ -44,8 +45,12 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.sql.SQLException;
 import java.util.LinkedList;
 import java.util.Scanner;
+
+import static pt.isel.ls.model.commands.sql.TransactionManager.CONNECTION_REFUSED_ERROR;
+import static pt.isel.ls.model.commands.sql.TransactionManager.DUPLICATE_COLUMN_ERROR;
 
 public class App {
     private static final TransactionManager trans = new TransactionManager(System.getenv("JDBC_DATABASE_URL"));
@@ -149,6 +154,21 @@ public class App {
                 displayResult(result, headers);
                 addExitRoutine(result);
             }
+        } catch (SQLException e) {
+            switch (e.getSQLState()) {
+                case DUPLICATE_COLUMN_ERROR:
+                    System.out.println("Error: Inserted data conflicts with an existing entry in the database.\n");
+                    break;
+                case CONNECTION_REFUSED_ERROR:
+                    System.out.println("Error: Could not connect to database.\n");
+                    break;
+                default:
+                    System.out.println(e.getMessage() + "\n");
+            }
+            return true;
+        } catch (ValidationException e) {
+            System.out.println(e.getMessage() + " (in: '" + e.getValidatedString() + "')\n");
+            return true;
         } catch (Exception e) {
             System.out.println(e.getMessage() + "\n");
             return true;
