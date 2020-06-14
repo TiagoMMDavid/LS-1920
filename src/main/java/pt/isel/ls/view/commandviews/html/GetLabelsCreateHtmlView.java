@@ -53,7 +53,7 @@ public class GetLabelsCreateHtmlView extends HtmlView {
                                                 p(
                                                         70, "red",
                                                         getResultError(result,
-                                                                "name", "Name", result.getPreviousName())
+                                                                "name", "Name", result.getPreviousName(), false)
                                                 )
                                         ),
                                         input(SUBMIT, attrib("name","submit"), attrib("value","Create"))

@@ -54,7 +54,7 @@ public class GetUsersCreateHtmlView extends HtmlView {
                                                 p(
                                                         70, "red",
                                                         getResultError(result,
-                                                                "name", "Name", result.getPreviousName())
+                                                                "name", "Name", result.getPreviousName(), true)
                                                 )
                                         ),
                                         div(
@@ -69,7 +69,7 @@ public class GetUsersCreateHtmlView extends HtmlView {
                                                 p(
                                                         70, "red",
                                                         getResultError(result,
-                                                                "email", "Email", result.getPreviousEmail())
+                                                                "email", "Email", result.getPreviousEmail(), false)
                                                 )
                                         ),
                                         br(),

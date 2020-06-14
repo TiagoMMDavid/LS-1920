@@ -63,7 +63,7 @@ public class GetRoomsCreateHtmlView extends HtmlView {
                                                 p(
                                                         70, "red",
                                                         getResultError(result,
-                                                                "name", "Name", result.getPreviousName())
+                                                                "name", "Name", result.getPreviousName(), false)
                                                 )
                                         ),
                                         div(
@@ -79,7 +79,7 @@ public class GetRoomsCreateHtmlView extends HtmlView {
                                                 p(
                                                         70, "red",
                                                         getResultError(result, "description",
-                                                                "Description", result.getPreviousDescription())
+                                                                "Description", result.getPreviousDescription(), true)
                                                 )
                                         ),
                                         div(
@@ -95,8 +95,8 @@ public class GetRoomsCreateHtmlView extends HtmlView {
                                                 ),
                                                 p(
                                                         70, "red",
-                                                        getResultError(result,
-                                                                "location", "Location", result.getPreviousLocation())
+                                                        getResultError(result, "location",
+                                                                "Location", result.getPreviousLocation(), true)
                                                 )
                                         ),
                                         div(
