@@ -73,8 +73,10 @@ public class GetBookingsCreateHtmlView extends HtmlView {
                                                         attrib("required", "true"),
                                                         attrib("step", "600") // 600 seconds = 10 min
                                                 ),
-                                                p(result.getErrorType() == OverlapException
-                                                        ? "Date overlaps with an existing booking!" : "")
+                                                p(
+                                                        70, "red",
+                                                        result.getErrorType() == OverlapException
+                                                            ? "Date overlaps with an existing booking!" : "")
                                         ),
                                         div(
                                                 label("duration", "Enter duration time: "),

@@ -48,7 +48,8 @@ public class Headers {
     }
 
     public String getFirst(String header) {
-        return headers.get(header).get(0);
+        LinkedList<String> values = headers.get(header);
+        return values != null ? values.get(0) : null;
     }
 
     public Iterable<String> getValues(String header) {
