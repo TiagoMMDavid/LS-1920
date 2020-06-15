@@ -265,31 +265,56 @@ Esta classe conta com os seguintes campos, sendo muito semelhante à classe _App
 * TransactionManager trans – Que servirá de interface com a base de dados.
 * Logger log – Um _logger_ que usufrui da _library_ SLF4J (Simple Logger Factory 4 Java), que é utilizado para debug e apresentação de dados do pedido e da resposta.
 
+#### doGet
+
 Foi necessário efetuar um _Override_ do método _doGet_ da _library_ do _servlet_. Este método recebe uma _HttpServletRequest_ e uma _HttpServletResponse_, e a sua função é preencher a resposta com os dados em formato HTML ou texto, dependendo do _header_ fornecido.
 Para obter o _CommandHandler_ correspondente a um pedido é necessário extrair do mesmo o _Path_ através do seu _URI_,  os parâmetros que se encontram na _Query String_ do pedido, sendo obtida através do método _getQueryString()_. Para além disto, é também necessário obter os _headers_ (neste caso, só nos vamos preocupar com o _header accept_). Para tal, é usado o método _getHeader(“Accept”)_ do pedido.
 Tendo agora o caminho completo tal como na classe _App_, basta efetuar o _findRoute()_ com o caminho obtido, e executar o comando resultante dessa pesquisa.
 Por fim, é obtida a _View_ correspondente ao comando efetuado, e, utilizando o _OutputStream_ da resposta, são colocados os _Bytes_ da _String_ resultante da representação visual do comando no corpo da resposta. 
 
+#### doPost
+
+Para além do método _doGet_ foi também pedido o suporte para os comandos com método `POST` na interface HTTP. Para tal, foi necessário realizar formulários para criação de cada um dos recursos (Rooms, Bookings, Labels e Users), que seguiram a seguinte estrutura:
+
+*	Um método `GET` - retorna a representação em formato HTML de um formulário de preenchimento de dados.
+
+*	Um método `POST` - efetua a criação do recurso passado como parâmetro, e fornece um link que redireciona o utilizador para a página com os detalhes do recurso criado. Caso existam erros, é retornado um formulário em formato HTML pré-preenchido com a informação submetida, apresentando os erros por baixo de dados onde ocorreram.
+
+Após a submissão, é realizado um pedido `POST` ao caminho do recurso associado ao formulário. 
+À semelhança do pedido _doGet_ realizado no último tópico, é passado um pedido (_HttpServletRequest_) e uma resposta (_HttpServletResponse_) como parâmetro, sendo apenas necessário o preenchimento do conteúdo dessa resposta. Para tal, extraímos a informação contida no pedido, tal como foi realizado no pedido anterior. Assim sendo, é obtido o _Handler_ correspondente a essa informação.
+
+Neste caso, cada um dos comandos _POST_ nos _Handlers_ implementa a interface _PostResult_. Esta interface é apenas composta por um método, que retornará o ID do recurso criado, caso tenha êxito na execução do comando.
+
+Após a execução do comando, se o resultado não tiver erros, será dado o _Status Code_ 303, contendo no _header_ _Location_ o link para o recurso criado, redirecionando o utilizador para a página detalhada do respetivo recurso. Caso ocorram erros, é efetuado um pedido `GET`, no mesmo _Path_ e com a mesma informação presente no pedido inicial, assim como informações relativas ao erro ocorrido. Ao executar o comando associado a esse _Path_, irá ser retornada a _View_ que reflete um formulário de criação, pré-preenchido com a informação válida, apresentando erros onde tenham sido introduzidos dados inválidos.
+
+
 ### Processamento de erros
 
 De modo a averiguar o correto funcionamento do programa é necessário efetuar o processamento de erros e comunicá-los ao utilizador do programa.
 
-Os erros que possam eventualmente ocorrer durante a execução do programa são comunicados através do uso de exceções. Para tal, foram concebidas várias exceções específicas a cada um dos casos que possamos encontrar, tal como:
+Os erros que possam eventualmente ocorrer durante a execução do programa são comunicados através do uso de exceções. Para tal, foram concebidas várias exceções específicas a cada um dos casos que possamos encontrar.
 
-Quando ocorre um erro genérico:
-* CommandException - Quando há um erro a executar um comando (cada comando é responsável por descrever o erro que ocorreu).
+Todas as exceções desenvolvidas estendem da classe abstrata *CommandException*. Esta possui um enumerado que define o tipo de exceção, de modo a serem identificadas fora do modelo da aplicação, e um método abstrato para retornar o devido tipo de exceção.
 
-Quando quando ocorre o erro específico (estas classes extendem CommandException): 
-* ExitException - Quando ocorre um erro ao executar uma rotina de saída para dado comando.
-* InvalidIdException - Quando o utilizador fornece um ID inválido.
-* MissingArgumentsException - Quando o utilizador não fornece argumentos, aplica-se especificamente a comandos encarregues de colocar nova informação na base de dados (POST e PUT).
-* ParseArgumentException – Quando o utilizador não introduz um argumento no formato correto, ou não suportado.
+Dispondo do tipo base para a exceção, foram implementadas as seguintes exceções que estendem de *CommandException*: 
+* ExitException - Dado quando ocorre um erro ao executar uma rotina de saída para dado comando.
+* InvalidIdException - Dado quando o utilizador fornece um ID inválido.
+* MissingArgumentsException - Dado quando o utilizador não fornece argumentos, aplica-se especificamente a comandos encarregues de colocar nova informação na base de dados (POST e PUT).
+* OverlapException - Dado quando o utilizador tenta inserir um Booking num horário que já se encontra preenchido.
+* ParseArgumentException – Dado quando o utilizador não introduz um argumento no formato correto, ou não suportado.
+* ServerException - Dado quando ocorre um erro interno no servidor.
+* ValidationException - Dado quando ocorre um erro de validação de dados introduzidos pelo utilizador.
+* DuplicateColumnError - Erro relativo à base de dados, é dado quando se tenta inserir um tuplo que já existe.
 
 Na introdução de um comando também são feitas verificações, no entanto, a informação é simplesmente apresentada na janela da consola. Neste processo é verificado se o comando passado à aplicação se encontra descrito de maneira correta. Esta verificação é feita por partes, começando pela verificação da existência de um método, passando à verificação dos _headers_ e parâmetros, e finalmente à verificação do *path*. Cabe às classes representantes de cada um destes tipos efetuar a verificação dos mesmos. No caso desta falhar, estas devem lançar uma exceção contendo uma mensagem de erro informativa. Quando se executa um comando, a App irá apanhar eventuais exceções lançadas pelo mesmo, apresentando a mensagem da mesma ao utilizador. Cabe aos _handlers_ preencherem esta mensagem na exceção lançada. 
 Do lado _HTML_ foi concebida a classe _HttpResponseView_, que se encarrega de apresentar os _status codes_ dos erros que possam ocorrer aquando da execução de um comando. O _status code_ a ser representado depende da exceção que ocorreu no processo de execução:
 * InvalidIdException corresponde ao _status code_ 404 (Not Found), visto que não é possível encontrar o que utilizador pede.
-* SQLException (que faz parte da _library JDBC_), CommandException ou IllegalArgumentException (quando se realiza o parse dos parâmetros) correspondem ao _status code_ 500 (Internal Server Error), que indica que houve um erro interno no servidor.
+* OverlapException, ParseArgumentException e ValidationException correspondem todos ao _status code_ 400 (Bad Request), que significa que houve um argumento inválido relativamente à informação que o utilizador forneceu. Caso o erro aconteça num pedido GET, o HTML apenas deve apresentar que houve erro, já para um pedido POST, é necessário reencaminhar o utilizador para o formulário de criação da devida entidade e apresentar o respetivo erro
+* SQLException (que faz parte da _library JDBC_) pode ter várias representações. Uma das representações aplica-se ao _status code_ 500 (Interval Server Error) quando são problemas relativos ao servidor, como por exemplo o mesmo se desliga a meio do pedido. Já a outra é relativa à inserção de dados que já se encontram na base de dados. Nestes casos, é aplicado o _status code_ 400 (Bad Request) de modo a avisar ao utilizador que a informação já está presente na base de dados.
 * Quando o utilizador introduz um comando que não tem representação em formato HTML, é aplicado o _status code_ 406 (Not Acceptable). 
+* CommandException, ou seja, as exceções que derivam desta que não estão contidas nas anteriores. Nestes casos é utilizado o _status code_ 500 (Interval Server Error)
+
+Relativamente à representação em HTML dos erros foi criada a classe *ErrorHelper* que apenas contém um método que obtém uma String correspondente a dado erro. Este método verifica vários tipos de exceções presentes no enumerado *ExceptionType* e retorna a String adequada em função do erro presente no resultado.
 
 ## Validator
 De maneira a facilitar a deteção de erros e aumentar a segurança durante a inserção de dados pelo utilizador (impedir, por exemplo, ataques XSS), foi criada a classe *Validator*, que será utilizada nos Handlers dos métodos POST e PUT. Esta classe contém apenas o método `validateString`, que verifica uma dada String, retornando `true` caso a validação tenha sucesso. Caso a validação falhe, é lançada uma exceção do tipo *ValidationException*, sendo que para lançar a mesma, é necessário passar-lhe o nome da String validada, assim como uma mensagem sobre o erro de validação. A razão pela qual é passado o nome da String deve-se ao facto de possibilitar a passagem do nome do campo que falhou a validação durante a execução de um comando, a um outro comando por parâmetro. Isto faz com que seja possível, por exemplo, mostrar uma mensagem de erro ao utilizador num formulário HTML, mesmo por baixo do campo em questão.
