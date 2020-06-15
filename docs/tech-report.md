@@ -309,6 +309,24 @@ Do lado _HTML_ foi concebida a classe _HttpResponseView_, que se encarrega de ap
 * SQLException (que faz parte da _library JDBC_), CommandException ou IllegalArgumentException (quando se realiza o parse dos parâmetros) correspondem ao _status code_ 500 (Internal Server Error), que indica que houve um erro interno no servidor.
 * Quando o utilizador introduz um comando que não tem representação em formato HTML, é aplicado o _status code_ 406 (Not Acceptable). 
 
+## Validator
+De maneira a facilitar a deteção de erros e aumentar a segurança durante a inserção de dados pelo utilizador (impedir, por exemplo, ataques XSS), foi criada a classe *Validator*, que será utilizada nos Handlers dos métodos POST e PUT. Esta classe contém apenas o método `validateString`, que verifica uma dada String, retornando `true` caso a validação tenha sucesso. Caso a validação falhe, é lançada uma exceção do tipo *ValidationException*, sendo que para lançar a mesma, é necessário passar-lhe o nome da String validada, assim como uma mensagem sobre o erro de validação. A razão pela qual é passado o nome da String deve-se ao facto de possibilitar a passagem do nome do campo que falhou a validação durante a execução de um comando, a um outro comando por parâmetro. Isto faz com que seja possível, por exemplo, mostrar uma mensagem de erro ao utilizador num formulário HTML, mesmo por baixo do campo em questão.
+
+Foi criado também um outro tipo de *Result* denominado *ValidatedResult*, que específica tipos de resultados de comandos que necessitam de receber informações acerca de validações, como por exemplo, comandos de criação de formulários, de maneira a apresentar mensagens de erro no sitio adequado. Este tipo de resultado contém as seguintes informações:
+
+* errorType: O tipo de erro que ocorreu no comando (valor de enumerado *CommandException.ExceptionType*);
+* errorMessage: Mensagem que descreve o tipo de erro que ocorreu;
+* validatedStringName: O nome do parâmetro que foi alvo de validação.
+
+No contexto da aplicação, os resultados que estendem esta classe são apenas os relacionados com a criação de formulários HTML para criação de utilizadores, reservas, salas e *labels*.
+
+Como também foi dito acima, esta classe conta apenas com a presença de um único método, cuja função é apenas verificar Strings. O método `validateString` verifica as seguintes condições:
+
+* A não existência de espaços em branco antes e depois da String;
+* A não ultrapassagem do tamanho máximo permitido (passado por parâmetro);
+* A não existência de caracteres utilizados em HTML (<>).
+
+Caso fosse necessário verificar um outro tipo de dados, como por exemplo datas, bastava apenas adicionar um método novo a esta classe, assim como efetuar o seu chamamento nos handlers correspondentes.
 
 ## Avaliação crítica
 
