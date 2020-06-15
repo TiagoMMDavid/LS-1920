@@ -7,7 +7,7 @@ import pt.isel.ls.utils.ExitRoutine;
 
 public class ListenResult implements CommandResult {
 
-    private boolean hasResult = false;
+    private boolean hasResult;
     private int port;
     private Server server;
 

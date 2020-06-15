@@ -312,10 +312,9 @@ Caso fosse necessário verificar um outro tipo de dados, como por exemplo datas,
 
 ## Avaliação crítica
 
-À medida que se desenvolveu o projeto, demos conta de alguns defeitos que podem vir a prejudicar o desenvolvimento (nomeadamente no que toca à complexidade temporal, e no acesso à base de dados).
+À medida que se desenvolveu o projeto, demos conta de alguns defeitos que podem vir a prejudicar o desempenho (nomeadamente no que toca à complexidade temporal, e no acesso à base de dados).
 Entre eles achamos pertinente destacar:
 * Repetição de código em todos os Handlers, para efetuar o acesso à base de dados;
 * Algoritmo de procura de HandlerNodes não revela ser o mais eficiente;
-* Foram apenas implementados os _status codes_ necessário no contexto da aplicação desenvolvida, portanto é possível abrangir todos os _status codes_ que possam eventualmente surgir.
-
-Para a próxima fase podemos melhorar os aspetos referidos na lista anterior, tanto como há sempre a possibilidade de encontrarmos mais defeitos e necessitarmos de soluções para os mesmos. É possível que o código não esteja completamente legível, ou com falta de comentários, no entanto, isso é um esforço que tem de ser feito ao longo do desenvolvimento. Dito isto, esperemos melhorar na próxima fase em todas as vertentes.
+* Foram apenas implementados os _status codes_ necessários no contexto da aplicação desenvolvida, portanto não é possível abrangir todos os _status codes_ que possam eventualmente surgir durante a execução;
+* A produção de formulários HTML não se revela ser a mais eficiente, devido à não existência de uma classe de geração dos mesmos;
