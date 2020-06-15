@@ -265,10 +265,28 @@ Esta classe conta com os seguintes campos, sendo muito semelhante à classe _App
 * TransactionManager trans – Que servirá de interface com a base de dados.
 * Logger log – Um _logger_ que usufrui da _library_ SLF4J (Simple Logger Factory 4 Java), que é utilizado para debug e apresentação de dados do pedido e da resposta.
 
+#### doGet
+
 Foi necessário efetuar um _Override_ do método _doGet_ da _library_ do _servlet_. Este método recebe uma _HttpServletRequest_ e uma _HttpServletResponse_, e a sua função é preencher a resposta com os dados em formato HTML ou texto, dependendo do _header_ fornecido.
 Para obter o _CommandHandler_ correspondente a um pedido é necessário extrair do mesmo o _Path_ através do seu _URI_,  os parâmetros que se encontram na _Query String_ do pedido, sendo obtida através do método _getQueryString()_. Para além disto, é também necessário obter os _headers_ (neste caso, só nos vamos preocupar com o _header accept_). Para tal, é usado o método _getHeader(“Accept”)_ do pedido.
 Tendo agora o caminho completo tal como na classe _App_, basta efetuar o _findRoute()_ com o caminho obtido, e executar o comando resultante dessa pesquisa.
 Por fim, é obtida a _View_ correspondente ao comando efetuado, e, utilizando o _OutputStream_ da resposta, são colocados os _Bytes_ da _String_ resultante da representação visual do comando no corpo da resposta. 
+
+#### doPost
+
+Para além do método _doGet_ foi também pedido o suporte para os comandos com método `POST` na interface HTTP. Para tal, foi necessário realizar formulários para criação de cada um dos recursos (Rooms, Bookings, Labels e Users), que seguiram a seguinte estrutura:
+
+*	Um método `GET` - retorna a representação em formato HTML de um formulário de preenchimento de dados.
+
+*	Um método `POST` - efetua a criação do recurso passado como parâmetro, e fornece um link que redireciona o utilizador para a página com os detalhes do recurso criado. Caso existam erros, é retornado um formulário em formato HTML pré-preenchido com a informação submetida, apresentando os erros por baixo de dados onde ocorreram.
+
+Após a submissão, é realizado um pedido `POST` ao caminho do recurso associado ao formulário. 
+À semelhança do pedido _doGet_ realizado no último tópico, é passado um pedido (_HttpServletRequest_) e uma resposta (_HttpServletResponse_) como parâmetro, sendo apenas necessário o preenchimento do conteúdo dessa resposta. Para tal, extraímos a informação contida no pedido, tal como foi realizado no pedido anterior. Assim sendo, é obtido o _Handler_ correspondente a essa informação.
+
+Neste caso, cada um dos comandos _POST_ nos _Handlers_ implementa a interface _PostResult_. Esta interface é apenas composta por um método, que retornará o ID do recurso criado, caso tenha êxito na execução do comando.
+
+Após a execução do comando, se o resultado não tiver erros, será dado o _Status Code_ 303, contendo no _header_ _Location_ o link para o recurso criado, redirecionando o utilizador para a página detalhada do respetivo recurso. Caso ocorram erros, é efetuado um pedido `GET`, no mesmo _Path_ e com a mesma informação presente no pedido inicial, assim como informações relativas ao erro ocorrido. Ao executar o comando associado a esse _Path_, irá ser retornada a _View_ que reflete um formulário de criação, pré-preenchido com a informação válida, apresentando erros onde tenham sido introduzidos dados inválidos.
+
 
 ### Processamento de erros
 
@@ -297,6 +315,25 @@ Do lado _HTML_ foi concebida a classe _HttpResponseView_, que se encarrega de ap
 * CommandException, ou seja, as exceções que derivam desta que não estão contidas nas anteriores. Nestes casos é utilizado o _status code_ 500 (Interval Server Error)
 
 Relativamente à representação em HTML dos erros foi criada a classe *ErrorHelper* que apenas contém um método que obtém uma String correspondente a dado erro. Este método verifica vários tipos de exceções presentes no enumerado *ExceptionType* e retorna a String adequada em função do erro presente no resultado.
+
+## Validator
+De maneira a facilitar a deteção de erros e aumentar a segurança durante a inserção de dados pelo utilizador (impedir, por exemplo, ataques XSS), foi criada a classe *Validator*, que será utilizada nos Handlers dos métodos POST e PUT. Esta classe contém apenas o método `validateString`, que verifica uma dada String, retornando `true` caso a validação tenha sucesso. Caso a validação falhe, é lançada uma exceção do tipo *ValidationException*, sendo que para lançar a mesma, é necessário passar-lhe o nome da String validada, assim como uma mensagem sobre o erro de validação. A razão pela qual é passado o nome da String deve-se ao facto de possibilitar a passagem do nome do campo que falhou a validação durante a execução de um comando, a um outro comando por parâmetro. Isto faz com que seja possível, por exemplo, mostrar uma mensagem de erro ao utilizador num formulário HTML, mesmo por baixo do campo em questão.
+
+Foi criado também um outro tipo de *Result* denominado *ValidatedResult*, que específica tipos de resultados de comandos que necessitam de receber informações acerca de validações, como por exemplo, comandos de criação de formulários, de maneira a apresentar mensagens de erro no sitio adequado. Este tipo de resultado contém as seguintes informações:
+
+* errorType: O tipo de erro que ocorreu no comando (valor de enumerado *CommandException.ExceptionType*);
+* errorMessage: Mensagem que descreve o tipo de erro que ocorreu;
+* validatedStringName: O nome do parâmetro que foi alvo de validação.
+
+No contexto da aplicação, os resultados que estendem esta classe são apenas os relacionados com a criação de formulários HTML para criação de utilizadores, reservas, salas e *labels*.
+
+Como também foi dito acima, esta classe conta apenas com a presença de um único método, cuja função é apenas verificar Strings. O método `validateString` verifica as seguintes condições:
+
+* A não existência de espaços em branco antes e depois da String;
+* A não ultrapassagem do tamanho máximo permitido (passado por parâmetro);
+* A não existência de caracteres utilizados em HTML (<>).
+
+Caso fosse necessário verificar um outro tipo de dados, como por exemplo datas, bastava apenas adicionar um método novo a esta classe, assim como efetuar o seu chamamento nos handlers correspondentes.
 
 ## Avaliação crítica
 
