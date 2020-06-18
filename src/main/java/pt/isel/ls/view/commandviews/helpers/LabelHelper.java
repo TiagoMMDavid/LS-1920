@@ -7,6 +7,12 @@ import pt.isel.ls.model.entities.Room;
 import java.util.Iterator;
 
 public class LabelHelper {
+
+    /**
+     * These methods are responsible for appending specific Label information to the
+     * StringBuilder that's passed as a parameter
+     */
+
     public static void appendName(Label label, StringBuilder builder) {
         String name = label.getName();
         if (name != null) {

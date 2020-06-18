@@ -6,12 +6,18 @@ public abstract class ValidatedResult {
 
     private CommandException.ExceptionType errorType;
     private String errorMessage;
-    private String validatedStringName;
+    private String validatedParamName;
 
-    public void setError(String errorType, String errorMessage, String validatedString) {
+    /**
+     * Sets the validation error type
+     * @param errorType the error type
+     * @param errorMessage the message representing the error
+     * @param validatedParam the name of the validated parameter
+     */
+    public void setError(String errorType, String errorMessage, String validatedParam) {
         this.errorType = CommandException.ExceptionType.valueOf(errorType);
         this.errorMessage = errorMessage;
-        this.validatedStringName = validatedString;
+        this.validatedParamName = validatedParam;
     }
 
     public CommandException.ExceptionType getErrorType() {
@@ -22,7 +28,7 @@ public abstract class ValidatedResult {
         return errorMessage;
     }
 
-    public String getValidatedStringName() {
-        return validatedStringName;
+    public String getValidatedParamName() {
+        return validatedParamName;
     }
 }

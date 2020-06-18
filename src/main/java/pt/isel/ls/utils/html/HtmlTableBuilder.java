@@ -25,6 +25,11 @@ public class HtmlTableBuilder<T> {
         return this;
     }
 
+    /**
+     * Builds a Table Element.
+     * Each column contains a Pair of a String and a Function<T,Object>.
+     * The String is used to represent the column name while the Function is used to get each row's content
+     */
     public Element build() {
         Element table = table();
         Element tableHeaders = tr();

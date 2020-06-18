@@ -12,6 +12,10 @@ public class Parameters {
         processParams(params);
     }
 
+    /**
+     * Process the given parameters String
+     * @param params the String containing the parameters and their value
+     */
     private void processParams(String params) {
         String[] splitParams = params.split("&");
         for (String param: splitParams) {
@@ -36,6 +40,11 @@ public class Parameters {
         }
     }
 
+    /**
+     * Adds a Parameter to the map. In case the parameter already exists, then add a new value to it.
+     * @param name the Parameter's name
+     * @param value the Parameter's value
+     */
     public void addParam(String name, String value) {
         LinkedList<String> list = params.get(name);
         if (list == null) {
@@ -45,21 +54,41 @@ public class Parameters {
         params.put(name, list);
     }
 
-    public Iterable<String> getValues(String key) {
-        return params.get(key);
+    /**
+     * Gets every value of a given Parameter
+     * @param paramName the Parameter's name
+     * @return the Parameter's values
+     */
+    public Iterable<String> getValues(String paramName) {
+        return params.get(paramName);
     }
 
-    public List<String> getValuesAsList(String key) {
-        return params.get(key);
+    /**
+     * Gets every value of a given Parameter as a List
+     * @param paramName the Parameter's name
+     * @return the Parameter's values
+     */
+    public List<String> getValuesAsList(String paramName) {
+        return params.get(paramName);
     }
 
-    public String getString(String varName) {
-        LinkedList<String> curr = params.get(varName);
+    /**
+     * Gets the first value of a given Parameter as a String
+     * @param paramName the Parameter's name
+     * @return the first value of the Parameter
+     */
+    public String getString(String paramName) {
+        LinkedList<String> curr = params.get(paramName);
         return curr == null ? null : curr.getFirst();
     }
 
-    public Integer getInt(String varName) throws NumberFormatException {
-        String res = getString(varName);
+    /**
+     * Gets the first value of a given Parameter as an Integer
+     * @param paramName the Parameter's name
+     * @return the first value of the Parameter
+     */
+    public Integer getInt(String paramName) throws NumberFormatException {
+        String res = getString(paramName);
         return res == null ? null : Integer.parseInt(res);
     }
 }
