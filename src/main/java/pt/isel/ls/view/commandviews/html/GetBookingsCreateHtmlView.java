@@ -42,7 +42,7 @@ public class GetBookingsCreateHtmlView extends HtmlView {
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
         String beginDate = result.getPreviousBeginInst().isEmpty()
-                ? formatter.format(DateUtils.roundDateToTenMin(new Date())).replace(' ', 'T')
+                ? formatter.format(DateUtils.roundDateToXMin(new Date(), 10)).replace(' ', 'T')
                 : result.getPreviousBeginInst();
 
         String duration = result.getPreviousDuration().isEmpty() ? "00:10" : result.getPreviousDuration();

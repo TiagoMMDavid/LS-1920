@@ -1,7 +1,5 @@
 package pt.isel.ls.model.commands.common;
 
-import pt.isel.ls.utils.ExitRoutine;
-
 public interface CommandResult {
 
     /**

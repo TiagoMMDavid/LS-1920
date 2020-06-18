@@ -36,16 +36,16 @@ public class DateUtils {
     // Rounds date passed as argument to the closest multiple of ten minute value
 
     /**
-     * Rounds a date to ten minutes, as in, sums the necessary amount to get to the next multiple of ten
+     * Rounds a date to x minutes, as in, sums the necessary amount to get to the next multiple of x
      * @param date Date to be rounded
      * @return The rounded date
      */
-    public static Date roundDateToTenMin(Date date) {
+    public static Date roundDateToXMin(Date date, int x) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
         int unroundedMinutes = calendar.get(Calendar.MINUTE);
-        int mod = unroundedMinutes % 10;
-        calendar.add(Calendar.MINUTE, mod == 0 ? 10 : 10 - mod);
+        int mod = unroundedMinutes % x;
+        calendar.add(Calendar.MINUTE, mod == 0 ? x : x - mod);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
         return calendar.getTime();

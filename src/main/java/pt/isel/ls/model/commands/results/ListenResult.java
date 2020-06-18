@@ -3,7 +3,7 @@ package pt.isel.ls.model.commands.results;
 import org.eclipse.jetty.server.Server;
 import pt.isel.ls.model.commands.common.CommandResult;
 import pt.isel.ls.model.commands.common.exceptions.ExitException;
-import pt.isel.ls.utils.ExitRoutine;
+import pt.isel.ls.model.commands.common.ExitRoutine;
 
 public class ListenResult implements CommandResult {
 

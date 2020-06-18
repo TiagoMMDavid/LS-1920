@@ -1,4 +1,4 @@
-package pt.isel.ls.utils;
+package pt.isel.ls.model.commands.common;
 
 import pt.isel.ls.model.commands.common.exceptions.ExitException;
 
