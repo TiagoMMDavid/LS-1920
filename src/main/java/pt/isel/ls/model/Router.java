@@ -10,22 +10,33 @@ import pt.isel.ls.utils.Pair;
 import java.util.Iterator;
 
 public class Router {
-    /**
-     * A NTree is used to store the routes.
-     * Composed of an HashMap with a Method as a key, and MethodNode as value.
-     * This way, repetition is avoided, while also minimizing the amount of time to execute.
-     */
+
     private NTree routes = new NTree();
 
+    /**
+     * Adds a new route to a Command Handler
+     * @param method Handler's Method
+     * @param path Handler's Path
+     * @param handler The Handler itself
+     */
     public void addRoute(Method method, PathTemplate path, CommandHandler handler) {
         routes.add(method, path, handler);
     }
 
-    //Searches the NTree for a valid route
+    /**
+     * Searches the NTree for the correct Handler based on the parameters given
+     * @param method Handler's Method
+     * @param path Handler's Path
+     * @return the Handler associated with the given parameters
+     */
     public CommandHandler findRoute(Method method, Path path) {
         return routes.getHandlerAndApplyTemplate(method, path);
     }
 
+    /**
+     * @return an iterator of all the existing commands in this Router. This iterator only
+     * contains String representations of said commands.
+     */
     public Iterator<Pair<String,String>> getCommands() {
         return routes.iterator();
     }

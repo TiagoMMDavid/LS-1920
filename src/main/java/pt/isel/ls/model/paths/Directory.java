@@ -5,6 +5,11 @@ class Directory {
     private String name;
     private boolean isVariable;
 
+    /**
+     * Constructor for a Directory.
+     * @param name the directory's name
+     * @param isVariable if either this directory is a variable or not
+     */
     public Directory(String name, boolean isVariable) {
         if (isVariable) {
             name = name.substring(1, name.length() - 1);

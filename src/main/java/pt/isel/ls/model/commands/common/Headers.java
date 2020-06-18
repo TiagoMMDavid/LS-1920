@@ -11,8 +11,12 @@ public class Headers {
         processHeaders(headers);
     }
 
-    private void processHeaders(String params) {
-        String[] splitParams = params.split("\\|");
+    /**
+     * Process the given headers String
+     * @param headers the String containing the headers and their value
+     */
+    private void processHeaders(String headers) {
+        String[] splitParams = headers.split("\\|");
         for (String param: splitParams) {
             int indexOfEqual = param.indexOf(':');
             if (indexOfEqual < 0) {
@@ -38,6 +42,11 @@ public class Headers {
         }
     }
 
+    /**
+     * Adds a Header to the Map
+     * @param name the Header's name
+     * @param value the Header's value
+     */
     private void addToMap(String name, String value) {
         LinkedList<String> list = headers.get(name);
         if (list == null) {
@@ -47,11 +56,21 @@ public class Headers {
         headers.put(name, list);
     }
 
+    /**
+     * Gets the first value from a Header
+     * @param header the Header's name
+     * @return the first value of the Header
+     */
     public String getFirst(String header) {
         LinkedList<String> values = headers.get(header);
         return values != null ? values.get(0) : null;
     }
 
+    /**
+     * Gets every value from a given Header
+     * @param header the Header's name
+     * @return the Header's values
+     */
     public Iterable<String> getValues(String header) {
         return headers.get(header);
     }

@@ -19,6 +19,12 @@ import static pt.isel.ls.utils.DateUtils.parseTimeWithTimezone;
 
 public class DatabaseDataHelper {
 
+    /**
+     * Gets the label IDs associated with the given label names
+     * @param labels iterable containing label names
+     * @param con the SQL Connection to be used
+     * @return the IDs of the given labels
+     */
     public static LinkedList<Integer> getLids(Iterable<String> labels, Connection con) throws SQLException {
         if (labels == null) {
             return null;
@@ -52,6 +58,12 @@ public class DatabaseDataHelper {
         return toReturn;
     }
 
+    /**
+     * Gets the Room IDs that identify Rooms having the given Labels
+     * @param labels the Label IDs identifying the labels that the rooms must have
+     * @param con the SQL Connection to be used
+     * @return Room IDs associated with the given labels
+     */
     public static LinkedList<Integer> getRidsWithLabels(Iterable<String> labels, Connection con) throws SQLException {
         LinkedList<Integer> lids = getLids(labels, con);
         if (lids == null || lids.size() == 0) {
@@ -80,6 +92,12 @@ public class DatabaseDataHelper {
         return toReturn;
     }
 
+    /**
+     * Gets the Rooms which have the given label
+     * @param lid the Label ID
+     * @param con the SQL Connection to be used
+     * @return Rooms containing the given label
+     */
     public static Iterable<Room> getRoomsWithLabel(int lid, Connection con) throws SQLException {
         PreparedStatement ps = con.prepareStatement("SELECT ROOM.rid, ROOM.name "
                 + "FROM ROOM join ROOMLABEL on (ROOMLABEL.rid = ROOM.rid) "
@@ -97,6 +115,12 @@ public class DatabaseDataHelper {
         return toReturn;
     }
 
+    /**
+     * Gets the labels from a given Room.
+     * @param rid the Room ID identifying the Room to get the labels from
+     * @param con the SQL Connection to be used
+     * @return The Labels associated with the given Room
+     */
     public static Iterable<Label> getLabelsFromRid(int rid, Connection con) throws SQLException {
         PreparedStatement ps = con.prepareStatement("SELECT name, LABEL.lid "
                 + "FROM LABEL join ROOMLABEL on (ROOMLABEL.lid = LABEL.lid) "
@@ -114,6 +138,12 @@ public class DatabaseDataHelper {
         return labels;
     }
 
+    /**
+     * Gets the Bookings from the given User
+     * @param uid the User ID identifying the User to get the Bookings from
+     * @param con the SQL Connection to be used
+     * @return the Bookings from the given User
+     */
     public static Iterable<Booking> getBookingsFromUid(int uid, Connection con) throws SQLException, CommandException {
         PreparedStatement ps = con.prepareStatement("SELECT * "
                 + "FROM BOOKING "
@@ -143,6 +173,15 @@ public class DatabaseDataHelper {
         return bookings;
     }
 
+    /**
+     * Checks if the given Booking dates overlap with an already existing Booking, except itself
+     * @param begin The Booking's begin date
+     * @param end The Bookings end date
+     * @param rid the Booking's Room ID
+     * @param bid the Booking's ID
+     * @param con The SQL Connection to be used
+     * @return whether there is an overlap or not
+     */
     public static boolean dateOverlaps(Date begin, Date end, int rid, int bid, Connection con) throws SQLException {
         PreparedStatement ps = con.prepareStatement("select rid, begin_inst, end_inst"
                 + " from booking"
@@ -160,6 +199,14 @@ public class DatabaseDataHelper {
         return toReturn;
     }
 
+    /**
+     * Checks if the given Booking dates overlap with an already existing Booking
+     * @param begin The Booking's begin date
+     * @param end The Bookings end date
+     * @param rid the Booking's Room ID
+     * @param con The SQL Connection to be used
+     * @return whether there is an overlap or not
+     */
     public static boolean dateOverlaps(Date begin, Date end, int rid, Connection con) throws SQLException {
         PreparedStatement ps = con.prepareStatement("select rid, begin_inst, end_inst"
                 + " from booking"
@@ -177,6 +224,12 @@ public class DatabaseDataHelper {
         return toReturn;
     }
 
+    /**
+     * Gets the name of the given Label
+     * @param labelId the Label's ID
+     * @param con the SQL Connection to be used
+     * @return the Label's name
+     */
     public static String getLabelName(int labelId, Connection con) throws SQLException {
         PreparedStatement ps = con.prepareStatement("SELECT name FROM label WHERE lid = ?");
         ps.setInt(1, labelId);
@@ -190,6 +243,12 @@ public class DatabaseDataHelper {
         return labelName;
     }
 
+    /**
+     * Gets the name of the given Room
+     * @param roomId the Room's ID
+     * @param con the SQL Connection to be used
+     * @return the Label's name
+     */
     public static String getRoomName(int roomId, Connection con) throws SQLException {
         PreparedStatement ps = con.prepareStatement("SELECT name FROM room WHERE rid = ?");
         ps.setInt(1, roomId);
@@ -203,6 +262,12 @@ public class DatabaseDataHelper {
         return roomName;
     }
 
+    /**
+     * Checks if there is any Booking for the given Room
+     * @param roomId the Room's ID
+     * @param con the SQL Connection to be used
+     * @return whether there is any bookings for the given Room or not
+     */
     public static boolean hasBookings(int roomId, Connection con) throws SQLException {
         PreparedStatement ps = con.prepareStatement("SELECT bid FROM BOOKING WHERE rid = ?");
         ps.setInt(1, roomId);

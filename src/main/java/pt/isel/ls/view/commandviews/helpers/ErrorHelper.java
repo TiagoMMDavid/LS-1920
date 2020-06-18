@@ -26,7 +26,7 @@ public class ErrorHelper {
                     }
                     break;
                 case ValidationException:
-                    if (result.getValidatedStringName().equals(valueId)) {
+                    if (result.getValidatedParamName().equals(valueId)) {
                         return valueName + " " + result.getErrorMessage();
                     }
                     break;

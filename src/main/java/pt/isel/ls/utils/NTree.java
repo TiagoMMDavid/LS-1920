@@ -10,31 +10,17 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
+/**
+ * Data Structure to store the Command Handlers
+ * The first nodes of the Tree Contain the possible Methods from the handlers
+ * Each Method Node contains the Command Handlers that exist in a given method
+ */
 public class NTree implements Iterable<Pair<String,String>> {
 
-    static class HandlerNode {
-        private PathTemplate template;
-        private CommandHandler cmdHandler;
-
-        public HandlerNode(CommandHandler cmd, PathTemplate path) {
-            this.template = path;
-            this.cmdHandler = cmd;
-        }
-
-        public boolean checkTemplateAndApply(Path path) {
-            if (template.isTemplateOf(path)) {
-                template.applyTemplate(path);
-                return true;
-            } else {
-                return false;
-            }
-        }
-
-        public CommandHandler getCmdHandler() {
-            return cmdHandler;
-        }
-    }
-
+    /**
+     * Inner class that represents a method Node, as in,
+     * the first level from the NTree
+     */
     static class MethodNode {
         private LinkedList<HandlerNode> cmdhandlers = new LinkedList<>();
 
@@ -57,9 +43,42 @@ public class NTree implements Iterable<Pair<String,String>> {
         }
     }
 
+    /**
+     * Inner class that represents a Handler Node, as in,
+     * the second level from the NTree (below MethodNode)
+     */
+    static class HandlerNode {
+        private PathTemplate template;
+
+        private CommandHandler cmdHandler;
+
+        public HandlerNode(CommandHandler cmd, PathTemplate path) {
+            this.template = path;
+            this.cmdHandler = cmd;
+        }
+
+        public boolean checkTemplateAndApply(Path path) {
+            if (template.isTemplateOf(path)) {
+                template.applyTemplate(path);
+                return true;
+            } else {
+                return false;
+            }
+        }
+
+        public CommandHandler getCmdHandler() {
+            return cmdHandler;
+        }
+    }
+
     private HashMap<Method,MethodNode> methods = new HashMap<>();
 
-    //Adds a route to the HashMap
+    /**
+     * Adds a new route to the data structure
+     * @param method The method in which the Command is in
+     * @param template The Path template used for the Command
+     * @param cmd Command Handler to be stored
+     */
     public void add(Method method, PathTemplate template, CommandHandler cmd) {
         MethodNode node = getMethodNode(method);
         if (node == null) {
@@ -79,6 +98,12 @@ public class NTree implements Iterable<Pair<String,String>> {
         return node == null ? null : node.getHandlerAndApplyTemplate(path);
     }
 
+    /**
+     * Gets an Iterator for the NTree
+     * @return an Iterator which contains a Pair of Strings containing the Handler's Method, PathTemplate,
+     *         and its description.
+     *         The Method's name and Path Template are combined into the Pair's first element
+     */
     @Override
     public Iterator<Pair<String,String>> iterator() {
         return new Iterator<>() {

@@ -58,9 +58,9 @@ public class CommandServlet extends HttpServlet {
         Method method = Method.GET;
 
         Path path = getPath(req, resp);
-        Parameters params = getParametersGet(req, resp);
+        Parameters params = getParametersInGetRequest(req, resp);
         // In this phase, we only require the accept header
-        Headers headers = getAccept(req, resp);
+        Headers headers = getAcceptHeader(req, resp);
 
         CommandResult result = null;
 
@@ -95,7 +95,7 @@ public class CommandServlet extends HttpServlet {
         Method method = Method.POST;
 
         Path path = getPath(req, resp);
-        Parameters params = getParametersPost(req, resp);
+        Parameters params = getParametersInPostRequest(req, resp);
 
         PostResult result = null;
 
@@ -114,7 +114,7 @@ public class CommandServlet extends HttpServlet {
             resp.setStatus(303); // See Other / Redirect
             resp.setHeader("location", result.getCreatedId());
         } else {
-            Headers headers = getAccept(req, resp);
+            Headers headers = getAcceptHeader(req, resp);
             CommandResult resultView = null;
 
             // We only want to present the same page when the error is 400 (Bad Request)
@@ -133,6 +133,13 @@ public class CommandServlet extends HttpServlet {
                 resp.getHeader("Content-Type"));
     }
 
+    /**
+     * Executes a command with the given information
+     * @param resp Response that will be written
+     * @param request Command Request containing the command's parameters
+     * @param handler Command Handler that's responsible for executing the given command
+     * @return
+     */
     private CommandResult executeCommand(HttpServletResponse resp, CommandRequest request, CommandHandler handler) {
         CommandResult result = null;
         if (handler != null) {
@@ -175,7 +182,12 @@ public class CommandServlet extends HttpServlet {
         return result;
     }
 
-
+    /**
+     * Writes a view to a HTTP response
+     * @param resp The HTTP response to be written
+     * @param headers Command headers to be used
+     * @param result The result of the command's execution
+     */
     private void writeView(HttpServletResponse resp, Headers headers, CommandResult result) throws IOException {
         String viewFormat = headers != null ? headers.getFirst("accept") : null;
         View view = View.findView(result != null ? result : new HttpResponseResult(resp.getStatus()), viewFormat);
@@ -197,7 +209,7 @@ public class CommandServlet extends HttpServlet {
     }
 
 
-    private Headers getAccept(HttpServletRequest req, HttpServletResponse resp) {
+    private Headers getAcceptHeader(HttpServletRequest req, HttpServletResponse resp) {
         String accept = req.getHeader("Accept");
         if (accept != null) {
             try {
@@ -221,7 +233,7 @@ public class CommandServlet extends HttpServlet {
         return null;
     }
 
-    private Parameters getParametersGet(HttpServletRequest req, HttpServletResponse resp) {
+    private Parameters getParametersInGetRequest(HttpServletRequest req, HttpServletResponse resp) {
         String parameters = req.getQueryString();
         if (parameters != null) {
             try {
@@ -234,7 +246,7 @@ public class CommandServlet extends HttpServlet {
         return null;
     }
 
-    private Parameters getParametersPost(HttpServletRequest req, HttpServletResponse resp) {
+    private Parameters getParametersInPostRequest(HttpServletRequest req, HttpServletResponse resp) {
         Map<String, String[]> parameterMap = req.getParameterMap();
         if (parameterMap != null) {
             try {
@@ -247,6 +259,12 @@ public class CommandServlet extends HttpServlet {
         return null;
     }
 
+    /**
+     * Builds a String containing all the parameters used in a Post Request
+     * @param parameterMap The parameters used in the Post Request
+     * @return A Formatted String containing all the parameters given in the Post Request
+     *         This String should be used later while creating a new instance of Parameters
+     */
     private String parsePostParameters(Map<String, String[]> parameterMap) {
         StringBuilder builder = new StringBuilder();
         int entrySize = parameterMap.entrySet().size();
