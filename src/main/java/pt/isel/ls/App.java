@@ -57,21 +57,23 @@ public class App {
     private static final Router router = new Router();
     private static final LinkedList<ExitRoutine> exitRoutines = new LinkedList<>();
 
+    private static final String VALID_COMMAND_FORMAT =
+            "Please either use:"
+                    + "\n{method} {path}"
+                    + "\n{method} {path} {headers}"
+                    + "\n{method} {path} {parameters}"
+                    + "\n{method} {path} {headers} {parameters}";
+
+
     public static void main(String[] args) {
         addCommands();
 
         if (args.length > 0) {
-            executeCommand(args);
+            processCommand(args);
         } else {
             run();
         }
 
-    }
-
-    private static void executeExitRoutines() throws ExitException {
-        for (ExitRoutine exitRoutine : exitRoutines) {
-            exitRoutine.close();
-        }
     }
 
     private static void run() {
@@ -84,24 +86,20 @@ public class App {
             if (!isCommandValid(commands)) {
                 System.out.println("Wrong format. " + VALID_COMMAND_FORMAT);
             } else {
-                running = executeCommand(commands);
+                running = processCommand(commands);
             }
         }
     }
 
-    private static boolean isCommandValid(String[] commands) {
-        return commands.length > 1 && commands.length <= 4;
-    }
 
-    private static final String VALID_COMMAND_FORMAT =
-              "Please either use:"
-            + "\n{method} {path}"
-            + "\n{method} {path} {headers}"
-            + "\n{method} {path} {parameters}"
-            + "\n{method} {path} {headers} {parameters}";
+    // Returned value determines if the app should continue running or not
 
-    //Returned value determines if the app should continue running or not
-    private static boolean executeCommand(String[] commands) {
+    /**
+     * Processes a command by getting the respective method, headers, parameters and path
+     * @param commands The String array containing the command's information
+     * @return whether the app should continue running or not
+     */
+    private static boolean processCommand(String[] commands) {
         Method method;
         try {
             method = Method.valueOf(commands[0].toUpperCase());
@@ -136,10 +134,7 @@ public class App {
             return true;
         }
 
-        CommandRequest cmd = new CommandRequest(path,
-                params,
-                trans,
-                router);
+        CommandRequest cmd = new CommandRequest(path, params, trans, router);
 
         CommandHandler handler = router.findRoute(method, cmd.getPath());
         if (handler == null) {
@@ -147,6 +142,17 @@ public class App {
             return true;
         }
 
+        return executeCommand(headers, cmd, handler);
+    }
+
+    /**
+     * Executes a command with the given information
+     * @param headers Command headers to be used
+     * @param cmd Command Request containing the command's parameters
+     * @param handler Command Handler that's responsible for executing the given command
+     * @return whether the app should continue running or not
+     */
+    private static boolean executeCommand(Headers headers, CommandRequest cmd, CommandHandler handler) {
         CommandResult result;
         try {
             result = handler.execute(cmd);
@@ -185,17 +191,11 @@ public class App {
         return !isNull;
     }
 
-    private static void addExitRoutine(CommandResult result) {
-        ExitRoutine exitRoutine = result.getExitRoutine();
-        if (exitRoutine != null) {
-            exitRoutines.add(exitRoutine);
-        }
-    }
-
-    private static boolean isHeader(String command) {
-        return command.contains(":") && !command.contains("=") && !command.contains("&");
-    }
-
+    /**
+     * Displays the result obtained after executing a command
+     * @param result The result of the command's execution
+     * @param headers Command headers to be used
+     */
     private static void displayResult(CommandResult result, Headers headers) {
         try {
             String filename = null;
@@ -228,6 +228,31 @@ public class App {
         return new FileOutputStream(fileName);
     }
 
+    private static boolean isCommandValid(String[] commands) {
+        return commands.length > 1 && commands.length <= 4;
+    }
+
+    private static boolean isHeader(String command) {
+        return command.contains(":") && !command.contains("=") && !command.contains("&");
+    }
+
+    private static void addExitRoutine(CommandResult result) {
+        ExitRoutine exitRoutine = result.getExitRoutine();
+        if (exitRoutine != null) {
+            exitRoutines.add(exitRoutine);
+        }
+    }
+
+    private static void executeExitRoutines() throws ExitException {
+        for (ExitRoutine exitRoutine : exitRoutines) {
+            exitRoutine.close();
+        }
+    }
+
+    /**
+     * Adds commands to the Router
+     * New commands must be added here along with their Methods and Paths
+     */
     private static void addCommands() {
         // GET commands
         router.addRoute(Method.GET, new PathTemplate("/rooms"), new GetRoomsCommand());
