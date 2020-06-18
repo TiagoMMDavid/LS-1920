@@ -5,6 +5,15 @@ import pt.isel.ls.model.commands.common.exceptions.CommandException;
 
 public class ErrorHelper {
 
+    /**
+     * This method is responsible for returning a String corresponding to the error that's present in the result.
+     * @param result the result containing the error
+     * @param valueId identification of the value to verify
+     * @param valueName used to represent the value name
+     * @param previousValue the previously entered value
+     * @param canBeDuplicatedOrOverlapped whether the value can be duplicated or overlapped with an existing one
+     */
+
     public static String getResultError(ValidatedResult result, String valueId, String valueName,
                                         String previousValue, boolean canBeDuplicatedOrOverlapped) {
 

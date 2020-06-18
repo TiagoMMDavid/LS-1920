@@ -6,6 +6,14 @@ import java.util.LinkedList;
 
 public abstract class Element {
 
+    /**
+     * This class is used to represent an HTML element in a tree format.
+     * That means each element can have children contained inside itself.
+     * Each HTML element also has delimiters (except certain ones).
+     * There are also several constructors that reflect the many kinds of elements that can exist.
+     * To create a new Element the class needs to extend this class or ElementText, since it serves as the base
+     * for all other elements
+     */
     LinkedList<Element> children = new LinkedList<>();
     Pair<String, String> delimiters;
 

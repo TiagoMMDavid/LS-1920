@@ -6,6 +6,10 @@ import pt.isel.ls.utils.DateUtils;
 import java.util.Date;
 
 public class BookingHelpers {
+    /**
+     * These methods are responsible for appending specific Booking information to the
+     * StringBuilder that's passed as a parameter
+     */
     public static void appendEndInst(Booking booking, StringBuilder builder) {
         Date date = booking.getEndInst();
         builder.append("End Date:\t\t");
