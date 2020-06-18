@@ -150,7 +150,7 @@ public class CommandServlet extends HttpServlet {
                 Parameters params = request.getParams();
                 params.addParam("errorType", e.getExceptionType().name());
                 params.addParam("errorMessage", e.getErrorMessage());
-                params.addParam("validatedString", e.getValidatedString());
+                params.addParam("validatedString", e.getValidatedParam());
             } catch (SQLException e) {
                 log.error("SQL ERROR STATE: {}", e.getSQLState());
                 switch (e.getSQLState()) {

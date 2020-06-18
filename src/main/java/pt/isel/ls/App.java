@@ -167,7 +167,7 @@ public class App {
             }
             return true;
         } catch (ValidationException e) {
-            System.out.println(e.getMessage() + " (in: '" + e.getValidatedString() + "')\n");
+            System.out.println(e.getMessage() + " (in: '" + e.getValidatedParam() + "')\n");
             return true;
         } catch (Exception e) {
             System.out.println(e.getMessage() + "\n");

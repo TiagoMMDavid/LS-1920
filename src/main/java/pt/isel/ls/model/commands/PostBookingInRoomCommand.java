@@ -4,6 +4,7 @@ import pt.isel.ls.model.commands.common.CommandHandler;
 import pt.isel.ls.model.commands.common.CommandRequest;
 import pt.isel.ls.model.commands.common.CommandResult;
 import pt.isel.ls.model.commands.common.Parameters;
+import pt.isel.ls.model.commands.common.Validator;
 import pt.isel.ls.model.commands.common.exceptions.CommandException;
 import pt.isel.ls.model.commands.common.exceptions.InvalidIdException;
 import pt.isel.ls.model.commands.common.exceptions.MissingArgumentsException;
@@ -60,8 +61,11 @@ public class PostBookingInRoomCommand implements CommandHandler {
                 Date durationDate;
                 try {
                     beginDate = parseTimeWithTimezone(begin, "yyyy-MM-dd'T'HH:mm");
+                    Validator.validateDateMultipleOf(beginDate, "begin", 10);
+
                     //Parsed time without timezone because the duration is independent of Timezones
                     durationDate = parseTime(duration, "HH:mm");
+                    Validator.validateDateMultipleOf(durationDate, "duration", 10);
                 } catch (ParseException e) {
                     throw new ParseArgumentException("Failed to parse dates");
                 }

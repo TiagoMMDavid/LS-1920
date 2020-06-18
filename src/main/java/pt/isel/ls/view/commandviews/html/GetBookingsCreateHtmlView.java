@@ -9,7 +9,6 @@ import pt.isel.ls.utils.html.elements.Element;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static pt.isel.ls.model.commands.common.exceptions.CommandException.ExceptionType.OverlapException;
 import static pt.isel.ls.utils.html.HtmlDsl.a;
 import static pt.isel.ls.utils.html.HtmlDsl.body;
 import static pt.isel.ls.utils.html.HtmlDsl.br;
@@ -28,6 +27,7 @@ import static pt.isel.ls.utils.html.elements.Input.InputType.DATETIME_LOCAL;
 import static pt.isel.ls.utils.html.elements.Input.InputType.SUBMIT;
 import static pt.isel.ls.utils.html.elements.Input.InputType.TIME;
 import static pt.isel.ls.utils.html.elements.Input.attrib;
+import static pt.isel.ls.view.commandviews.helpers.ErrorHelper.getResultError;
 
 public class GetBookingsCreateHtmlView extends HtmlView {
 
@@ -75,8 +75,8 @@ public class GetBookingsCreateHtmlView extends HtmlView {
                                                 ),
                                                 p(
                                                         70, "red",
-                                                        result.getErrorType() == OverlapException
-                                                            ? "Date overlaps with an existing booking!" : "")
+                                                        getResultError(result,
+                                                                "begin", "Date", result.getPreviousBeginInst(), false))
                                         ),
                                         div(
                                                 label("duration", "Enter duration time: "),
@@ -87,7 +87,11 @@ public class GetBookingsCreateHtmlView extends HtmlView {
                                                         attrib("required", "true"),
                                                         attrib("step", "600")
                                                 ),
-                                                br(), br()
+                                                p(
+                                                        70, "red",
+                                                        getResultError(result,
+                                                                "duration", "Duration",
+                                                                result.getPreviousDuration(), true))
                                         ),
                                         br(),
                                         input(SUBMIT, attrib("name","submit"), attrib("value","Create"))

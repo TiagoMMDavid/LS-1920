@@ -2,17 +2,17 @@ package pt.isel.ls.model.commands.common.exceptions;
 
 public class ValidationException extends CommandException {
 
-    private String validatedString;
+    private String validatedParam;
     private String message;
 
-    public ValidationException(String validatedString, String message) {
-        super("String " + message);
-        this.validatedString = validatedString;
+    public ValidationException(String validatedParam, String paramType, String message) {
+        super(paramType + " " + message);
+        this.validatedParam = validatedParam;
         this.message = message;
     }
 
-    public String getValidatedString() {
-        return validatedString;
+    public String getValidatedParam() {
+        return validatedParam;
     }
 
     public String getErrorMessage() {

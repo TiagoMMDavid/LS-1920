@@ -34,6 +34,14 @@ public class DateUtils {
         return calendar.getTime();
     }
 
+    // Checks if the given date is multiple of x
+    public static boolean isDateMinutesMultipleOf(Date date, int x) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        int minutes = calendar.get(Calendar.MINUTE);
+        return minutes % x == 0;
+    }
+
     public static String formatDate(Date date, String pattern) {
         return new SimpleDateFormat(pattern).format(date);
     }

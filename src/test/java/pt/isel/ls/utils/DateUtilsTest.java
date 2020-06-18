@@ -7,6 +7,8 @@ import java.util.Calendar;
 import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class DateUtilsTest {
 
@@ -21,6 +23,22 @@ public class DateUtilsTest {
         expected.set(2020, Calendar.JANUARY, 1, 12, 30, 0);
 
         assertEquals(expected.get(Calendar.MINUTE), calendar.get(Calendar.MINUTE));
+    }
+
+    @Test
+    public void isDateMultipleOfTenMinTest_ShouldReturnTrue() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2020, Calendar.JANUARY, 1, 12, 30, 0);
+
+        assertTrue(DateUtils.isDateMinutesMultipleOf(calendar.getTime(), 10));
+    }
+
+    @Test
+    public void isDateMultipleOfTenMinTest_ShouldReturnFalse() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2020, Calendar.JANUARY, 1, 12, 35, 0);
+
+        assertFalse(DateUtils.isDateMinutesMultipleOf(calendar.getTime(), 10));
     }
 
     @Test
