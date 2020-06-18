@@ -61,8 +61,15 @@ public abstract class View {
     protected static final String HtmlViewFormat = "text/html";
     protected static final String PlainViewFormat = "text/plain";
 
+    /**
+     * Used to determine whether the View has a route or not, in case the View doesn't have
+     * an HTML or textual representation
+     */
     protected boolean foundRoute = true;
 
+    /**
+     * Determines the representation for the result parameter based on the viewFormat String
+     */
     public static View findView(CommandResult commandResult, String viewFormat) {
         if (viewFormat != null && viewFormat.equals(HtmlViewFormat)) {
             return findHtmlView(commandResult);
@@ -72,6 +79,9 @@ public abstract class View {
         return findTextPlainView(commandResult);
     }
 
+    /**
+     * Creates a new instance of a plain text View corresponding to the result type of the commandResult parameter
+     */
     private static View findTextPlainView(CommandResult commandResult) {
         if (!commandResult.hasResults()) {
             return new EmptyPlainView();
@@ -125,6 +135,9 @@ public abstract class View {
         }
     }
 
+    /**
+     * Creates a new instance of an HTML View corresponding to the result type of the commandResult parameter
+     */
     private static View findHtmlView(CommandResult commandResult) {
         if (!commandResult.hasResults()) {
             return new EmptyHtmlView();
@@ -188,10 +201,16 @@ public abstract class View {
         }
     }
 
+    /**
+     * Renders the String corresponding to the View to the OutputStream
+     */
     public void render(OutputStream out) throws IOException {
         out.write((getDisplay()).getBytes());
     }
 
+    /**
+     * Returns the String corresponding to the View representation
+     */
     public String getDisplay() {
         return display() + "\n\n";
     }

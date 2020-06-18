@@ -7,6 +7,12 @@ import pt.isel.ls.model.entities.Room;
 import java.util.Iterator;
 
 public class RoomHelper {
+
+    /**
+     * These methods are responsible for appending specific Room information to the
+     * StringBuilder that's passed as a parameter
+     */
+
     public static void appendId(Room room, StringBuilder builder) {
         builder.append("Room ID:\t\t");
         builder.append(room.getRid());

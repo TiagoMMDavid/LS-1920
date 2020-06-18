@@ -6,6 +6,11 @@ import pt.isel.ls.utils.DateUtils;
 
 public class UserHelpers {
 
+    /**
+     * These methods are responsible for appending specific User information to the
+     * StringBuilder that's passed as a parameter
+     */
+
     public static void appendEmail(User user, StringBuilder builder) {
         String email = user.getEmail();
         builder.append("Email: ");
