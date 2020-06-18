@@ -6,6 +6,9 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
+/**
+ * Class containing helper methods for Dates
+ */
 public class DateUtils {
 
     public static Date parseTimeWithTimezone(String date, String pattern) throws ParseException {
@@ -16,6 +19,14 @@ public class DateUtils {
         return parseTime(date, pattern, TimeZone.getTimeZone("UTC"));
     }
 
+    /**
+     * Gets a Date with the given parameters
+     * @param date String containing the date
+     * @param pattern Pattern used to represent the String date
+     * @param tz Timezone to be used for the Date
+     * @return The parsed Date
+     * @throws ParseException Whenever the String date does not correspond to the pattern
+     */
     private static Date parseTime(String date, String pattern, TimeZone tz) throws ParseException {
         SimpleDateFormat formatDate = new SimpleDateFormat(pattern);
         formatDate.setTimeZone(tz);
@@ -23,6 +34,12 @@ public class DateUtils {
     }
 
     // Rounds date passed as argument to the closest multiple of ten minute value
+
+    /**
+     * Rounds a date to ten minutes, as in, sums the necessary amount to get to the next multiple of ten
+     * @param date Date to be rounded
+     * @return The rounded date
+     */
     public static Date roundDateToTenMin(Date date) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
@@ -34,7 +51,12 @@ public class DateUtils {
         return calendar.getTime();
     }
 
-    // Checks if the given date is multiple of x
+    /**
+     * Checks if a Date is multiple of a given value (x)
+     * @param date Date to be checked
+     * @param x Value that represents the desired Multiple that will be checked
+     * @return whether the Date is multiple of x
+     */
     public static boolean isDateMinutesMultipleOf(Date date, int x) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
