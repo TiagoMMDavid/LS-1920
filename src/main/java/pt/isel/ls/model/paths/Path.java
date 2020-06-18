@@ -5,20 +5,22 @@ import java.util.LinkedList;
 
 public class Path extends BasePath {
 
-    /**
-     * An Hashmap of Strings to represent the each variable's name.
-     */
     private HashMap<String, String> variables;
-
-    void addVariable(String varName, String var) {
-        if (variables == null) {
-            variables = new HashMap<>();
-        }
-        variables.put(varName, var);
-    }
 
     public Path(String path) {
         super(path);
+    }
+
+    /**
+     * Adds a variable to the variable Map
+     * @param name The variable's name
+     * @param value The variable's value
+     */
+    void addVariable(String name, String value) {
+        if (variables == null) {
+            variables = new HashMap<>();
+        }
+        variables.put(name, value);
     }
 
     public Integer getInt(String varName) throws NumberFormatException {

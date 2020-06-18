@@ -4,8 +4,14 @@ import pt.isel.ls.utils.ExitRoutine;
 
 public interface CommandResult {
 
+    /**
+     * @return Whether there's results or not
+     */
     boolean hasResults();
 
+    /**
+     * Enum containing every type of Result. New Result types must be added here.
+     */
     enum ResultType {
         DeleteBookingInRoom,
         GetBookingByRoomAndBookingId,
@@ -35,6 +41,9 @@ public interface CommandResult {
         HttpResponse
     }
 
+    /**
+     * @return the ExitRoutine that must be executed when the App is terminating its execution
+     */
     default ExitRoutine getExitRoutine() {
         return null;
     }

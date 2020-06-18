@@ -9,8 +9,9 @@ public class PathTemplate extends BasePath {
     }
 
     /**
-     * Compares the Directories of both the Path and PathTemplate, in case they all have the same name,
-     * or correspond to a variable, returns true.
+     * Used to check if the given Path is adhering to this PathTemplate.
+     * @param path The Path to be checked
+     * @return if this template is a template of the given Path
      */
     public boolean isTemplateOf(Path path) {
         Iterator<Directory> templateItr = this.path.iterator();
@@ -34,7 +35,8 @@ public class PathTemplate extends BasePath {
     }
 
     /**
-     * Applies the Template to a path, allowing it to add the variables to the allocated place.
+     * Applies the Template to a Path, allowing it to add its variables in the correct places.
+     * @param path The Path to alter
      */
     public void applyTemplate(Path path) {
         Iterator<Directory> templateItr = this.path.iterator();
@@ -48,15 +50,15 @@ public class PathTemplate extends BasePath {
         }
     }
 
-    @Override
-    protected void addDirectory(String dir) {
-        super.path.add(new Directory(dir,isVariable(dir)));
-    }
-
     private boolean isVariable(String dir) {
         if (dir.charAt(0) == '{') {
             return dir.charAt(dir.length() - 1) == '}';
         }
         return false;
+    }
+
+    @Override
+    protected void addDirectory(String dir) {
+        super.path.add(new Directory(dir,isVariable(dir)));
     }
 }

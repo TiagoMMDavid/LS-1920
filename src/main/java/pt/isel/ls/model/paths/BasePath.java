@@ -4,10 +4,6 @@ import java.util.LinkedList;
 
 abstract class BasePath {
 
-    /**
-     * This class was created because there was a lot of repeated code between the several path-related classes.
-     * A path is composed of a List of Directories, which store the name, and whether or not it is a variable.
-     */
     protected LinkedList<Directory> path;
     protected String pathString;
 
@@ -18,6 +14,8 @@ abstract class BasePath {
 
     /**
      * Splits the string and parses it accordingly, adding each valid string to the list of Directories.
+     * @param path the path to be processed
+     * @throws IllegalArgumentException in case the given path is invalid
      */
     protected void parsePath(String path) throws IllegalArgumentException {
         StringBuilder pathStringBuilder = new StringBuilder();
@@ -44,8 +42,17 @@ abstract class BasePath {
         pathString = pathStringBuilder.toString();
     }
 
+    /**
+     * Abstract method to add a directory to the list of directories
+     * @param dir the directory's name
+     */
     protected abstract void addDirectory(String dir);
 
+    /**
+     * Checks if a given path string is valid
+     * @param path the path to be validated
+     * @return whether the path is valid or not
+     */
     protected boolean isValid(String path) {
         return path != null && !path.isEmpty() && path.charAt(0) == '/';
     }
