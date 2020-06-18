@@ -20,8 +20,6 @@ public class TransactionManager {
     /**
      * Executes an SQL transaction
      * @param f the SQLFunction that will be executes
-     * @throws CommandException
-     * @throws SQLException
      */
     public void executeTransaction(SqlFunction f) throws CommandException, SQLException {
         PGSimpleDataSource ds = new PGSimpleDataSource();

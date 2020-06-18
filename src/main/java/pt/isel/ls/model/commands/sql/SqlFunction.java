@@ -13,8 +13,6 @@ public interface SqlFunction {
      * This method's implementation is required by the TransactionManager.
      *
      * @param con the SQL Connection to be used
-     * @throws CommandException
-     * @throws SQLException
      */
     void execute(Connection con) throws CommandException, SQLException;
 }

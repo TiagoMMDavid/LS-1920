@@ -24,7 +24,6 @@ public class DatabaseDataHelper {
      * @param labels iterable containing label names
      * @param con the SQL Connection to be used
      * @return the IDs of the given labels
-     * @throws SQLException
      */
     public static LinkedList<Integer> getLids(Iterable<String> labels, Connection con) throws SQLException {
         if (labels == null) {
@@ -64,7 +63,6 @@ public class DatabaseDataHelper {
      * @param labels the Label IDs identifying the labels that the rooms must have
      * @param con the SQL Connection to be used
      * @return Room IDs associated with the given labels
-     * @throws SQLException
      */
     public static LinkedList<Integer> getRidsWithLabels(Iterable<String> labels, Connection con) throws SQLException {
         LinkedList<Integer> lids = getLids(labels, con);
@@ -99,7 +97,6 @@ public class DatabaseDataHelper {
      * @param lid the Label ID
      * @param con the SQL Connection to be used
      * @return Rooms containing the given label
-     * @throws SQLException
      */
     public static Iterable<Room> getRoomsWithLabel(int lid, Connection con) throws SQLException {
         PreparedStatement ps = con.prepareStatement("SELECT ROOM.rid, ROOM.name "
@@ -123,7 +120,6 @@ public class DatabaseDataHelper {
      * @param rid the Room ID identifying the Room to get the labels from
      * @param con the SQL Connection to be used
      * @return The Labels associated with the given Room
-     * @throws SQLException
      */
     public static Iterable<Label> getLabelsFromRid(int rid, Connection con) throws SQLException {
         PreparedStatement ps = con.prepareStatement("SELECT name, LABEL.lid "
@@ -147,8 +143,6 @@ public class DatabaseDataHelper {
      * @param uid the User ID identifying the User to get the Bookings from
      * @param con the SQL Connection to be used
      * @return the Bookings from the given User
-     * @throws SQLException
-     * @throws CommandException
      */
     public static Iterable<Booking> getBookingsFromUid(int uid, Connection con) throws SQLException, CommandException {
         PreparedStatement ps = con.prepareStatement("SELECT * "
@@ -187,7 +181,6 @@ public class DatabaseDataHelper {
      * @param bid the Booking's ID
      * @param con The SQL Connection to be used
      * @return whether there is an overlap or not
-     * @throws SQLException
      */
     public static boolean dateOverlaps(Date begin, Date end, int rid, int bid, Connection con) throws SQLException {
         PreparedStatement ps = con.prepareStatement("select rid, begin_inst, end_inst"
@@ -213,7 +206,6 @@ public class DatabaseDataHelper {
      * @param rid the Booking's Room ID
      * @param con The SQL Connection to be used
      * @return whether there is an overlap or not
-     * @throws SQLException
      */
     public static boolean dateOverlaps(Date begin, Date end, int rid, Connection con) throws SQLException {
         PreparedStatement ps = con.prepareStatement("select rid, begin_inst, end_inst"
@@ -237,7 +229,6 @@ public class DatabaseDataHelper {
      * @param labelId the Label's ID
      * @param con the SQL Connection to be used
      * @return the Label's name
-     * @throws SQLException
      */
     public static String getLabelName(int labelId, Connection con) throws SQLException {
         PreparedStatement ps = con.prepareStatement("SELECT name FROM label WHERE lid = ?");
@@ -257,7 +248,6 @@ public class DatabaseDataHelper {
      * @param roomId the Room's ID
      * @param con the SQL Connection to be used
      * @return the Label's name
-     * @throws SQLException
      */
     public static String getRoomName(int roomId, Connection con) throws SQLException {
         PreparedStatement ps = con.prepareStatement("SELECT name FROM room WHERE rid = ?");
@@ -277,7 +267,6 @@ public class DatabaseDataHelper {
      * @param roomId the Room's ID
      * @param con the SQL Connection to be used
      * @return whether there is any bookings for the given Room or not
-     * @throws SQLException
      */
     public static boolean hasBookings(int roomId, Connection con) throws SQLException {
         PreparedStatement ps = con.prepareStatement("SELECT bid FROM BOOKING WHERE rid = ?");
