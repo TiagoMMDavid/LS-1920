@@ -38,7 +38,7 @@ import pt.isel.ls.model.commands.common.exceptions.ValidationException;
 import pt.isel.ls.model.commands.sql.TransactionManager;
 import pt.isel.ls.model.paths.Path;
 import pt.isel.ls.model.paths.PathTemplate;
-import pt.isel.ls.utils.ExitRoutine;
+import pt.isel.ls.model.commands.common.ExitRoutine;
 import pt.isel.ls.view.View;
 
 import java.io.FileNotFoundException;

@@ -16,7 +16,7 @@ public class DateUtilsTest {
     public void roundDateToTenMinTest() {
         Calendar calendar = Calendar.getInstance();
         calendar.set(2020, Calendar.JANUARY, 1, 12, 25, 0);
-        Date date = DateUtils.roundDateToTenMin(calendar.getTime());
+        Date date = DateUtils.roundDateToXMin(calendar.getTime(), 10);
         calendar.setTime(date);
 
         Calendar expected = Calendar.getInstance();

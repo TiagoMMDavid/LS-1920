@@ -65,6 +65,7 @@ public class NTree implements Iterable<Pair<String,String>> {
                 return false;
             }
         }
+
         public CommandHandler getCmdHandler() {
             return cmdHandler;
         }
