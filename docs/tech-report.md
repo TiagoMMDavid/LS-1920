@@ -10,7 +10,7 @@ Este documento contém os aspectos relevantes do desenho e implementação da fa
 
 O seguinte diagrama apresenta a modelo entidade-associação para a informação gerida pelo sistema. 
 
-![EA Diagram](https://github.com/isel-leic-ls/1920-2-LI42D-G08/blob/master/docs/images/EA_Diagram.png "EA Diagram")
+![EA Diagram](https://github.com/PTKickass/LS-1920/blob/master/docs/images/EA_Diagram.png "EA Diagram")
 
 Destacam-se os seguintes aspectos deste modelo:
 
